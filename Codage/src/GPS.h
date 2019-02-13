@@ -13,6 +13,7 @@ class GPS
 
 		float latitude;
 		float longitude; 
+		float vitesse;
 		struct tm datation;
 		bool available = false;
     
@@ -29,6 +30,7 @@ class GPS
 		int maj();
 		float getLatitude() {return latitude;};
 		float getLongitude() {return longitude;};
+		float getVitesse() {return vitesse;};
 		struct tm getDatation() {return datation;};
 		bool isDispo();
 		char readDATA();
