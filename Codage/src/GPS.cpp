@@ -39,6 +39,7 @@ int GPS::maj()
     //Mettre les valeurs dans les attributs
     this->latitude = gps->latitudeDegrees;
     this->longitude = gps->longitudeDegrees;
+    this->vitesse = gps->speed;
 
     this->datation.tm_year = gps->year;
     this->datation.tm_mon = gps->month - 1;
