@@ -6,10 +6,10 @@
 #include "LiaisonSimulateur.h"
 
 //Communication avec OBD2 réel (Bleu)
-//#define DEBUT_POIDS_FORT 6 
-//#define FIN_POIDS_FORT 8
-//#define DEBUT_POIDS_FAIBLE 9
-//#define FIN_POIDS_FAIBLE 11
+/*#define DEBUT_POIDS_FORT 6
+#define FIN_POIDS_FORT 8
+#define DEBUT_POIDS_FAIBLE 9
+#define FIN_POIDS_FAIBLE 11*/
 
 //Communication avec le simulateur OBDSim
 #define DEBUT_POIDS_FORT 8 
