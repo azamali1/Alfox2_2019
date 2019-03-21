@@ -1,5 +1,5 @@
 project/CarteSDTesteur.cpp.o: ../../CarteSDTesteur.cpp \
- ../../../src/CarteSD.h \
+ ../../../../src/CarteSD.h \
  /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SPI/SPI.h \
  /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Arduino.h \
  /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/avr/pgmspace.h \
@@ -111,4 +111,4 @@ project/CarteSDTesteur.cpp.o: ../../CarteSDTesteur.cpp \
  /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/utility/FatStructs.h \
  /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Print.h \
  /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/utility/SdFatUtil.h \
- ../../../src/DonneesTR.h ../../../src/DonneesTR.h
+ ../../../../src/DonneesTR.h ../../../../src/DonneesTR.h
