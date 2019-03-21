@@ -80,7 +80,7 @@ bool CarteSD::ecrire(DonneesTR* dTR)
   fichierSD = SD.open(nomFichier, FILE_WRITE);          // ouverture du fichier en ecriture et creation si il n'existe pas 
   if (fichierSD) {// si l'ouverture as réussie
     //Serial.println(fichierSD.name());                   // debug
-    fichierSD.println(String(dTR->getDistanceParcourue())+'\t' + String(dTR->getConsoMax()) + "		" + String(dTR->getConsoMoyenne()) + " 	" +  String(dTR->getVitesseMoyenne()) + "  	" + String(dTR->getVitesseMax()) + "  	" + String(dTR->getRegimeMax()) + " 	"+ String(dTR->getRegimeMoyen()) + "	 "+ String(dTR->getLatitude()) + " 	"+ String(dTR->getLongitude()));
+    fichierSD.println(String(dTR->getDistanceParcourue())+'\t' + String(dTR->getConsoMax()) + "	" + String(dTR->getConsoMoyenne()) + " 	" +  String(dTR->getVitesseMoyenne()) + "  	" + String(dTR->getVitesseMax()) + "  	" + String(dTR->getRegimeMax()) + " 	"+ String(dTR->getRegimeMoyen()) + "	 "+ String(dTR->getLatitude()) + " 	"+ String(dTR->getLongitude()));
                                                         // ecriture des donnée 
     fichierSD.close();                                  // fermeture du fichier
     

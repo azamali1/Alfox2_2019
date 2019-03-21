@@ -148,6 +148,10 @@ void DonneesTR::setLongitude(float longitude){
   this->longitude = longitude;
 }
 
+struct tm setdatation( struct tm datation){
+	this->datation = datation;
+}
+
 
 float DonneesTR::getLatitude() {
 	return latitude;
@@ -157,6 +161,11 @@ float DonneesTR::getLatitude() {
 float DonneesTR::getLongitude() {
 	return longitude;
 }
+
+struct tm getdatation(){
+	return datation;
+}
+
 /*
 	void DonneesTR::majData(OBD2 obd2)
 	{

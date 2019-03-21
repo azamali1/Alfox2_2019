@@ -1,0 +1,2 @@
+eclipse.preferences.version=1
+libraries=[{"package"\:"arduino","platform"\:"samd","library"\:"SPI"},{"package"\:"arduino","platform"\:"samd","library"\:"Wire"}]

@@ -7,14 +7,12 @@ boolean NL = true;
 
 void setup() {
   Serial.begin(9600);
-  delay(5000);
+  delay(2500);
   bluetooth = new Bluetooth(PINALIM, PINEN);
   Serial.println("Test de la classe Bluetooth");
-  //bluetooth->connexion("2017,11,7030A"); // OBD2 bleu
+  bluetooth->connexion("2017,11,7030A"); // OBD2 bleu
   //bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
-   bluetooth->connexion("E84E,84,CCF54A"); //Portable ZAMALI
-   bluetooth->connexion(""); //Portable LOPEZ
-  //bluetooth->connexion("001A,7D,DA7117"); //Dongle 4.0
+ // bluetooth->connexion("E84E,84,CCF54A"); //Portable ZAMALI
   delay(2000);
   Serial.println(bluetooth->isActif());
 

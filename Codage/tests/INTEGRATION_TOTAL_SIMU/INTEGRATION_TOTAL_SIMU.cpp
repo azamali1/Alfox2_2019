@@ -119,6 +119,7 @@ void majGPS()
   delay(250);
   donneesTR->setLatitude(gps->getLatitude());
   donneesTR->setLongitude(gps->getLongitude());
+  donneesTR->setdatation(gps->getDatation());
 }
 
 

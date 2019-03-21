@@ -27,9 +27,11 @@ class DonneesTR {
     //void majData(OBD2 obd2);
     float getLatitude();
     float getLongitude();
+    struct tm getdatation();
 
     void setLatitude(float latitude);
     void setLongitude(float longitude);
+    struct tm setdatation( struct tm datation);
 
     
     // pas de getDefaut ou de getNbDefaut ni de set
@@ -48,6 +50,7 @@ class DonneesTR {
     int regimeMax;
     float latitude;
     float longitude;
+    struct tm datation;
 
     int moyenneRegime = 0;  //nb total de valeurs
     long valeurMoyenneRegime = 0;
