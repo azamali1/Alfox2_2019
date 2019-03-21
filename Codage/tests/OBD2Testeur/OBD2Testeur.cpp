@@ -46,14 +46,29 @@ void loop() {
 	      }
 	  }
 
-	Serial.println(obd2->lireVitesse());
+	Serial.print(obd2->lireVitesse());
+	Serial.println(" Km/h");
 	delay(2000);
-	Serial.println(obd2->lireConsomation());
+	//ici on lit la Pression en kpa
+	Serial.print(obd2->lirePression());
+	Serial.println(" kpa");
 	delay(2000);
-	Serial.println(obd2->lireRegimeMoteur());
+	//ici on lit la Température d'admission d'air en °C
+	Serial.print(obd2->lireTemprerature());
+	Serial.println(" °C");
 	delay(2000);
-
-
+	//ici on lit le Ratio carburant/air
+	Serial.println(obd2->lireRatio());
+	delay(2000);
+	//ici on lit grâce a un calcul la consommation du véhicule
+	//Serial.print(obd2->calculConsommation());
+	Serial.print(obd2->lireConsomation());
+	Serial.println(" L/100");
+	delay(2000);
+	//ici on lit le Regime moteur en tr/min
+	Serial.print(obd2->lireRegimeMoteur());
+	Serial.println(" tr/min");
+	delay(2000);
 
 }
 void SERCOM3_Handler()

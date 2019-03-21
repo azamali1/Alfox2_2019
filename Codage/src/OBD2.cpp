@@ -70,7 +70,6 @@ String OBD2::demande(TCode numCode){
   liaisonBT->println(code[numCode]);
   String a = lireReponse();
   return a/*.toInt()*/;
-  
 }
 
 String OBD2::lireReponse(){
@@ -121,11 +120,26 @@ int OBD2::lireRegimeMoteur(){
   String trame  = "";
   trame = reponse.substring(DEBUT_POIDS_FORT,FIN_POIDS_FORT);
   trame += reponse.substring(DEBUT_POIDS_FAIBLE,FIN_POIDS_FAIBLE);
+
   return hex2uint16(trame.c_str())/4;
 }
 
+int OBD2::calculConsommation ()
+{
+	//Voici le calcul de la consommation que vous pouvez retrouver dans la documentation "Consommation OBD2"
+	int conso = (6000/this->lireVitesse())*(0.0027*(this->lirePression()*this->lireRegimeMoteur()/((this->lireTemprerature()+273.15)*this->lireRatio())));
+	return conso /20;
+}
+
 float OBD2::lireConsomation(){
-  String reponse = demande(C_CONSOMMATION);
+
+  //Voici le calcul de la consommation que vous pouvez retrouver dans la documentation "Consommation OBD2"
+  float conso = (6000/this->lireVitesse())*(0.0027*(this->lirePression()*this->lireRegimeMoteur()/((this->lireTemprerature()+273.15)*this->lireRatio())));
+  char buffer [128];
+
+  String reponse ;
+  sprintf(buffer,"%f",conso);
+  reponse  = buffer;
   
   //Si la vitesse n'est pas suffisante, pas de donnée, on renvoie -1
   if (reponse.substring(0,7) == "NO DATA")
@@ -139,12 +153,70 @@ float OBD2::lireConsomation(){
   if (reponse.substring(0,9) == "ERROR:(0)")
     return -3;
     
-#ifdef DEBUG
-  Serial.println(reponse);
-  Serial.println(reponse.substring(DEBUT_POIDS_FORT,FIN_POIDS_FORT));
-  Serial.println(reponse.substring(DEBUT_POIDS_FAIBLE,FIN_POIDS_FAIBLE));
-#endif
-  String trame = reponse.substring(DEBUT_POIDS_FORT,FIN_POIDS_FORT);
-  trame += reponse.substring(DEBUT_POIDS_FAIBLE,FIN_POIDS_FAIBLE);
+  String trame  = "";
+    trame = reponse.substring(DEBUT_POIDS_FORT,FIN_POIDS_FORT);
+    trame += reponse.substring(DEBUT_POIDS_FAIBLE,FIN_POIDS_FAIBLE);
   return ((float)hex2uint16(trame.c_str()))/20;
 }
+float OBD2::lirePression(){
+  String reponse = demande(C_PESSION);
+
+  //Si la vitesse n'est pas suffisante, pas de donnée, on renvoie -1
+  if (reponse.substring(0,7) == "NO DATA")
+    return -1;
+
+  //Si le contact est coupé, la connexion est impossible, on renvoie -2
+  if (reponse.substring(0,17) == "UNABLE TO CONNECT")
+    return -2;
+
+  //Si la connexion bluetooth est perdue on renvoie -3
+  if (reponse.substring(0,9) == "ERROR:(0)")
+    return -3;
+
+  String trame  = "";
+    trame = reponse.substring(DEBUT_POIDS_FORT,FIN_POIDS_FORT);
+    trame += reponse.substring(DEBUT_POIDS_FAIBLE,FIN_POIDS_FAIBLE);
+return hex2uint8(reponse.substring(DEBUT_POIDS_FORT,FIN_POIDS_FORT).c_str());
+}
+float OBD2::lireTemprerature(){
+  String reponse = demande(C_TEMPERATURE);
+
+  //Si la vitesse n'est pas suffisante, pas de donnée, on renvoie -1
+  if (reponse.substring(0,7) == "NO DATA")
+    return -1;
+
+  //Si le contact est coupé, la connexion est impossible, on renvoie -2
+  if (reponse.substring(0,17) == "UNABLE TO CONNECT")
+    return -2;
+
+  //Si la connexion bluetooth est perdue on renvoie -3
+  if (reponse.substring(0,9) == "ERROR:(0)")
+    return -3;
+
+  String trame  = "";
+    trame = reponse.substring(DEBUT_POIDS_FORT,FIN_POIDS_FORT);
+    trame += reponse.substring(DEBUT_POIDS_FAIBLE,FIN_POIDS_FAIBLE);
+  return hex2uint8(reponse.substring(DEBUT_POIDS_FORT,FIN_POIDS_FORT).c_str())-40;
+}
+float OBD2::lireRatio(){
+  String reponse = demande(C_RATIO);
+
+  //Si la vitesse n'est pas suffisante, pas de donnée, on renvoie -1
+  if (reponse.substring(0,7) == "NO DATA")
+    return -1;
+
+  //Si le contact est coupé, la connexion est impossible, on renvoie -2
+  if (reponse.substring(0,17) == "UNABLE TO CONNECT")
+    return -2;
+
+  //Si la connexion bluetooth est perdue on renvoie -3
+  if (reponse.substring(0,9) == "ERROR:(0)")
+    return -3;
+
+
+  String trame  = "";
+    trame = reponse.substring(DEBUT_POIDS_FORT,FIN_POIDS_FORT);
+    trame += reponse.substring(DEBUT_POIDS_FAIBLE,FIN_POIDS_FAIBLE);
+  return hex2uint16(reponse.substring(DEBUT_POIDS_FORT,FIN_POIDS_FORT).c_str())*(2/65536);
+}
+
