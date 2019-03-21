@@ -10,9 +10,9 @@ mymkdir = mkdir -p $1
 endif
 
 PROJECT_OBJS = \
-	project/../src/CarteSD.cpp.o \
+	project/../../src/CarteSD.cpp.o \
 	project/CarteSDTesteur.cpp.o \
-	project/../src/DonneesTR.cpp.o \
+	project/../../src/DonneesTR.cpp.o \
 
 PLATFORM_CORE_OBJS = \
 	core/delay.c.o \
@@ -81,13 +81,13 @@ clean:
 size:
 	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-size" -A "./CarteSDTesteur.elf"
 
-project/../src/CarteSD.cpp.o: ../../../src/CarteSD.cpp project/../src/CarteSD.cpp.d
+project/../../src/CarteSD.cpp.o: ../../../../src/CarteSD.cpp project/../../src/CarteSD.cpp.d
 	@$(call mymkdir,$(dir $@))
 	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++" -mcpu=cortex-m0plus -mthumb -c -g -Os -w -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD -DF_CPU=48000000L -DARDUINO=10608 -DARDUINO_SAMD_MKRFox1200 -DARDUINO_ARCH_SAMD  -DUSE_ARDUINO_MKR_PIN_LAYOUT -D__SAMD21G18A__ -DUSB_VID=0x2341 -DUSB_PID=0x8050 -DUSBCON '-DUSB_MANUFACTURER="Arduino LLC"' '-DUSB_PRODUCT="Arduino MKR FOX 1200"' "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS/4.5.0/CMSIS/Include/" "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SPI" -I"/home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src" "$<" -o "$@"
 
-project/../src/CarteSD.cpp.d: ;
+project/../../src/CarteSD.cpp.d: ;
 
--include project/../src/CarteSD.cpp.d 
+-include project/../../src/CarteSD.cpp.d 
 
 project/CarteSDTesteur.cpp.o: ../../CarteSDTesteur.cpp project/CarteSDTesteur.cpp.d
 	@$(call mymkdir,$(dir $@))
@@ -97,13 +97,13 @@ project/CarteSDTesteur.cpp.d: ;
 
 -include project/CarteSDTesteur.cpp.d 
 
-project/../src/DonneesTR.cpp.o: ../../../src/DonneesTR.cpp project/../src/DonneesTR.cpp.d
+project/../../src/DonneesTR.cpp.o: ../../../../src/DonneesTR.cpp project/../../src/DonneesTR.cpp.d
 	@$(call mymkdir,$(dir $@))
 	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++" -mcpu=cortex-m0plus -mthumb -c -g -Os -w -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD -DF_CPU=48000000L -DARDUINO=10608 -DARDUINO_SAMD_MKRFox1200 -DARDUINO_ARCH_SAMD  -DUSE_ARDUINO_MKR_PIN_LAYOUT -D__SAMD21G18A__ -DUSB_VID=0x2341 -DUSB_PID=0x8050 -DUSBCON '-DUSB_MANUFACTURER="Arduino LLC"' '-DUSB_PRODUCT="Arduino MKR FOX 1200"' "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS/4.5.0/CMSIS/Include/" "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SPI" -I"/home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src" "$<" -o "$@"
 
-project/../src/DonneesTR.cpp.d: ;
+project/../../src/DonneesTR.cpp.d: ;
 
--include project/../src/DonneesTR.cpp.d 
+-include project/../../src/DonneesTR.cpp.d 
 
 
 core/delay.c.o: /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/delay.c core/delay.c.d

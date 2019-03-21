@@ -1,5 +1,5 @@
-#include "../src/CarteSD.h"
-#include "../src/DonneesTR.h"
+#include "../../src/CarteSD.h"
+#include "../../src/DonneesTR.h"
 
 
 CarteSD* carteSD;

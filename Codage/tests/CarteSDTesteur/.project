@@ -21,22 +21,22 @@
 		<link>
 			<name>CarteSD.cpp</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/src/CarteSD.cpp</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/src/CarteSD.cpp</locationURI>
 		</link>
 		<link>
 			<name>CarteSD.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/include/CarteSD.h</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/src/CarteSD.h</locationURI>
 		</link>
 		<link>
 			<name>DonneesTR.cpp</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/src/DonneesTR.cpp</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/src/DonneesTR.cpp</locationURI>
 		</link>
 		<link>
 			<name>DonneesTR.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/include/DonneesTR.h</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/src/DonneesTR.h</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
