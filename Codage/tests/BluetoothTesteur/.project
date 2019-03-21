@@ -21,12 +21,18 @@
 		<link>
 			<name>Bluetooth.cpp</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/Bluetooth.cpp</locationURI>
+			<locationURI>copy_PARENT/src/Bluetooth.cpp</locationURI>
 		</link>
 		<link>
 			<name>Bluetooth.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/Bluetooth.h</locationURI>
+			<locationURI>copy_PARENT/src/Bluetooth.h</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>copy_PARENT</name>
+			<value>$%7BPARENT-2-PROJECT_LOC%7D</value>
+		</variable>
+	</variableList>
 </projectDescription>
