@@ -7,7 +7,7 @@ GPS* gps;
 
 void setup()
 {
-  gps = new GPS();
+  gps = GPS::getInstance();
   Serial.begin(115200);
   Serial1.begin(9600);
   configureInterrupt_timer4_1ms();
@@ -31,7 +31,7 @@ void loop() {
   if(gps->isDispo()){
     Serial.println(gps->getLatitude(),6);
     Serial.println(gps->getLongitude(),6);
-    Serial.println(gps->getVitesse(),3)
+    Serial.println(gps->getVitesse(),3);
 
     Serial.println(gps->getVitesse(),3);
 

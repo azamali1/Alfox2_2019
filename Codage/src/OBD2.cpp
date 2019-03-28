@@ -44,6 +44,23 @@ byte hex2uint8(const char *p)
 
   return c1 << 4 | (c2 & 0xf);
 }
+OBD2* OBD2::OBD2Instance = 0;
+
+OBD2* OBD2::getInstance(Bluetooth* bt) {
+
+	if (OBD2Instance == 0) {
+		OBD2Instance = new OBD2(bt);
+	}
+	return OBD2Instance;
+}
+
+OBD2* OBD2::getInstance(LiaisonSimulateur* liaison) {
+
+	if (OBD2Instance == 0) {
+		OBD2Instance = new OBD2(liaison);
+	}
+	return OBD2Instance;
+}
 
 
 OBD2::OBD2(Bluetooth* bt){
