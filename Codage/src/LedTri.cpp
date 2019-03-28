@@ -1,6 +1,15 @@
 #include "LedTri.h"
 using namespace std;
 
+LedTri* LedTri::ledTriInstance = 0;
+
+LedTri* LedTri::getInstance(int pLedRougePin, int pLedVertPin, int pLedBleuPin) {
+
+	if (ledTriInstance == 0) {
+		ledTriInstance = new LedTri(pLedRougePin, pLedVertPin, pLedBleuPin);
+	}
+	return ledTriInstance;
+}
 
 LedTri::LedTri(int pLedRougePin, int pLedVertPin, int pLedBleuPin ) {
     ledRougePin = pLedRougePin;

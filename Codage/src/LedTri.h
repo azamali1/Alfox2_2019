@@ -5,34 +5,38 @@
 #define blueLedPin 4
 #include <Arduino.h>
 
-enum COLOR {rouge = 1, jaune, vert, cyan, bleu, magenta}; /*fonction sur laquelle s'appuie le switchcase pour 
-                                                          changer de couleur a chaque fois */
-class LedTri{
-  
-  public:
-    LedTri();
-    ~LedTri();
-  
-    LedTri( int pLedRougePin, int pLedVertPin, int pLedBleuPin );
-  
-    void setCouleur(COLOR couleur, int lumi);
+enum COLOR {
+	rouge = 1, jaune, vert, cyan, bleu, magenta
+};
+/*fonction sur laquelle s'appuie le switchcase pour
+ changer de couleur a chaque fois */
+class LedTri {
 
-    void setCouleur(int rouge, int vert, int bleu);
+public:
 
-    void resetCouleur();
+	static LedTri* getInstance(int pLedRougePin, int pLedVertPin, int pLedBleuPin);
 
-  private:
-    COLOR couleur;                             //attributs
-    int ledRougePin;
-    int ledVertPin;
-    int ledBleuPin;                            //attributs
-    void setRouge(int lumi);                   //méthodes
-    void setJaune(int lumi);
-    void setVert(int lumi);
-    void setCyan(int lumi);
-    void setBleu(int lumi);
-    void setMagenta(int lumi);                 
-       //méthodes
+	void setCouleur(COLOR couleur, int lumi);
+
+	void setCouleur(int rouge, int vert, int bleu);
+
+	void resetCouleur();
+
+private:
+
+	static LedTri* ledTriInstance;
+	LedTri(int pLedRougePin, int pLedVertPin, int pLedBleuPin);
+	COLOR couleur;                             //attributs
+	int ledRougePin;
+	int ledVertPin;
+	int ledBleuPin;                            //attributs
+	void setRouge(int lumi);                   //méthodes
+	void setJaune(int lumi);
+	void setVert(int lumi);
+	void setCyan(int lumi);
+	void setBleu(int lumi);
+	void setMagenta(int lumi);
+	//méthodes
 };
 
 #endif /* LedTri */

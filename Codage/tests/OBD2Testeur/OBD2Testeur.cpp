@@ -19,7 +19,7 @@ void setup() {
   delay(2000);
   if (bluetooth->isActif())
   Serial.println();
-  obd2 = new OBD2(bluetooth);
+  obd2 = OBD2::getInstance(bluetooth);
   Serial.println("OBD2 OK");
 
 

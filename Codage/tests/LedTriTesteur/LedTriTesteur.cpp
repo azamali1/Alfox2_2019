@@ -1,6 +1,6 @@
 #include "../../src/LedTri.h"
 
-LedTri* maLed = new LedTri(redLedPin, greenLedPin, blueLedPin); // définit la pin pour chaque couleur
+LedTri* maLed = LedTri::getInstance(redLedPin, greenLedPin, blueLedPin); // définit la pin pour chaque couleur
 
 void setup() {
 	// put your setup code here, to run once:
