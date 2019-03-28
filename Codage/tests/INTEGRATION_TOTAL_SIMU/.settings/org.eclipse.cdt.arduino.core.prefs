@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-libraries=[{"package"\:"arduino","platform"\:"samd","library"\:"SPI"},"Adafruit GPS Library"]
+libraries=[{"package"\:"arduino","platform"\:"samd","library"\:"SPI"},"SD","Adafruit GPS Library"]

@@ -22,11 +22,12 @@ class LiaisonSimulateur {
     int pinAlim;
     int pinEn;
     String adresseOBD2;
+    static LiaisonSimulateur* liaisonSimulateurInstance;
+    LiaisonSimulateur(int pinAlim, int pinEn);
     
   
   public:
-    LiaisonSimulateur(int pinAlim, int pinEn);
-    ~LiaisonSimulateur();
+    static LiaisonSimulateur* getInstance(int pinAlim, int pinEn);
     int connexion(String adresse);
     bool isActif();
     Uart* getLiaisonBT();

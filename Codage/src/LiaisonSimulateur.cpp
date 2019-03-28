@@ -1,5 +1,15 @@
 #include "LiaisonSimulateur.h"
 
+LiaisonSimulateur* LiaisonSimulateur::liaisonSimulateurInstance = 0;
+
+LiaisonSimulateur* LiaisonSimulateur::getInstance(int pinAlim, int pinEn) {
+
+	if (liaisonSimulateurInstance == 0) {
+		liaisonSimulateurInstance = new LiaisonSimulateur(pinAlim, pinEn);
+	}
+	return liaisonSimulateurInstance;
+}
+
 LiaisonSimulateur::LiaisonSimulateur(int pinAlim, int pinEn) 
 {
   this->pinAlim=pinAlim;

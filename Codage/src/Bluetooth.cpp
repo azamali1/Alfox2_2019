@@ -2,6 +2,17 @@
 #include "Bluetooth.h"
 
 //Création des port séries
+
+Bluetooth* Bluetooth::bluetoothInstance = 0;
+
+Bluetooth* Bluetooth::getInstance(int pinAlim, int pinEn) {
+
+	if (bluetoothInstance == 0) {
+		bluetoothInstance = new Bluetooth(pinAlim, pinEn);
+	}
+	return bluetoothInstance;
+}
+
 Bluetooth::Bluetooth(int pinAlim, int pinEn) 
 {
   this->pinAlim=pinAlim;

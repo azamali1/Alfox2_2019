@@ -24,10 +24,12 @@ class Bluetooth {
     int pinAlim;
     int pinEn;
     String adresseOBD2;
+    Bluetooth(int pinAlim, int pinEn);
+    static Bluetooth* bluetoothInstance;
     
   
   public:
-    Bluetooth(int pinAlim, int pinEn);
+    static Bluetooth* getInstance(int pinAlim, int pinEn);
     ~Bluetooth();
     void activerModule(Mode mode);
     void desactiverModule();

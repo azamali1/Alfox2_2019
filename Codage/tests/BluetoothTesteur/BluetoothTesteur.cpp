@@ -8,7 +8,7 @@ boolean NL = true;
 void setup() {
   Serial.begin(9600);
   delay(2500);
-  bluetooth = new Bluetooth(PINALIM, PINEN);
+  bluetooth = Bluetooth::getInstance(PINALIM, PINEN);
   Serial.println("Test de la classe Bluetooth");
   bluetooth->connexion("2017,11,7030A"); // OBD2 bleu
   //bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
