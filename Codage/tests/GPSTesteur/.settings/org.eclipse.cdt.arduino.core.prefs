@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-libraries=["Adafruit GPS Library"]
+libraries=["SD","Adafruit GPS Library"]

@@ -1,6 +1,18 @@
 #include "GPS.h"
 #include "wiring_private.h" // pinPeripheral() function
 
+GPS* GPS::getInstance() {
+
+       if (this->alredyExist == false){
+    	   GPS* gpsInstance = new GPS();
+    	   this->alredyExist=true;
+    	   return gpsInstance;
+       }else{
+    	   Serial.println("Objet GPS déjà créé");
+    	   return false;
+       }
+    }
+
 GPS::GPS()
 {
   //Création de la liaison série

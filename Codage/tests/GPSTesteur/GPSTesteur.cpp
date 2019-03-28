@@ -1,4 +1,4 @@
-#include "GPS.h"
+#include "../../src/GPS.h"
 #include <Arduino.h>
 
 void configureInterrupt_timer4_1ms();

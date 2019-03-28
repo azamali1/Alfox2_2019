@@ -16,6 +16,7 @@ class GPS
 		float vitesse;
 		struct tm datation;
 		bool available = false;
+		bool alredyExist;
     
     boolean usingInterrupt = false;
     Adafruit_GPS* gps;
@@ -26,7 +27,7 @@ class GPS
 	
 		/** Constructeur **/
 		GPS();
-
+		GPS* getInstance();
 		int maj();
 		float getLatitude() {return latitude;};
 		float getLongitude() {return longitude;};
