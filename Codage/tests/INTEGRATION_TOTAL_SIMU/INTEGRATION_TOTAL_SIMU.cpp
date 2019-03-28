@@ -33,7 +33,7 @@ void setup()
 
   Serial.println("Test integration total");
 
-  bluetooth = new Bluetooth(PINALIM, PINEN);
+  bluetooth = Bluetooth::getInstance(PINALIM, PINEN);
 
   //ELM327 (Bleu) Original
   //int resultatConnexion = bluetooth->connexion("2017,11,7030A");
@@ -48,11 +48,11 @@ void setup()
 
   delay(2000);
 
-  carteSD = new CarteSD();
+  carteSD = CarteSD::getInstance();
   Serial.println("Carte SD OK");
-  gps = new GPS();
+  gps = GPS::getInstance();
   Serial.println("GPS OK");
-  donneesTR = new DonneesTR();
+  donneesTR = DonneesTR::getInstance();
   configureInterrupt_timer4_1ms();
   Serial.println("Interruption GPS OK");
   delay(2000);
@@ -60,7 +60,7 @@ void setup()
   if (bluetooth->isActif())
     Serial.println();
 
-  obd2 = new OBD2(bluetooth);
+  obd2 = OBD2::getInstance(bluetooth);
   Serial.println("OBD2 OK");
   initial = millis();
 }

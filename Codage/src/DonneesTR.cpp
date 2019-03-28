@@ -1,5 +1,13 @@
 #include "DonneesTR.h"
 
+DonneesTR* DonneesTR::donneesTRInstance = 0;
+
+DonneesTR* DonneesTR::getInstance(){
+	if (donneesTRInstance == 0) {
+		donneesTRInstance = new DonneesTR();
+		}
+		return donneesTRInstance;
+}
 
 DonneesTR::DonneesTR() {
   distanceParcourue = 0;

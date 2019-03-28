@@ -254,7 +254,4 @@ int LiaisonSimulateur::lien(String adresse)
   }
 }
 
-LiaisonSimulateur::~LiaisonSimulateur(){
-  delete this;
-}
 

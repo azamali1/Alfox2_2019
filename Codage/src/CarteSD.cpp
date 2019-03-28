@@ -4,6 +4,16 @@
 //-----------------------------------------------------
 //------- Constructeur --------------------------------
 //-----------------------------------------------------
+
+CarteSD* CarteSD::carteSDInstance = 0;
+
+CarteSD* CarteSD::getInstance(){
+	if (carteSDInstance == 0) {
+			carteSDInstance = new CarteSD();
+		}
+		return carteSDInstance;
+}
+
 CarteSD::CarteSD() {
   Serial.println(F("Initialisation de la carte SD"));                // debug 
   pinMode(11, OUTPUT);                                 // laisser la broche SS en sortie - obligatoire avec librairie SD

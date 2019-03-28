@@ -11,8 +11,8 @@ String nomDuFichier = "180711.TXT"; // nom du fichier qui va être créé, lue, 
 void setup() {
   Serial.begin(9600); //debut de la connection au port serie
   delay(1000);
-  carteSD = new CarteSD(); // instanciation de carteSD
-  donneesTR = new DonneesTR(); // instanciation de donneesTR
+  carteSD = CarteSD::getInstance(); // instanciation de carteSD
+  donneesTR = DonneesTR::getInstance(); // instanciation de donneesTR
 
   delay(10000);
   carteSD->nouveauFichier(nomDuFichier);

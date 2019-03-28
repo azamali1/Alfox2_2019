@@ -30,7 +30,6 @@ class Bluetooth {
   
   public:
     static Bluetooth* getInstance(int pinAlim, int pinEn);
-    ~Bluetooth();
     void activerModule(Mode mode);
     void desactiverModule();
     int connexion(String adresse);

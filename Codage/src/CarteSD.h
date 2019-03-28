@@ -8,8 +8,8 @@
 
 class CarteSD {
 public:
-    CarteSD();
-    virtual ~CarteSD();
+
+	static CarteSD* getInstance();
     bool lire(String fichierALire);  
     bool lire(File* fichierSD); 
     bool ecrire(DonneesTR* dTR);
@@ -23,6 +23,8 @@ public:
     void extractionRacine();
     
 private:
+    CarteSD();
+    static CarteSD* carteSDInstance;
     String nomFichier;// nom du fichier journalier 
     File fichierSD;// fichier journaliers ( change chaque jours) 
     File fichierRacineSD;// normalement "/"

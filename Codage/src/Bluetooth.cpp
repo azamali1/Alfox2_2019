@@ -302,8 +302,3 @@ int Bluetooth::lien(String adresse)
     return 0;
   }
 }
-
-Bluetooth::~Bluetooth(){
-  delete this;
-}
-
