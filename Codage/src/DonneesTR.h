@@ -9,6 +9,7 @@
 class DonneesTR {
 public:
 	DonneesTR();
+	static DonneesTR* getInstance();
 	virtual ~DonneesTR();
 	void razStat();
 	float getConsommation();
@@ -47,6 +48,7 @@ public:
 
 	// pas de getDefaut ou de getNbDefaut ni de set
 private:
+	static DonneesTR* DonneesTRInstance;
 	float distanceParcourue;
 	int nbDefauts;
 	int defauts[4];

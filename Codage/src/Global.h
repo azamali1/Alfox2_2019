@@ -9,7 +9,7 @@
 #define GLOBAL_H
 
 typedef enum {
-    STANDARD, NORMAL, DEGRADE, DMD_GPS, GPS,
+    STANDARD, NORMAL, DEGRADE, DMD_GPS, INSTANT_GPS,
     MAINTENANCE, INIT, DORMIR, ERREUR
 } Etat;
 
@@ -21,7 +21,7 @@ typedef enum {
 
 typedef enum {
     ENTRY, DO, EXIT
-} Mode;
+} ModeG;
 
 // Déclaration des variables et instanciation par composition.
 /*  Global DonneesTR *donneesTR;

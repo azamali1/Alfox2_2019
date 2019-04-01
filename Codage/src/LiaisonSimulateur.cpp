@@ -101,6 +101,7 @@ Uart* LiaisonSimulateur::getLiaisonBT()
 int LiaisonSimulateur::reinitialiser() 
 {
   serialBT->println("AT+ORGL");
+  return 0;
 }
 
 int LiaisonSimulateur::modeMaster() 
