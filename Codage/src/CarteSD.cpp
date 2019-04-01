@@ -31,9 +31,7 @@ CarteSD::CarteSD() {
 //-----------------------------------------------------
 
 
-CarteSD::~CarteSD() {
 
-}
 //-----------------------------------------------------
 //------- méthode de lecture avec nom du fichier ------
 //-----------------------------------------------------                                                     // bloque la lercture mais non bloquant au final
@@ -134,8 +132,10 @@ void CarteSD::effacer()
       Serial.println(String(dir.name()));
       String aSupprimer = entry.name();
       entry.close();
-      if (supprimerFichier(aSupprimer));
-      Serial.println("supression réussie");
+      if (supprimerFichier(aSupprimer)){
+    	  Serial.println("supression réussie");
+      }
+
     }
   }
   numTabs = 0;
