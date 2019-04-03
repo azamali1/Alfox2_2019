@@ -154,6 +154,14 @@ float DonneesTR::getLatitude() {
 float DonneesTR::getLongitude() {
 	return longitude;
 }
+
+void DonneesTR::setDatation(struct tm dateGPS){
+
+}
+
+void DonneesTR::getDatation(){
+
+}
 /*
  void DonneesTR::majData(OBD2 obd2)
  {
