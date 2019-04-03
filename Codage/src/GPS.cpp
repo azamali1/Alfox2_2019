@@ -57,9 +57,8 @@ int GPS::maj() {
 
 		//bool qui dit que la donnée est prête à être récupérée
 		available = true;
-		return 0;
-
 	}
+	return 0;
 }
 
 char GPS::readDATA() {

@@ -18,6 +18,7 @@ class GPS
 		bool available = false;
 		static GPS* gpsInstance;
 		GPS();
+		//HTR*
     
     boolean usingInterrupt = false;
     Adafruit_GPS* gps;
