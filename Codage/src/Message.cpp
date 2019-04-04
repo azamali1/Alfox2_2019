@@ -29,7 +29,7 @@ void Message::nouveau(Etat etat, DonneesTR* data, byte* b) {
 	case DMD_GPS:
 		dmdGPS(data, b);
 		break;
-	case GPS:
+	case GPS_SEUL:
 		gps(data, b);
 		break;
 	case DORMIR:
@@ -107,7 +107,7 @@ void Message::gps(DonneesTR* data, byte* bMsg) {
 	// NB = nb defauts
 	bMsg[0] = bMsg[0] << 2 | (byte) ((data->getNbDefaut() != 0) ? 1 : 0);
 	// TM = Type de message
-	bMsg[0] = bMsg[0] << 4 | GPS;
+	bMsg[0] = bMsg[0] << 4 | GPS_SEUL;
 	// Distance parcourue depuis le dernier reset du boitier en KM
 	bMsg[1] = (byte) (data->getDistanceParcourue() / 10000);
 	bMsg[2] = (byte) (((int) data->getDistanceParcourue() % 10000) / 100);
