@@ -143,38 +143,54 @@ int OBD2::lireRegimeMoteur(){
 
 int OBD2::calculConsommation ()
 {
-	//Voici le calcul de la consommation que vous pouvez retrouver dans la documentation "Consommation OBD2"
-	int conso = (6000/this->lireVitesse())*(0.0027*(this->lirePression()*this->lireRegimeMoteur()/((this->lireTemprerature()+273.15)*this->lireRatio())));
-	return conso /20;
+	//Consommation est en L/100
+	float conso = 0;
+	float vitesse = (float)this->lireVitesse();
+	//float pression = this->lirePression();
+	//float regime = (float)this->lireRegimeMoteur();
+	//float temperature = this->lireTemprerature();
+	//float ratio = this->lireRatio();
+	float dair =this->lireDair();
+	/*if(ratio == -1){
+		ratio = 18;
+	}*/
+	if (vitesse ==0) {
+		 conso = 0;
+	}
+	else {
+	//Calcul de la consommation que vous pouvez retrouver dans la documentation "Consommation OBD2"
+		conso = ((360000 / 845) * (dair / 30) * (1 / vitesse));
+	    //conso = ((6000 / vitesse)* (0.0027* ((pression * regime) / ((temperature + 273.15) * ratio))));
+	}
+
+	return conso;
 }
 
 float OBD2::lireConsomation(){
 
-  //Voici le calcul de la consommation que vous pouvez retrouver dans la documentation "Consommation OBD2"
-  float conso = (6000/this->lireVitesse())*(0.0027*(this->lirePression()*this->lireRegimeMoteur()/((this->lireTemprerature()+273.15)*this->lireRatio())));
-  char buffer [128];
+	//Consommation est en L/100
+	float conso = 0;
+	float vitesse = (float)this->lireVitesse();
+	//float pression = this->lirePression();
+	//float regime = (float)this->lireRegimeMoteur();
+	//float temperature = this->lireTemprerature();
+	//float ratio = this->lireRatio();
+	float dair =this->lireDair();
+	/*if(ratio == -1){
+		ratio = 18;
+	}*/
+	if (vitesse ==0) {
+		 conso = 0;
+	}
+	else {
+	//Calcul de la consommation que vous pouvez retrouver dans la documentation "Consommation OBD2"
+		conso = ((360000 / 845) * (dair / 30) * (1 / vitesse));
+	    //conso = ((6000 / vitesse)* (0.0027* ((pression * regime) / ((temperature + 273.15) * ratio))));
+	}
 
-  String reponse ;
-  sprintf(buffer,"%f",conso);
-  reponse  = buffer;
-  
-  //Si la vitesse n'est pas suffisante, pas de donnée, on renvoie -1
-  if (reponse.substring(0,7) == "NO DATA")
-    return -1;
-  
-  //Si le contact est coupé, la connexion est impossible, on renvoie -2
-  if (reponse.substring(0,17) == "UNABLE TO CONNECT")
-    return -2;
-  
-  //Si la connexion bluetooth est perdue on renvoie -3
-  if (reponse.substring(0,9) == "ERROR:(0)")
-    return -3;
-    
-  String trame  = "";
-    trame = reponse.substring(DEBUT_POIDS_FORT,FIN_POIDS_FORT);
-    trame += reponse.substring(DEBUT_POIDS_FAIBLE,FIN_POIDS_FAIBLE);
-  return ((float)hex2uint16(trame.c_str()))/20;
+	return conso;
 }
+
 float OBD2::lirePression(){
   String reponse = demande(C_PESSION);
 
@@ -195,6 +211,7 @@ float OBD2::lirePression(){
     trame += reponse.substring(DEBUT_POIDS_FAIBLE,FIN_POIDS_FAIBLE);
 return hex2uint8(reponse.substring(DEBUT_POIDS_FORT,FIN_POIDS_FORT).c_str());
 }
+
 float OBD2::lireTemprerature(){
   String reponse = demande(C_TEMPERATURE);
 
@@ -215,6 +232,7 @@ float OBD2::lireTemprerature(){
     trame += reponse.substring(DEBUT_POIDS_FAIBLE,FIN_POIDS_FAIBLE);
   return hex2uint8(reponse.substring(DEBUT_POIDS_FORT,FIN_POIDS_FORT).c_str())-40;
 }
+
 float OBD2::lireRatio(){
   String reponse = demande(C_RATIO);
 
@@ -237,3 +255,24 @@ float OBD2::lireRatio(){
   return hex2uint16(reponse.substring(DEBUT_POIDS_FORT,FIN_POIDS_FORT).c_str())*(2/65536);
 }
 
+float OBD2::lireDair() {
+	//Dair = débit d'air en g/s
+	String reponse = demande(C_DAIR);
+
+	//Si la vitesse n'est pas suffisante, pas de donnée, on renvoie -1
+	if (reponse.substring(0, 7) == "NO DATA")
+		return -1;
+
+	//Si le contact est coupé, la connexion est impossible, on renvoie -2
+	if (reponse.substring(0, 17) == "UNABLE TO CONNECT")
+		return -2;
+
+	//Si la connexion bluetooth est perdue on renvoie -3
+	if (reponse.substring(0, 9) == "ERROR:(0)")
+		return -3;
+
+	String trame = "";
+	trame = reponse.substring(DEBUT_POIDS_FORT, FIN_POIDS_FORT);
+	trame += reponse.substring(DEBUT_POIDS_FAIBLE, FIN_POIDS_FAIBLE);
+	return hex2uint16(reponse.substring(DEBUT_POIDS_FORT, FIN_POIDS_FORT).c_str())/100;
+}
