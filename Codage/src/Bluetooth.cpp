@@ -106,7 +106,7 @@ int Bluetooth::connexion(String adresse)
     else
     {
       digitalWrite(pinAlim, 0);
-      delay(1000);
+      delay (1000);
       digitalWrite(pinAlim, 1);
     }*/
     return sommeErreurs;
