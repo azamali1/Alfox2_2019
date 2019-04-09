@@ -68,19 +68,19 @@ LIBRARIES_OBJS = \
 	libraries/CAN/0.3.1/src/CANController.cpp.o \
 
 TARGETS = \
-	MAE.hex \
-	MAE.bin \
+	MAE_Testeur.hex \
+	MAE_Testeur.bin \
 
 all: $(TARGETS)
 
-MAE.hex: MAE.elf
-	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-objcopy" -O ihex -R .eeprom  "./MAE.elf" "./MAE.hex"
+MAE_Testeur.hex: MAE_Testeur.elf
+	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-objcopy" -O ihex -R .eeprom  "./MAE_Testeur.elf" "./MAE_Testeur.hex"
 
-MAE.bin: MAE.elf
-	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-objcopy" -O binary  "./MAE.elf" "./MAE.bin"
+MAE_Testeur.bin: MAE_Testeur.elf
+	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-objcopy" -O binary  "./MAE_Testeur.elf" "./MAE_Testeur.bin"
 
-MAE.elf: $(PROJECT_OBJS) $(LIBRARIES_OBJS) core.a
-	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++"  "-L." -Os -Wl,--gc-sections -save-temps  "-T/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200/linker_scripts/gcc/flash_with_bootloader.ld" "-Wl,-Map,./MAE.map" --specs=nano.specs --specs=nosys.specs -mcpu=cortex-m0plus -mthumb -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align -o "./MAE.elf" $(PROJECT_OBJS) $(LIBRARIES_OBJS) -Wl,--start-group "-L/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS/4.5.0/CMSIS/Lib/GCC/" -larm_cortexM0l_math -lm "./core.a" -Wl,--end-group
+MAE_Testeur.elf: $(PROJECT_OBJS) $(LIBRARIES_OBJS) core.a
+	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++"  "-L." -Os -Wl,--gc-sections -save-temps  "-T/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200/linker_scripts/gcc/flash_with_bootloader.ld" "-Wl,-Map,./MAE_Testeur.map" --specs=nano.specs --specs=nosys.specs -mcpu=cortex-m0plus -mthumb -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align -o "./MAE_Testeur.elf" $(PROJECT_OBJS) $(LIBRARIES_OBJS) -Wl,--start-group "-L/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS/4.5.0/CMSIS/Lib/GCC/" -larm_cortexM0l_math -lm "./core.a" -Wl,--end-group
 
 core.a:	$(PLATFORM_CORE_OBJS) $(PLATFORM_VARIANT_OBJS)
 
@@ -89,7 +89,7 @@ clean:
 	-$(RM) *.hex *.eep *.bin *.elf *.a *.ar *.d
 
 size:
-	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-size" -A "./MAE.elf"
+	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-size" -A "./MAE_Testeur.elf"
 
 project/../../Bureau/Alfox2_2019/Codage/src/Bluetooth.cpp.o: ../../../../Bureau/Alfox2_2019/Codage/src/Bluetooth.cpp project/../../Bureau/Alfox2_2019/Codage/src/Bluetooth.cpp.d
 	@$(call mymkdir,$(dir $@))

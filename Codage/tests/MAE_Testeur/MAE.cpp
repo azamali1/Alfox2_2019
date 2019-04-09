@@ -1,10 +1,12 @@
-#include "/home/snir2g2/Bureau/Alfox2_2019/Codage/src/GPS.h"
-#include "/home/snir2g2/Bureau/Alfox2_2019/Codage/src/DonneesTR.h"
-#include "/home/snir2g2/Bureau/Alfox2_2019/Codage/src/Bluetooth.h"
-#include "/home/snir2g2/Bureau/Alfox2_2019/Codage/src/CarteSD.h"
-#include "/home/snir2g2/Bureau/Alfox2_2019/Codage/src/OBD2.h"
-#include "/home/snir2g2/Bureau/Alfox2_2019/Codage/src/LedTri.h"
-#include "/home/snir2g2/Bureau/Alfox2_2019/Codage/src/Global.h"
+#include "../../src/GPS.h"
+#include "../../src/DonneesTR.h"
+#include "../../src/Bluetooth.h"
+#include "../../src/CarteSD.h"
+#include "../../src/OBD2.h"
+#include "../../src/Global.h"
+#include "../../src/Message.h"
+#include "../../src/HTR.h"
+
 
 #define T_ECH 5000 //en millisecondes
 #define T_MSG_STND 720000 //12 minutes en ms

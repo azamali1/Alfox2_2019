@@ -1,4 +1,6 @@
-project/AlfoxMainV1.cpp.o: ../../AlfoxMainV1.cpp \
+project/../../src/HTR.cpp.o: ../../../../src/HTR.cpp \
+ ../../../../src/HTR.h \
+ /home/snir2g2/.arduinocdt/libraries/RTCZero/1.5.3/src/RTCZero.h \
  /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Arduino.h \
  /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/avr/pgmspace.h \
  /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/avr/interrupt.h \
@@ -100,23 +102,4 @@ project/AlfoxMainV1.cpp.o: ../../AlfoxMainV1.cpp \
  /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Stream.h \
  /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/RingBuffer.h \
  /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/USB_host.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/samd21_host.h \
- ../../../../src/GPS.h \
- /home/snir2g2/.arduinocdt/libraries/Adafruit_GPS_Library/1.0.3/Adafruit_GPS.h \
- ../../../../src/DonneesTR.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SPI/SPI.h \
- /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/SD.h \
- /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/utility/SdFat.h \
- /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/utility/Sd2Card.h \
- /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/utility/Sd2PinMap.h \
- /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/utility/SdInfo.h \
- /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/utility/FatStructs.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Print.h \
- /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/utility/SdFatUtil.h \
- ../../../../src/Bluetooth.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring_private.h \
- ../../../../src/CarteSD.h ../../../../src/DonneesTR.h \
- ../../../../src/OBD2.h ../../../../src/Bluetooth.h \
- ../../../../src/LiaisonSimulateur.h ../../../../src/Global.h \
- ../../../../src/Message.h ../../../../src/Global.h ../../../../src/HTR.h \
- /home/snir2g2/.arduinocdt/libraries/RTCZero/1.5.3/src/RTCZero.h
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/samd21_host.h

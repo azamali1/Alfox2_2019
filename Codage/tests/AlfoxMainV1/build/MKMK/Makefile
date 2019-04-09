@@ -11,15 +11,15 @@ endif
 
 PROJECT_OBJS = \
 	project/AlfoxMainV1.cpp.o \
-	project/../../Bureau/Alfox2_2019/Codage/src/Bluetooth.cpp.o \
-	project/../../Bureau/Alfox2_2019/Codage/src/CarteSD.cpp.o \
-	project/../../Bureau/Alfox2_2019/Codage/src/DonneesTR.cpp.o \
-	project/../../Bureau/Alfox2_2019/Codage/src/GPS.cpp.o \
-	project/../../Bureau/Alfox2_2019/Codage/src/HTR.cpp.o \
-	project/../../Bureau/Alfox2_2019/Codage/src/LedTri.cpp.o \
-	project/../../Bureau/Alfox2_2019/Codage/src/LiaisonSimulateur.cpp.o \
-	project/../../Bureau/Alfox2_2019/Codage/src/Message.cpp.o \
-	project/../../Bureau/Alfox2_2019/Codage/src/OBD2.cpp.o \
+	project/../../src/Bluetooth.cpp.o \
+	project/../../src/CarteSD.cpp.o \
+	project/../../src/DonneesTR.cpp.o \
+	project/../../src/GPS.cpp.o \
+	project/../../src/HTR.cpp.o \
+	project/../../src/LedTri.cpp.o \
+	project/../../src/LiaisonSimulateur.cpp.o \
+	project/../../src/Message.cpp.o \
+	project/../../src/OBD2.cpp.o \
 
 PLATFORM_CORE_OBJS = \
 	core/delay.c.o \
@@ -118,77 +118,77 @@ project/AlfoxMainV1.cpp.d: ;
 
 -include project/AlfoxMainV1.cpp.d 
 
-project/../../Bureau/Alfox2_2019/Codage/src/Bluetooth.cpp.o: ../../../../Bureau/Alfox2_2019/Codage/src/Bluetooth.cpp project/../../Bureau/Alfox2_2019/Codage/src/Bluetooth.cpp.d
+project/../../src/Bluetooth.cpp.o: ../../../../src/Bluetooth.cpp project/../../src/Bluetooth.cpp.d
 	@$(call mymkdir,$(dir $@))
 	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++" -mcpu=cortex-m0plus -mthumb -c -g -Os -w -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD -DF_CPU=48000000L -DARDUINO=10608 -DARDUINO_SAMD_MKRFox1200 -DARDUINO_ARCH_SAMD  -DUSE_ARDUINO_MKR_PIN_LAYOUT -D__SAMD21G18A__ -DUSB_VID=0x2341 -DUSB_PID=0x8050 -DUSBCON '-DUSB_MANUFACTURER="Arduino LLC"' '-DUSB_PRODUCT="Arduino MKR FOX 1200"' "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS/4.5.0/CMSIS/Include/" "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200" -I"/home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SPI" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/Wire" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SAMD_AnalogCorrection/src" -I"/home/snir2g2/.arduinocdt/libraries/Time/1.5.0" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/USBHost/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/I2S/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SDU/src" -I"/home/snir2g2/.arduinocdt/libraries/Adafruit_GPS_Library/1.0.3" -I"/home/snir2g2/.arduinocdt/libraries/RTCZero/1.5.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/HID" "$<" -o "$@"
 
-project/../../Bureau/Alfox2_2019/Codage/src/Bluetooth.cpp.d: ;
+project/../../src/Bluetooth.cpp.d: ;
 
--include project/../../Bureau/Alfox2_2019/Codage/src/Bluetooth.cpp.d 
+-include project/../../src/Bluetooth.cpp.d 
 
-project/../../Bureau/Alfox2_2019/Codage/src/CarteSD.cpp.o: ../../../../Bureau/Alfox2_2019/Codage/src/CarteSD.cpp project/../../Bureau/Alfox2_2019/Codage/src/CarteSD.cpp.d
+project/../../src/CarteSD.cpp.o: ../../../../src/CarteSD.cpp project/../../src/CarteSD.cpp.d
 	@$(call mymkdir,$(dir $@))
 	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++" -mcpu=cortex-m0plus -mthumb -c -g -Os -w -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD -DF_CPU=48000000L -DARDUINO=10608 -DARDUINO_SAMD_MKRFox1200 -DARDUINO_ARCH_SAMD  -DUSE_ARDUINO_MKR_PIN_LAYOUT -D__SAMD21G18A__ -DUSB_VID=0x2341 -DUSB_PID=0x8050 -DUSBCON '-DUSB_MANUFACTURER="Arduino LLC"' '-DUSB_PRODUCT="Arduino MKR FOX 1200"' "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS/4.5.0/CMSIS/Include/" "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200" -I"/home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SPI" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/Wire" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SAMD_AnalogCorrection/src" -I"/home/snir2g2/.arduinocdt/libraries/Time/1.5.0" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/USBHost/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/I2S/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SDU/src" -I"/home/snir2g2/.arduinocdt/libraries/Adafruit_GPS_Library/1.0.3" -I"/home/snir2g2/.arduinocdt/libraries/RTCZero/1.5.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/HID" "$<" -o "$@"
 
-project/../../Bureau/Alfox2_2019/Codage/src/CarteSD.cpp.d: ;
+project/../../src/CarteSD.cpp.d: ;
 
--include project/../../Bureau/Alfox2_2019/Codage/src/CarteSD.cpp.d 
+-include project/../../src/CarteSD.cpp.d 
 
-project/../../Bureau/Alfox2_2019/Codage/src/DonneesTR.cpp.o: ../../../../Bureau/Alfox2_2019/Codage/src/DonneesTR.cpp project/../../Bureau/Alfox2_2019/Codage/src/DonneesTR.cpp.d
+project/../../src/DonneesTR.cpp.o: ../../../../src/DonneesTR.cpp project/../../src/DonneesTR.cpp.d
 	@$(call mymkdir,$(dir $@))
 	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++" -mcpu=cortex-m0plus -mthumb -c -g -Os -w -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD -DF_CPU=48000000L -DARDUINO=10608 -DARDUINO_SAMD_MKRFox1200 -DARDUINO_ARCH_SAMD  -DUSE_ARDUINO_MKR_PIN_LAYOUT -D__SAMD21G18A__ -DUSB_VID=0x2341 -DUSB_PID=0x8050 -DUSBCON '-DUSB_MANUFACTURER="Arduino LLC"' '-DUSB_PRODUCT="Arduino MKR FOX 1200"' "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS/4.5.0/CMSIS/Include/" "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200" -I"/home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SPI" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/Wire" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SAMD_AnalogCorrection/src" -I"/home/snir2g2/.arduinocdt/libraries/Time/1.5.0" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/USBHost/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/I2S/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SDU/src" -I"/home/snir2g2/.arduinocdt/libraries/Adafruit_GPS_Library/1.0.3" -I"/home/snir2g2/.arduinocdt/libraries/RTCZero/1.5.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/HID" "$<" -o "$@"
 
-project/../../Bureau/Alfox2_2019/Codage/src/DonneesTR.cpp.d: ;
+project/../../src/DonneesTR.cpp.d: ;
 
--include project/../../Bureau/Alfox2_2019/Codage/src/DonneesTR.cpp.d 
+-include project/../../src/DonneesTR.cpp.d 
 
-project/../../Bureau/Alfox2_2019/Codage/src/GPS.cpp.o: ../../../../Bureau/Alfox2_2019/Codage/src/GPS.cpp project/../../Bureau/Alfox2_2019/Codage/src/GPS.cpp.d
+project/../../src/GPS.cpp.o: ../../../../src/GPS.cpp project/../../src/GPS.cpp.d
 	@$(call mymkdir,$(dir $@))
 	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++" -mcpu=cortex-m0plus -mthumb -c -g -Os -w -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD -DF_CPU=48000000L -DARDUINO=10608 -DARDUINO_SAMD_MKRFox1200 -DARDUINO_ARCH_SAMD  -DUSE_ARDUINO_MKR_PIN_LAYOUT -D__SAMD21G18A__ -DUSB_VID=0x2341 -DUSB_PID=0x8050 -DUSBCON '-DUSB_MANUFACTURER="Arduino LLC"' '-DUSB_PRODUCT="Arduino MKR FOX 1200"' "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS/4.5.0/CMSIS/Include/" "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200" -I"/home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SPI" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/Wire" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SAMD_AnalogCorrection/src" -I"/home/snir2g2/.arduinocdt/libraries/Time/1.5.0" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/USBHost/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/I2S/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SDU/src" -I"/home/snir2g2/.arduinocdt/libraries/Adafruit_GPS_Library/1.0.3" -I"/home/snir2g2/.arduinocdt/libraries/RTCZero/1.5.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/HID" "$<" -o "$@"
 
-project/../../Bureau/Alfox2_2019/Codage/src/GPS.cpp.d: ;
+project/../../src/GPS.cpp.d: ;
 
--include project/../../Bureau/Alfox2_2019/Codage/src/GPS.cpp.d 
+-include project/../../src/GPS.cpp.d 
 
-project/../../Bureau/Alfox2_2019/Codage/src/HTR.cpp.o: ../../../../Bureau/Alfox2_2019/Codage/src/HTR.cpp project/../../Bureau/Alfox2_2019/Codage/src/HTR.cpp.d
+project/../../src/HTR.cpp.o: ../../../../src/HTR.cpp project/../../src/HTR.cpp.d
 	@$(call mymkdir,$(dir $@))
 	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++" -mcpu=cortex-m0plus -mthumb -c -g -Os -w -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD -DF_CPU=48000000L -DARDUINO=10608 -DARDUINO_SAMD_MKRFox1200 -DARDUINO_ARCH_SAMD  -DUSE_ARDUINO_MKR_PIN_LAYOUT -D__SAMD21G18A__ -DUSB_VID=0x2341 -DUSB_PID=0x8050 -DUSBCON '-DUSB_MANUFACTURER="Arduino LLC"' '-DUSB_PRODUCT="Arduino MKR FOX 1200"' "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS/4.5.0/CMSIS/Include/" "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200" -I"/home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SPI" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/Wire" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SAMD_AnalogCorrection/src" -I"/home/snir2g2/.arduinocdt/libraries/Time/1.5.0" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/USBHost/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/I2S/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SDU/src" -I"/home/snir2g2/.arduinocdt/libraries/Adafruit_GPS_Library/1.0.3" -I"/home/snir2g2/.arduinocdt/libraries/RTCZero/1.5.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/HID" "$<" -o "$@"
 
-project/../../Bureau/Alfox2_2019/Codage/src/HTR.cpp.d: ;
+project/../../src/HTR.cpp.d: ;
 
--include project/../../Bureau/Alfox2_2019/Codage/src/HTR.cpp.d 
+-include project/../../src/HTR.cpp.d 
 
-project/../../Bureau/Alfox2_2019/Codage/src/LedTri.cpp.o: ../../../../Bureau/Alfox2_2019/Codage/src/LedTri.cpp project/../../Bureau/Alfox2_2019/Codage/src/LedTri.cpp.d
+project/../../src/LedTri.cpp.o: ../../../../src/LedTri.cpp project/../../src/LedTri.cpp.d
 	@$(call mymkdir,$(dir $@))
 	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++" -mcpu=cortex-m0plus -mthumb -c -g -Os -w -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD -DF_CPU=48000000L -DARDUINO=10608 -DARDUINO_SAMD_MKRFox1200 -DARDUINO_ARCH_SAMD  -DUSE_ARDUINO_MKR_PIN_LAYOUT -D__SAMD21G18A__ -DUSB_VID=0x2341 -DUSB_PID=0x8050 -DUSBCON '-DUSB_MANUFACTURER="Arduino LLC"' '-DUSB_PRODUCT="Arduino MKR FOX 1200"' "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS/4.5.0/CMSIS/Include/" "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200" -I"/home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SPI" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/Wire" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SAMD_AnalogCorrection/src" -I"/home/snir2g2/.arduinocdt/libraries/Time/1.5.0" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/USBHost/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/I2S/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SDU/src" -I"/home/snir2g2/.arduinocdt/libraries/Adafruit_GPS_Library/1.0.3" -I"/home/snir2g2/.arduinocdt/libraries/RTCZero/1.5.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/HID" "$<" -o "$@"
 
-project/../../Bureau/Alfox2_2019/Codage/src/LedTri.cpp.d: ;
+project/../../src/LedTri.cpp.d: ;
 
--include project/../../Bureau/Alfox2_2019/Codage/src/LedTri.cpp.d 
+-include project/../../src/LedTri.cpp.d 
 
-project/../../Bureau/Alfox2_2019/Codage/src/LiaisonSimulateur.cpp.o: ../../../../Bureau/Alfox2_2019/Codage/src/LiaisonSimulateur.cpp project/../../Bureau/Alfox2_2019/Codage/src/LiaisonSimulateur.cpp.d
+project/../../src/LiaisonSimulateur.cpp.o: ../../../../src/LiaisonSimulateur.cpp project/../../src/LiaisonSimulateur.cpp.d
 	@$(call mymkdir,$(dir $@))
 	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++" -mcpu=cortex-m0plus -mthumb -c -g -Os -w -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD -DF_CPU=48000000L -DARDUINO=10608 -DARDUINO_SAMD_MKRFox1200 -DARDUINO_ARCH_SAMD  -DUSE_ARDUINO_MKR_PIN_LAYOUT -D__SAMD21G18A__ -DUSB_VID=0x2341 -DUSB_PID=0x8050 -DUSBCON '-DUSB_MANUFACTURER="Arduino LLC"' '-DUSB_PRODUCT="Arduino MKR FOX 1200"' "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS/4.5.0/CMSIS/Include/" "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200" -I"/home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SPI" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/Wire" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SAMD_AnalogCorrection/src" -I"/home/snir2g2/.arduinocdt/libraries/Time/1.5.0" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/USBHost/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/I2S/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SDU/src" -I"/home/snir2g2/.arduinocdt/libraries/Adafruit_GPS_Library/1.0.3" -I"/home/snir2g2/.arduinocdt/libraries/RTCZero/1.5.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/HID" "$<" -o "$@"
 
-project/../../Bureau/Alfox2_2019/Codage/src/LiaisonSimulateur.cpp.d: ;
+project/../../src/LiaisonSimulateur.cpp.d: ;
 
--include project/../../Bureau/Alfox2_2019/Codage/src/LiaisonSimulateur.cpp.d 
+-include project/../../src/LiaisonSimulateur.cpp.d 
 
-project/../../Bureau/Alfox2_2019/Codage/src/Message.cpp.o: ../../../../Bureau/Alfox2_2019/Codage/src/Message.cpp project/../../Bureau/Alfox2_2019/Codage/src/Message.cpp.d
+project/../../src/Message.cpp.o: ../../../../src/Message.cpp project/../../src/Message.cpp.d
 	@$(call mymkdir,$(dir $@))
 	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++" -mcpu=cortex-m0plus -mthumb -c -g -Os -w -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD -DF_CPU=48000000L -DARDUINO=10608 -DARDUINO_SAMD_MKRFox1200 -DARDUINO_ARCH_SAMD  -DUSE_ARDUINO_MKR_PIN_LAYOUT -D__SAMD21G18A__ -DUSB_VID=0x2341 -DUSB_PID=0x8050 -DUSBCON '-DUSB_MANUFACTURER="Arduino LLC"' '-DUSB_PRODUCT="Arduino MKR FOX 1200"' "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS/4.5.0/CMSIS/Include/" "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200" -I"/home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SPI" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/Wire" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SAMD_AnalogCorrection/src" -I"/home/snir2g2/.arduinocdt/libraries/Time/1.5.0" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/USBHost/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/I2S/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SDU/src" -I"/home/snir2g2/.arduinocdt/libraries/Adafruit_GPS_Library/1.0.3" -I"/home/snir2g2/.arduinocdt/libraries/RTCZero/1.5.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/HID" "$<" -o "$@"
 
-project/../../Bureau/Alfox2_2019/Codage/src/Message.cpp.d: ;
+project/../../src/Message.cpp.d: ;
 
--include project/../../Bureau/Alfox2_2019/Codage/src/Message.cpp.d 
+-include project/../../src/Message.cpp.d 
 
-project/../../Bureau/Alfox2_2019/Codage/src/OBD2.cpp.o: ../../../../Bureau/Alfox2_2019/Codage/src/OBD2.cpp project/../../Bureau/Alfox2_2019/Codage/src/OBD2.cpp.d
+project/../../src/OBD2.cpp.o: ../../../../src/OBD2.cpp project/../../src/OBD2.cpp.d
 	@$(call mymkdir,$(dir $@))
 	"/home/snir2g2/.arduinocdt/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++" -mcpu=cortex-m0plus -mthumb -c -g -Os -w -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD -DF_CPU=48000000L -DARDUINO=10608 -DARDUINO_SAMD_MKRFox1200 -DARDUINO_ARCH_SAMD  -DUSE_ARDUINO_MKR_PIN_LAYOUT -D__SAMD21G18A__ -DUSB_VID=0x2341 -DUSB_PID=0x8050 -DUSBCON '-DUSB_MANUFACTURER="Arduino LLC"' '-DUSB_PRODUCT="Arduino MKR FOX 1200"' "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS/4.5.0/CMSIS/Include/" "-I/home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200" -I"/home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SPI" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/Wire" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SAMD_AnalogCorrection/src" -I"/home/snir2g2/.arduinocdt/libraries/Time/1.5.0" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/USBHost/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/I2S/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SDU/src" -I"/home/snir2g2/.arduinocdt/libraries/Adafruit_GPS_Library/1.0.3" -I"/home/snir2g2/.arduinocdt/libraries/RTCZero/1.5.3/src" -I"/home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/HID" "$<" -o "$@"
 
-project/../../Bureau/Alfox2_2019/Codage/src/OBD2.cpp.d: ;
+project/../../src/OBD2.cpp.d: ;
 
--include project/../../Bureau/Alfox2_2019/Codage/src/OBD2.cpp.d 
+-include project/../../src/OBD2.cpp.d 
 
 
 core/delay.c.o: /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/delay.c core/delay.c.d
