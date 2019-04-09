@@ -1,0 +1,2 @@
+eclipse.preferences.version=1
+libraries=["SD",{"package"\:"arduino","platform"\:"samd","library"\:"SPI"},{"package"\:"arduino","platform"\:"samd","library"\:"Wire"},{"package"\:"arduino","platform"\:"samd","library"\:"SAMD_AnalogCorrection"},"Time",{"package"\:"arduino","platform"\:"samd","library"\:"USBHost"},{"package"\:"arduino","platform"\:"samd","library"\:"I2S"},{"package"\:"arduino","platform"\:"samd","library"\:"SDU"},"Adafruit GPS Library","RTCZero",{"package"\:"arduino","platform"\:"samd","library"\:"HID"}]
