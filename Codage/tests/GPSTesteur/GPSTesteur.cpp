@@ -16,6 +16,7 @@ void setup() {
 	delay(5000);
 	Serial.println("Test de la classe GPS");
 
+
 }
 
 unsigned long time1;
@@ -24,10 +25,13 @@ unsigned long time3;
 unsigned long time4;
 unsigned long timeInterrupt;
 
+struct tm testDatation;
+
 void loop() {
 	//Serial.print(gps->readDATA());
 	time1 = millis();
 	gps->maj();
+
 
 	if (gps->isDispo()) {
 		Serial.println(gps->getLatitude(), 6);
@@ -36,17 +40,18 @@ void loop() {
 
 		Serial.println(gps->getVitesse(), 3);
 
-		Serial.print(gps->getDatation().tm_mday);
+		testDatation = gps->getDatation();
+		Serial.print(testDatation.tm_mday);
 		 Serial.print("/");
-		 Serial.print(gps->getDatation().tm_mon);
+		 Serial.print(testDatation.tm_mon);
 		 Serial.print("/");
-		 Serial.print(gps->getDatation().tm_year);
+		 Serial.print(testDatation.tm_year);
 		 Serial.print(" ");
-		 Serial.print(gps->getDatation().tm_hour);
+		 Serial.print(testDatation.tm_hour);
 		 Serial.print(":");
-		 Serial.print(gps->getDatation().tm_min);
+		 Serial.print(testDatation.tm_min);
 		 Serial.print(":");
-		 Serial.println(gps->getDatation().tm_sec);
+		 Serial.println(testDatation.tm_sec);
 
 		Serial.println("-------------------------");
 

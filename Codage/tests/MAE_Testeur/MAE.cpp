@@ -6,6 +6,7 @@
 #include "../../src/Global.h"
 #include "../../src/Message.h"
 #include "../../src/HTR.h"
+#include "../../src/LedTri.h"
 
 
 #define T_ECH 5000 //en millisecondes
@@ -28,7 +29,7 @@ bool chgtModeSrv;
 //Message* message = new Message();  //Classe message non codée
 Bluetooth* bluetooth = Bluetooth::getInstance(PINALIM, PINEN);
 OBD2* obd2 = OBD2::getInstance(bluetooth);
-LedTri* led = LedTri::getInstance(255, 255, 255);
+LedTri* led = LedTri::getInstance(0,0,0);
 GPS* gps = GPS::getInstance();
 DonneesTR* donneesTR = new DonneesTR();
 CarteSD* sd = CarteSD::getInstance();

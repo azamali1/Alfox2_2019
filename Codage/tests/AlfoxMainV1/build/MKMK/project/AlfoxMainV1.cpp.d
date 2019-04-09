@@ -119,4 +119,5 @@ project/AlfoxMainV1.cpp.o: ../../AlfoxMainV1.cpp \
  ../../../../src/OBD2.h ../../../../src/Bluetooth.h \
  ../../../../src/LiaisonSimulateur.h ../../../../src/Global.h \
  ../../../../src/Message.h ../../../../src/Global.h ../../../../src/HTR.h \
- /home/snir2g2/.arduinocdt/libraries/RTCZero/1.5.3/src/RTCZero.h
+ /home/snir2g2/.arduinocdt/libraries/RTCZero/1.5.3/src/RTCZero.h \
+ ../../../../src/SigfoxArduino.h

@@ -113,5 +113,15 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/src/OBD2.h</locationURI>
 		</link>
+		<link>
+			<name>SigfoxArduino.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/src/SigfoxArduino.cpp</locationURI>
+		</link>
+		<link>
+			<name>SigfoxArduino.h</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/src/SigfoxArduino.h</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>

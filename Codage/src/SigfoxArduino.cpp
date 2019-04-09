@@ -19,6 +19,10 @@ SigfoxArduino* SigfoxArduino::getInstance() {
 	return SigArduinoInstance;
 }
 
+SigfoxArduino::SigfoxArduino(){
+
+}
+
 bool SigfoxArduino::envoyer(byte* bMsg) {
 	SigFox.begin();	//launch Sigfox
 	delay(1);

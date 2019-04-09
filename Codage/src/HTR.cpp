@@ -5,18 +5,30 @@ HTR::HTR() {
 
 }
 
-struct tm HTR::setDatation(struct tm gpsDatation) {
+void HTR::setDatation(struct tm gpsDatation) {
 	this->datation = gpsDatation;
-	return datation;
+
 }
 
 struct tm HTR::getDatation() {
 	return datation;
 }
 
-struct tm HTR::majDatation(unsigned int dureeMesuree) {
+struct tm HTR::majDatation(unsigned long dureeMesuree) {
 
-	//this->datation.tm_sec +=dureeMesuree/1000;
+	this->datation.tm_sec += int(dureeMesuree) / 1000;
+	if (datation.tm_sec >= 60) {
+		datation.tm_sec -= 60;
+		datation.tm_min += 1;
+	}
+	if(datation.tm_min >= 60){
+		datation.tm_min -= 60;
+		datation.tm_hour += 1;
+	}
+	if(datation.tm_hour >= 24){
+		datation.tm_hour -= 24;
+		datation.tm_mday += 1;
+	}
 	Serial.print(datation.tm_mday);
 	Serial.print("/");
 	Serial.print(datation.tm_mon);

@@ -11,6 +11,6 @@ private:
 public:
 	static HTR* getInstance();
 	struct tm getDatation();
-	struct tm setDatation(struct tm gpsDatation);
-	struct tm majDatation(unsigned int dureeMesuree);
+	void setDatation(struct tm gpsDatation);
+	struct tm majDatation(unsigned long dureeMesuree);
 };
