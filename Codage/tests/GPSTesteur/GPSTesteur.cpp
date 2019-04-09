@@ -1,5 +1,8 @@
 #include "../../src/GPS.h"
 #include <Arduino.h>
+#include <stdio.h>
+#include <string.h>
+
 
 void configureInterrupt_timer4_1ms();
 
@@ -33,22 +36,19 @@ void loop() {
 
 		Serial.println(gps->getVitesse(), 3);
 
-		Serial.println(gps->getDatation().tm_mday);
-		Serial.println(gps->getDatation().tm_mon);
-		Serial.println(gps->getDatation().tm_year);
-		Serial.println("-------------------------");
-		/*Serial.print(gps->getDatationUltimate().tm_mday);
-		Serial.print("/");
-		Serial.print(gps->getDatationUltimate().tm_mon);
-		Serial.print("/");
-		Serial.print(gps->getDatationUltimate().tm_year);
-		Serial.print(" ");
-		Serial.print(gps->getDatationUltimate().tm_hour);
-		Serial.print(":");
-		Serial.print(gps->getDatationUltimate().tm_min);
-		Serial.print(":");
-		Serial.println(gps->getDatationUltimate().tm_sec);*/
+		Serial.print(gps->getDatation().tm_mday);
+		 Serial.print("/");
+		 Serial.print(gps->getDatation().tm_mon);
+		 Serial.print("/");
+		 Serial.print(gps->getDatation().tm_year);
+		 Serial.print(" ");
+		 Serial.print(gps->getDatation().tm_hour);
+		 Serial.print(":");
+		 Serial.print(gps->getDatation().tm_min);
+		 Serial.print(":");
+		 Serial.println(gps->getDatation().tm_sec);
 
+		Serial.println("-------------------------");
 
 		time2 = millis();
 		//Serial.println(time2 - time1);

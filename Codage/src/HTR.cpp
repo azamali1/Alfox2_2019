@@ -15,10 +15,8 @@ struct tm HTR::getDatation() {
 }
 
 struct tm HTR::majDatation(unsigned int dureeMesuree) {
-	 unsigned int secondes = dureeMesuree / 1000;
-	 unsigned int minutes = secondes / 60;
-	 unsigned int heures = minutes / 60;
-	 this->datation.tm_sec = secondes;
+
+	//this->datation.tm_sec +=dureeMesuree/1000;
 	Serial.print(datation.tm_mday);
 	Serial.print("/");
 	Serial.print(datation.tm_mon);
