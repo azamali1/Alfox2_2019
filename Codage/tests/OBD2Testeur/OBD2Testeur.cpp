@@ -38,41 +38,52 @@ void setup() {
 
 void loop() {
 	periode = millis() - initial;
-	if (periode >= PERIODE_ECH) {
 
-		Serial.print("Vitesse : ");
-		Serial.print(obd2->lireVitesse());
-		Serial.println(" Km/h");
-		delay(250);
-		//ici on lit la Pression en kpa
-		Serial.print("Pression : ");
-		Serial.print(obd2->lirePression());
-		Serial.println(" kpa");
-		delay(250);
-		//ici on lit la Température d'admission d'air en °C
-		Serial.print("Temprérature : ");
-		Serial.print(obd2->lireTemprerature());
-		Serial.println(" °C");
-		delay(250);
-		//ici on lit le Ratio carburant/air
-		Serial.println(obd2->lireRatio());
-		delay(250);
-		//ici on lit le Regime moteur en tr/min
-		Serial.print("Regime moteur : ");
-		Serial.print(obd2->lireRegimeMoteur());
-		Serial.println(" tr/min");
-		delay(250);
-		Serial.print("Débit d'air : ");
-		Serial.print(obd2->lireDair());
-		Serial.println(" g/s");
-		delay(250);
-		//ici on lit grâce a un calcul la consommation du véhicule
-		Serial.print("Consommation : ");
-		Serial.print(obd2->lireConsomation());
-		Serial.println(" L/100");
-		delay(250);
-		initial = millis();
-	}
+		if (periode >= PERIODE_ECH) {
+
+			Serial.println("Réalisation des acquisitions");
+			if(obd2->isConnected())
+			{
+				delay(250);
+				Serial.print("Vitesse : ");
+				Serial.print(obd2->lireVitesse());
+				Serial.println(" Km/h");
+				delay(250);
+				//ici on lit la Pression en kpa
+				Serial.print("Pression : ");
+				Serial.print(obd2->lirePression());
+				Serial.println(" kpa");
+				delay(250);
+				//ici on lit la Température d'admission d'air en °C
+				Serial.print("Temprérature : ");
+				Serial.print(obd2->lireTemprerature());
+				Serial.println(" °C");
+				delay(250);
+				//ici on lit le Ratio carburant/air
+				Serial.println(obd2->lireRatio());
+				delay(250);
+				//ici on lit le Regime moteur en tr/min
+				Serial.print("Regime moteur : ");
+				Serial.print(obd2->lireRegimeMoteur());
+				Serial.println(" tr/min");
+				delay(250);
+				Serial.print("Débit d'air : ");
+				Serial.print(obd2->lireDair());
+				Serial.println(" g/s");
+				delay(250);
+				Serial.print("Sonde : ");
+				Serial.print(obd2->lireSonde());
+				Serial.println("V");
+				delay(250);
+				//ici on lit grâce a un calcul la consommation du véhicule
+				Serial.print("Consommation : ");
+				Serial.print(obd2->lireConsomation());
+				Serial.println(" L/100");
+				delay(250);
+				initial = millis();
+			}
+
+		}
 }
 
 void SERCOM3_Handler() {

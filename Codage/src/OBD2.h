@@ -23,10 +23,11 @@ typedef enum {
 	C_REGIME,
 	C_DEFAUT,
 	C_VERSION,
-	C_PESSION,
+	C_PRESSION,
 	C_TEMPERATURE,
 	C_RATIO,
-	C_DAIR
+	C_DAIR,
+	C_SONDE
 } TCode;
 
 class OBD2 {
@@ -39,11 +40,13 @@ private:
 	static OBD2* OBD2Instance;
 	OBD2(Bluetooth* bt);
 	OBD2(LiaisonSimulateur* liaison);
+	bool connected;
 
 public:
 	/** Constructeur **/
 	static OBD2* getInstance(Bluetooth* bt);
 	static OBD2* getInstance(LiaisonSimulateur* liaison);
+	void setIsConnected(bool etat);
 	bool isConnected();
 	String demande(TCode numCode);
 	float lireConsomation();
@@ -54,6 +57,7 @@ public:
 	float lireTemprerature();
 	float lireRatio();
 	float lireDair();
+	float lireSonde();
 	String lireReponse();
 };
 
