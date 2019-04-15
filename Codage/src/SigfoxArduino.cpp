@@ -19,7 +19,7 @@ SigfoxArduino* SigfoxArduino::getInstance() {
 	return SigArduinoInstance;
 }
 
-SigfoxArduino::SigfoxArduino(){
+SigfoxArduino::SigfoxArduino() {
 
 }
 
@@ -28,7 +28,7 @@ bool SigfoxArduino::envoyer(byte* bMsg) {
 	delay(1);
 	SigFox.beginPacket();	//start Paquet to send
 	SigFox.write(bMsg, 12);
-	SigFox.endPacket();  // send buffer to SIGFOX network
+	SigFox.endPacket();  //Le serial se déconnecte systématiquement ici, vérifier l'envoi du message sur https://backend.sigfox.com/
 	SigFox.end();	//end SigFox
 
 	return 0;

@@ -15,16 +15,16 @@ typedef unsigned char byte;
 class Message {
 
 public:
-    static Etat decoderEtat(byte* msg);
-    byte* nouveau(Etat etat, DonneesTR* data, byte* b);
+	static Etat decoderEtat(byte* msg);
+	void nouveau(Etat etat, DonneesTR* data, byte* b);
 
 private:
-    byte* normal(DonneesTR* data, byte* b);
-    byte* degrade(DonneesTR* data, byte* b);
-    byte* dmdGPS(DonneesTR* data, byte* b);
-    byte* gps(DonneesTR* data, byte* b);
-    byte* dormir(DonneesTR* data, byte* b);
-    byte* init(DonneesTR* data, byte* b);
+	void normal(DonneesTR* data, byte* b);
+	void degrade(DonneesTR* data, byte* b);
+	void dmdGPS(DonneesTR* data, byte* b);
+	void gps(DonneesTR* data, byte* b);
+	void dormir(DonneesTR* data, byte* b);
+	void init(DonneesTR* data, byte* b);
 
 };
 #endif /* MESSAGE_H */

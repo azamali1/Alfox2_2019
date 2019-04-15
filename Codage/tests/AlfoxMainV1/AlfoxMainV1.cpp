@@ -10,12 +10,15 @@
 #include "../../src/SigfoxArduino.h"
 
 #define DUREE_LOOP 5000 //en millisecondes
+#define DUREE_LOOP_SENDING_MESSAGE 10000
 #define T_MSG_STND 720000 //12 minutes en ms
 #define T_MSG_GPS 3600000 //1h en ms
 
-byte bMsg[12];
+byte messageEncode[12];
+bool passeDansUnIf = false;
 
 unsigned long dureeCumulee = 0;
+unsigned long dureeCumuleeGPS = 0;
 unsigned long heureDebut;
 unsigned long tempoMessage;
 
@@ -28,30 +31,31 @@ GPS* gps;
 DonneesTR* donneesTR;
 CarteSD* sd;
 
-void sendMessageStandard();
+void sendMessageNormal();
 void sendMessageGPS();
 void majDataTR();
+void afficherHeure();
 void configureInterrupt_timer4_1ms();
 
 void setup() {
-	Serial.begin(9600);
+	Serial.begin(115200);
 	delay(10000);
 	message = new Message();
 	htr = HTR::getInstance();
 	sigfoxArduino = SigfoxArduino::getInstance();
 	bluetooth = Bluetooth::getInstance(PINALIM, PINEN);
-	//obd2 = OBD2::getInstance(bluetooth);
+	obd2 = OBD2::getInstance(bluetooth);
 
 	//Acquisition datation par GPS
 	gps = GPS::getInstance();
 	configureInterrupt_timer4_1ms();
 	gps->maj();
-	delay(5000);
+	delay(500);
 	htr->setDatation(gps->getDatation());
 
 	donneesTR = new DonneesTR();
 	sd = CarteSD::getInstance();
-	delay(500);
+	delay(10000);
 
 }
 
@@ -59,32 +63,54 @@ void loop() {
 	Serial.println("Entrée dans la loop");
 	heureDebut = millis();
 
+	bool messageEnvoye = false;
+
 	Serial.println(dureeCumulee);
+	Serial.println(dureeCumuleeGPS);
+
+	gps->maj();
 
 	majDataTR();
+
+	afficherHeure();
 
 	sd->ecrire(donneesTR);
 
 	if (dureeCumulee >= T_MSG_STND) {
-		for (int i = 0; i < 20; i++) {
+
+		for (int i = 0; i < 3; i++) {
 			Serial.println(
 					"! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !");
 		}
-		sendMessageStandard();
-	} else if (dureeCumulee >= T_MSG_GPS) {
-		for (int i = 0; i < 20; i++) {
-			Serial.println(
-					"! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !");
+
+		sendMessageNormal();
+		dureeCumulee = 0;
+		messageEnvoye = true;
+
+	}
+	if (dureeCumuleeGPS >= T_MSG_GPS) {
+
+		for (int i = 0; i < 3; i++) {
+			Serial.println("###################################");
 		}
+
 		sendMessageGPS();
+		dureeCumuleeGPS = 0;
+		messageEnvoye = true;
+
 	}
 
-	htr->majDatation(millis());
+	//Durée constante de la loop avec cas des loop où les messages sont envoyés
 
-	//Durée constante de la loop
-
-	delay(DUREE_LOOP - (millis() - heureDebut));
-	dureeCumulee += DUREE_LOOP - (millis() - heureDebut);
+	if (messageEnvoye) {
+		dureeCumulee += DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut) + 1;
+		dureeCumuleeGPS += DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut) + 1;
+		delay(DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut));
+	} else {
+		dureeCumulee += DUREE_LOOP - (millis() - heureDebut) + 1;
+		dureeCumuleeGPS += DUREE_LOOP - (millis() - heureDebut) + 1;
+		delay(DUREE_LOOP - (millis() - heureDebut));
+	}
 
 	Serial.println("\n-----------------------------------------------------\n");
 
@@ -107,13 +133,15 @@ void majDataTR() {
 	 Serial.println("Le bluetooth est inactif");
 	 }*/
 	if (gps->isDispo()) {
-		Serial.println("Le GPS est actif");
+
 		gps->maj();
 		donneesTR->setLatitude(gps->getLatitude());
 		donneesTR->setLongitude(gps->getLongitude());
-		donneesTR->setDatation(htr->getDatation());
+		donneesTR->setDatation(gps->getDatation());
+		Serial.println("Le GPS est actif");
+
 	} else {
-		Serial.println("Le bluetooth est inactif");
+		Serial.println("Le gps est occupé");
 	}
 	/* obd2->demande(C_DEFAUT);
 	 int defauts = obd2->lire();
@@ -123,27 +151,46 @@ void majDataTR() {
 	 }*/
 }
 
-void sendMessageStandard() {
-	/*if (bluetooth->isActif()) {
+void sendMessageNormal() {
+	/*if (obd2->isConnected()) {
 
-	 //Si le bluetooth est actif, on envoi un message STANDARD
-	 message->nouveau(STANDARD, donneesTR, bMsg);
-	 sigfoxArduino->*/
+	 //Si on peut contacter OBD2, on envoi un message STANDARD
 
-	/* } else {
-	 //Sinon le bluetooth n'est pas actif on envoi un message dégadé*/
-	byte* messageEncode = message->nouveau(DEGRADE, donneesTR, bMsg);
-	sigfoxArduino->envoyer(messageEncode);
-	Serial.println("message stnd encodé");
-//}
+	 message->nouveau(STANDARD, donneesTR, messageEncode);
+	 sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
+	//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
+
+	 }*/
+	/*else {
+	 //Sinon OBD 2 n'est pas connecté, alors on envoi un message dégradé*/
+
+	message->nouveau(DEGRADE, donneesTR, messageEncode);
+	sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
+	//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
+
+	//}
 
 }
 
 void sendMessageGPS() {
 
-	message->nouveau(GPS_SEUL, donneesTR, bMsg);
-	Serial.println("message GPS encodé");
+	message->nouveau(GPS_SEUL, donneesTR, messageEncode);
+	sigfoxArduino->envoyer(messageEncode);
 
+}
+
+void afficherHeure(){
+	Serial.print(gps->getDatation().tm_mday);
+	Serial.print("/");
+	Serial.print(gps->getDatation().tm_mon);
+	Serial.print("/");
+	Serial.print(gps->getDatation().tm_year);
+	Serial.print(" ");
+	Serial.print(gps->getDatation().tm_hour);
+	Serial.print(":");
+	Serial.print(gps->getDatation().tm_min);
+	Serial.print(":");
+	Serial.println(gps->getDatation().tm_sec);
 }
 
 void TC4_Handler()              // Interrupt Service Routine (ISR) for timer TC4

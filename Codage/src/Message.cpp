@@ -1,8 +1,3 @@
-/*/=======================/*/
-/*/File: MessageSigfox.cpp/*/
-/*/create: 21 mars 2019   /*/
-/*/=======================/*/
-
 #include "Message.h"
 
 #include <Arduino.h>
@@ -18,32 +13,30 @@ Etat Message::decoderEtat(byte* msg) {
 	return etat;
 }
 
-byte* Message::nouveau(Etat etat, DonneesTR* data, byte* b) {
-	byte* msg;
+void Message::nouveau(Etat etat, DonneesTR* data, byte* b) {
 	switch (etat) {
 	case NORMAL:
-		msg = normal(data, b);
+		normal(data, b);
 		break;
 	case DEGRADE:
-		msg = degrade(data, b);
+		degrade(data, b);
 		break;
 	case DMD_GPS:
-		msg = dmdGPS(data, b);
+		dmdGPS(data, b);
 		break;
 	case GPS_SEUL:
-		msg = gps(data, b);
+		gps(data, b);
 		break;
 	case DORMIR:
-		msg = dormir(data, b);
+		dormir(data, b);
 		break;
 	case INIT:
-		msg = init(data, b);
+		init(data, b);
 		break;
 	}
-	return msg;
 }
 
-byte* Message::normal(DonneesTR* data, byte* bMsg) {
+void Message::normal(DonneesTR* data, byte* bMsg) {
 	// NORMAL : TM K1 K2 K3 CD CD VM VY RM RY CM CY
 	// OB = Etat BT et OBD2, 00 = BT_OFF&OBD2_OFF, 01 = BT_ON&OBD2_OFF, 11 = BT_ON&OBD2_ON
 	bMsg[0] = (byte) (((data->getBluetoothActif() ? 1 : 0) << 1)
@@ -71,10 +64,9 @@ byte* Message::normal(DonneesTR* data, byte* bMsg) {
 	bMsg[10] = (byte) data->getConsoMax();
 	// consommation moyenne
 	bMsg[11] = (byte) data->getConsoMoyenne();
-	return bMsg;
 }
 
-byte* Message::degrade(DonneesTR* data, byte* bMsg) {
+void Message::degrade(DonneesTR* data, byte* bMsg) {
 	// DEGRADE : TM K1 K2 K3 00 00 00 00 00 00 00 00
 	// OB = Etat BT et OBD2, 00 = BT_OFF&OBD2_OFF, 01 = BT_ON&OBD2_OFF, 11 = BT_ON&OBD2_ON
 	bMsg[0] = (byte) (((data->getBluetoothActif() ? 1 : 0) << 1)
@@ -85,22 +77,19 @@ byte* Message::degrade(DonneesTR* data, byte* bMsg) {
 	bMsg[1] = (byte) (data->getDistanceParcourue() / 10000);
 	bMsg[2] = (byte) (((int) data->getDistanceParcourue() % 10000) / 100);
 	bMsg[3] = (byte) ((int) data->getDistanceParcourue() % 100);
-	for (int i = 4; i < 12; i++){
+	for (int i = 4; i < 12; i++)
 		bMsg[i] = 0;
-	}
-	return bMsg;
 }
 
-byte* Message::dmdGPS(DonneesTR* data, byte* bMsg) {
+void Message::dmdGPS(DonneesTR* data, byte* bMsg) {
 	// DMD_GPS : TM K1 K2 K3 L1 L2 L3 L4 G1 G2 G3 G4
 	gps(data, bMsg);
 	// TM = Type de message
 	bMsg[0] = bMsg[0] & 0xF0; // On place le quartet de poids faible à 0
 	bMsg[0] = bMsg[0] | DMD_GPS; // Pour y placer le mode
-	return bMsg;
 }
 
-byte* Message::gps(DonneesTR* data, byte* bMsg) {
+void Message::gps(DonneesTR* data, byte* bMsg) {
 	//  GPS : TM K1 K2 K3 L1 L2 L3 L4 G1 G2 G3 G4
 	// le bit de poids faible de L4 et G4 donne le signe +/- de la lat resp long
 	bool negLat = false;
@@ -144,27 +133,22 @@ byte* Message::gps(DonneesTR* data, byte* bMsg) {
 	bMsg[9] = (byte) (iLg % 1000000 / 10000);
 	bMsg[10] = (byte) (iLg % 10000 / 100);
 	bMsg[11] = (byte) (iLg % 100);
-	if (negLg) {// on change le bit de poids faible
+	if (negLg) // on change le bit de poids faible
 		bMsg[11] = bMsg[11] | 0x01;
-	}else{
+	else
 		bMsg[11] = bMsg[11] & 0xFE;
-	}
-	return bMsg;
 }
 
-byte* Message::dormir(DonneesTR* data, byte* bMsg) {
+void Message::dormir(DonneesTR* data, byte* bMsg) {
 	// DORMIR : TM K1 K2 K3 00 00 00 00 00 00 00 00
 	degrade(data, bMsg);
 	bMsg[0] = bMsg[0] & 0xF0;
 	bMsg[0] = bMsg[0] | DORMIR;
-	return bMsg;
 }
 
-byte* Message::init(DonneesTR* data, byte* bMsg) {
+void Message::init(DonneesTR* data, byte* bMsg) {
 	// INIT : TM K1 K2 K3 00 00 00 00 00 00 00 00
 	degrade(data, bMsg);
 	bMsg[0] = bMsg[0] & 0xF0;
 	bMsg[0] = bMsg[0] | INIT;
-	return bMsg;
 }
-
