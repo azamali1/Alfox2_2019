@@ -81,7 +81,7 @@ OBD2::OBD2(Bluetooth* bt) {
 	Serial.println(lireReponse());
 	String reponse = demande(C_VERSION);
 	Serial.println(reponse);
-	//Si le contact est coupé ou la lieason bluetooth est coupé, on précise qu'on est pas connecté
+	//Si le contact est coupé ou la liaison bluetooth est coupé, on précise qu'on est pas connecté
 	if ((reponse.substring(0, 17) == "UNABLE TO CONNECT")
 			|| (reponse.substring(0, 9) == "ERROR:(0)")) {
 		this->connected = false;
@@ -92,7 +92,7 @@ OBD2::OBD2(Bluetooth* bt) {
 
 	}
 	Serial.println("Est connecté ? ");
-	this->isConnected();
+	Serial.println(this->isConnected());
 }
 
 String OBD2::demande(TCode numCode) {

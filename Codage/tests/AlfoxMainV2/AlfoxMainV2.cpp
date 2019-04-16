@@ -22,7 +22,7 @@ byte messageEncode[12];
 
 Etat etat;
 
-unsigned long dureeCumulee;
+unsigned long dureeCumulee = 0;
 unsigned long heureDebut;
 unsigned long tempoMessage;
 
@@ -42,6 +42,11 @@ void majDataTR();
 void nouvelEtat(Etat e);
 void traiterEvenement(Event ev);
 void traiterEtat(ModeG mode);
+
+//Les keepWatch sont les surveillances des evenements
+
+void keepWatchSerial();
+void keepWatchOBD2();
 
 void SERCOM3_Handler();
 void TC4_Handler();
@@ -76,31 +81,18 @@ void loop() {
 
 	heureDebut = millis();
 	bool messageEnvoye = false;
-
-	// Surveillance du Bluetooth
-	if (BLUETOOTH_ON) {
-		if (etat == DEGRADE) {
-			traiterEvenement(BLUETOOTH_ON);
-		} else if (etat == NORMAL)
-			traiterEvenement(BLUETOOTH_OFF);
-	}
-
-	// Surveillance de la voie série
-	int donneesAlire = Serial.available(); //lecture du nombre de caractères disponibles dans le buffer
-	if (donneesAlire > 0) { //si le serial a reçu un caractère // si le buffer n'est pas vide
-		String car = Serial.read(donneesAlire);      //lecture du caractère reçu
-		//while(Serial.read(donneesAlire) != -1);  Permet de lire et vider tout le buffer; à voir si à utiliser?
-
-		if (car == "#") {
-			traiterEvenement(MODE_MAINTENANCE);
-		}
-	}
+	keepWatchOBD2();
+	keepWatchSerial(); //Peut être bloquant
 
 	// ---------------------------------------------------
 	// -------------- TRAITEMENTS COURANTS ---------------
+
 	traiterEtat(DO);
 	sd->ecrire(donneesTR);
-	majDataTR();
+
+///////////////////////////////////////////////////////////////////////////
+
+	//Duree de loop contrôlée
 
 	if (messageEnvoye == true) { //On prends plus de temps pour laisser la carte envoyer le message
 		dureeCumulee += DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut)
@@ -117,37 +109,25 @@ void loop() {
 
 void majDataTR() {
 
-	if (obd2->isConnected() == true) {
-		Serial.println("OBD2 est joignable");
+	if (etat == STANDARD) {
 
 		donneesTR->setVitesse(obd2->lireVitesse());
-
-		Serial.println("0");
-
 		delay(250);
 		donneesTR->setRegime(obd2->lireRegimeMoteur());
-
-		Serial.println("1");
-
 		delay(250);
-		//donneesTR->setConsommation(obd2->lireConsomation());
-
-		Serial.println("2");
-
+		donneesTR->setConsommation(obd2->lireConsomation());
 		delay(250);
 
-	} else {
-		Serial.println("OBD2 est injoignable");
-	}
-	if (gps->isDispo()) {
+		if (gps->isDispo()) {
 
-		gps->maj();
-		donneesTR->setLatitude(gps->getLatitude());
-		donneesTR->setLongitude(gps->getLongitude());
-		donneesTR->setDatation(gps->getDatation());
-		Serial.println("Le GPS est actif");
-	} else {
-		Serial.println("Le GPS est occupé");
+			gps->maj();
+			donneesTR->setLatitude(gps->getLatitude());
+			donneesTR->setLongitude(gps->getLongitude());
+			donneesTR->setDatation(gps->getDatation());
+			Serial.println("Le GPS est actif");
+		} else {
+			Serial.println("Le GPS est occupé");
+		}
 	}
 }
 
@@ -158,7 +138,7 @@ void nouvelEtat(Etat e) {
 		// on doit toujours revenir à un état de suivi normal
 		if (e == STANDARD) {
 			if (obd2->isConnected() == true) {
-				etat = NORMAL;
+				etat = STANDARD;
 			} else {
 				etat = DEGRADE;
 			}
@@ -176,7 +156,7 @@ void traiterEvenement(Event ev) {
 	case INIT:
 		nouvelEtat(INIT);
 		break;
-	case NORMAL:
+	case STANDARD:
 		switch (ev) {
 		case MODE_DMD_GPS:
 			nouvelEtat(DMD_GPS);
@@ -184,7 +164,7 @@ void traiterEvenement(Event ev) {
 		case MODE_GPS:
 			nouvelEtat(GPS_SEUL);
 			break;
-		case BLUETOOTH_OFF:
+		case OBD2_OFF:
 			nouvelEtat(DEGRADE);
 			break;
 		case MODE_DORMIR:
@@ -206,8 +186,8 @@ void traiterEvenement(Event ev) {
 		case MODE_GPS:
 			nouvelEtat(GPS_SEUL);
 			break;
-		case BLUETOOTH_ON:
-			nouvelEtat(NORMAL);
+		case OBD2_ON:
+			nouvelEtat(STANDARD);
 			break;
 
 		case MODE_DORMIR:
@@ -278,25 +258,20 @@ void traiterEtat(ModeG mode) {
 			break;
 		}
 		break;
-	case NORMAL:
+	case STANDARD:
 		switch (mode) {
 		case ENTRY:
-			if (chgtModeSrv) {
-				dureeCumulee = 0;
-			}
+			majDataTR();
+			dureeCumulee = 0;
 			break;
 		case DO:
-			if ((dureeCumulee % tempoMessage) == 0) {
-				Serial.println("Envoi d'un message NORMAL");
-				// sigfox.envoyer(Message.normal(
-				//   connexionOBD2,
-				// 0,
-				//dpVoiture.getCodeDefauts(),
-				//(int)dpVoiture.getCompteur(),
-				//dpVoiture.getConsoMoyenne(),
-				//dpVoiture.getVitesseMoyenne(),
-				//dpVoiture.getRegimeMoyen())
-				//  );
+			gps->maj();
+			majDataTR();
+			if (dureeCumulee >= T_MSG_STND) {
+				Serial.println("Envoi d'un message STANDARD");
+				message->nouveau(etat, donneesTR, messageEncode);
+				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
+				//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
 			}
 			break;
 		case EXIT:
@@ -306,16 +281,15 @@ void traiterEtat(ModeG mode) {
 	case DEGRADE:
 		switch (mode) {
 		case ENTRY:
-			if (chgtModeSrv) {
-				dureeCumulee = 0;
-			}
-
-			tempoMessage = T_MSG_STND;
+			dureeCumulee = 0;
 			break;
 		case DO:
-			if ((dureeCumulee % tempoMessage) == 0) {
+			gps->maj();
+			if (dureeCumulee >= T_MSG_STND) {
 				Serial.println("Envoi d'un message DEGRADE");
-				//sigfox.envoyer(Message.degrade(connexionOBD2));
+				message->nouveau(etat, donneesTR, messageEncode);
+				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
+				//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
 			}
 			break;
 		case EXIT:
@@ -325,12 +299,14 @@ void traiterEtat(ModeG mode) {
 	case DMD_GPS:
 		switch (mode) {
 		case ENTRY:
-			dureeCumulee = 0;
 			break;
 		case DO:
 			Serial.println("Envoi d'un message DMD_GPS");
-			sigfoxArduino->envoyer(messageEncode);
-			chgtModeSrv = false;
+			gps->maj();
+			majDataTR();
+			message->nouveau(etat, donneesTR, messageEncode);
+			sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
+			//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
 			nouvelEtat(STANDARD);
 			break;
 		case EXIT:
@@ -343,9 +319,13 @@ void traiterEtat(ModeG mode) {
 			dureeCumulee = 0;
 			break;
 		case DO:
-			if (dureeCumulee >= T_MSG_GPS) {
-				Serial.println("Envoi d'un message GPS");
-				//sigfox.envoyer(Message.gps(gps));
+			gps->maj();
+			majDataTR();
+			if (dureeCumulee >= T_MSG_STND) {
+				Serial.println("Envoi d'un message GPS_SEUL");
+				message->nouveau(etat, donneesTR, messageEncode);
+				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
+				//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
 			}
 			break;
 		case EXIT:
@@ -356,7 +336,14 @@ void traiterEtat(ModeG mode) {
 		switch (mode) {
 		case ENTRY:
 			Serial.println("Envoi d'un message DORMIR");
-			//sigfox.envoyer(Message.eco(connexionOBD2));
+			gps->maj();
+			majDataTR();
+			if (dureeCumulee >= T_MSG_DORMIR) {
+				Serial.println("Envoi d'un message DORMIR");
+				message->nouveau(etat, donneesTR, messageEncode);
+				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
+				//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
+			}
 			break;
 		case DO:
 			break;
@@ -384,6 +371,31 @@ void traiterEtat(ModeG mode) {
 		case EXIT:
 			break;
 		}
+	}
+}
+
+void keepWatchSerial() { // Surveille la voie série pour passage en maintenance
+	// Surveillance de la voie série
+	String car;
+	int donneesAlire = Serial.available(); //lecture du nombre de caractères disponibles dans le buffer
+	if (car != NULL && donneesAlire > 0) { //si le serial a reçu un caractère // si le buffer n'est pas vide
+		car = Serial.readString();      //lecture du caractère reçu
+		//while(Serial.read(donneesAlire) != -1);  Permet de lire et vider tout le buffer; à voir si à utiliser?
+
+		if (car == "#") {
+			traiterEvenement(MODE_MAINTENANCE);
+		}
+	}
+
+}
+
+void keepWatchOBD2() {
+	// Surveillance du Bluetooth
+	if (OBD2_ON) {
+		if (etat == DEGRADE) {
+			traiterEvenement(OBD2_ON);
+		} else if (etat == STANDARD)
+			traiterEvenement(OBD2_OFF);
 	}
 }
 

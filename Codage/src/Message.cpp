@@ -4,18 +4,18 @@
 
 Etat etat;
 
-Etat Message::decoderEtat(byte* msg) {
+/*Etat Message::decoderEtat(byte* msg) {
 	// Message descendant : TM MB OB DD PP
 	int code = msg[0];
 	if (code != 0x30) // 0x30 est le code qui défini un msg de changement d'état
 		return Etat::ERREUR;
 	Etat etat = (Etat) msg[1];
 	return etat;
-}
+}*/
 
 void Message::nouveau(Etat etat, DonneesTR* data, byte* b) {
 	switch (etat) {
-	case NORMAL:
+	case STANDARD:
 		normal(data, b);
 		break;
 	case DEGRADE:

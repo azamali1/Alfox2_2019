@@ -15,7 +15,6 @@
 #define T_MSG_GPS 3600000 //1h en ms
 
 byte messageEncode[12];
-bool passeDansUnIf = false;
 
 unsigned long dureeCumulee = 0;
 unsigned long dureeCumuleeGPS = 0;
@@ -35,6 +34,8 @@ void sendMessageNormal();
 void sendMessageGPS();
 void majDataTR();
 void afficherHeure();
+void SERCOM3_Handler();
+void TC4_Handler();
 void configureInterrupt_timer4_1ms();
 
 void setup() {
@@ -44,6 +45,10 @@ void setup() {
 	htr = HTR::getInstance();
 	sigfoxArduino = SigfoxArduino::getInstance();
 	bluetooth = Bluetooth::getInstance(PINALIM, PINEN);
+	Serial.println("Test de la classe Bluetooth");
+	bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
+	delay(2000);
+	Serial.println(bluetooth->isActif());
 	obd2 = OBD2::getInstance(bluetooth);
 
 	//Acquisition datation par GPS
@@ -60,13 +65,10 @@ void setup() {
 }
 
 void loop() {
-	Serial.println("Entrée dans la loop");
+
 	heureDebut = millis();
 
 	bool messageEnvoye = false;
-
-	Serial.println(dureeCumulee);
-	Serial.println(dureeCumuleeGPS);
 
 	gps->maj();
 
@@ -79,8 +81,7 @@ void loop() {
 	if (dureeCumulee >= T_MSG_STND) {
 
 		for (int i = 0; i < 3; i++) {
-			Serial.println(
-					"! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !");
+			Serial.println("! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !");
 		}
 
 		sendMessageNormal();
@@ -91,7 +92,7 @@ void loop() {
 	if (dureeCumuleeGPS >= T_MSG_GPS) {
 
 		for (int i = 0; i < 3; i++) {
-			Serial.println("###################################");
+			Serial.println("# # # # # # # # # # # # # # # # # # # # # # #");
 		}
 
 		sendMessageGPS();
@@ -102,11 +103,13 @@ void loop() {
 
 	//Durée constante de la loop avec cas des loop où les messages sont envoyés
 
-	if (messageEnvoye) {
-		dureeCumulee += DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut) + 1;
-		dureeCumuleeGPS += DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut) + 1;
+	if (messageEnvoye == true) { //On prends plus de temps pour laisser la carte envoyer le message
+		dureeCumulee += DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut)
+				+ 1; //Decalage volontaire pour compenser le temps d'execution
+		dureeCumuleeGPS += DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut)
+				+ 1; //Decalage volontaire pour compenser le temps d'execution
 		delay(DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut));
-	} else {
+	} else { //Duree standard de la loop sans messages
 		dureeCumulee += DUREE_LOOP - (millis() - heureDebut) + 1;
 		dureeCumuleeGPS += DUREE_LOOP - (millis() - heureDebut) + 1;
 		delay(DUREE_LOOP - (millis() - heureDebut));
@@ -120,18 +123,28 @@ void loop() {
 
 void majDataTR() {
 	Serial.println("entrée dans majDAtaTR");
-	/*if (obd2->isConnected()== true ) {
-	 Serial.println("Le bluetooth est actif");
+	if (obd2->isConnected() == true) {
+		Serial.println("Le bluetooth est actif");
 
-	 donneesTR->setVitesse(obd2->lireVitesse());
-	 delay(250);
-	 donneesTR->setRegime(obd2->lireRegimeMoteur());
-	 delay(250);
-	 donneesTR->setConsommation(obd2->lireConsomation());
-	 delay(250);
-	 } else {
-	 Serial.println("Le bluetooth est inactif");
-	 }*/
+		donneesTR->setVitesse(obd2->lireVitesse());
+
+		Serial.println("0");
+
+		delay(250);
+		donneesTR->setRegime(obd2->lireRegimeMoteur());
+
+		Serial.println("1");
+
+		delay(250);
+		//donneesTR->setConsommation(obd2->lireConsomation());
+
+		Serial.println("2");
+
+		delay(250);
+
+	} else {
+		Serial.println("OBD2 est injoignable");
+	}
 	if (gps->isDispo()) {
 
 		gps->maj();
@@ -139,36 +152,28 @@ void majDataTR() {
 		donneesTR->setLongitude(gps->getLongitude());
 		donneesTR->setDatation(gps->getDatation());
 		Serial.println("Le GPS est actif");
-
 	} else {
 		Serial.println("Le gps est occupé");
 	}
-	/* obd2->demande(C_DEFAUT);
-	 int defauts = obd2->lire();
-	 if (defauts) {
-	 nbDefauts = nbDefauts + 1;
-	 donneesTR.setDefauts(defauts);
-	 }*/
 }
 
 void sendMessageNormal() {
-	/*if (obd2->isConnected()) {
+	if (obd2->isConnected()) {
 
-	 //Si on peut contacter OBD2, on envoi un message STANDARD
+		//Si on peut contacter OBD2, on envoi un message STANDARD
 
-	 message->nouveau(STANDARD, donneesTR, messageEncode);
-	 sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
-	//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
+		message->nouveau(STANDARD, donneesTR, messageEncode);
+		sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
+		//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
 
-	 }*/
-	/*else {
-	 //Sinon OBD 2 n'est pas connecté, alors on envoi un message dégradé*/
+	} else {
+		//Sinon OBD 2 n'est pas connecté, alors on envoi un message dégradé*/
 
-	message->nouveau(DEGRADE, donneesTR, messageEncode);
-	sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
-	//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
+		message->nouveau(DEGRADE, donneesTR, messageEncode);
+		sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
+		//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
 
-	//}
+	}
 
 }
 
@@ -179,7 +184,7 @@ void sendMessageGPS() {
 
 }
 
-void afficherHeure(){
+void afficherHeure() {
 	Serial.print(gps->getDatation().tm_mday);
 	Serial.print("/");
 	Serial.print(gps->getDatation().tm_mon);
@@ -193,8 +198,11 @@ void afficherHeure(){
 	Serial.println(gps->getDatation().tm_sec);
 }
 
-void TC4_Handler()              // Interrupt Service Routine (ISR) for timer TC4
-{
+void SERCOM3_Handler() {
+	bluetooth->getLiaisonBT()->IrqHandler();
+}
+
+void TC4_Handler() {            // Interrupt Service Routine (ISR) for timer TC4
 
 	// Check for overflow (OVF) interrupt
 	if (TC4->COUNT16.INTFLAG.bit.OVF && TC4->COUNT16.INTENSET.bit.OVF) {

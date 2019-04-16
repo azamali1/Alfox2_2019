@@ -1,0 +1,2 @@
+eclipse.preferences.version=1
+libraries=[{"package"\:"arduino","platform"\:"samd","library"\:"SPI"},"Time",{"package"\:"arduino","platform"\:"samd","library"\:"I2S"},{"package"\:"arduino","platform"\:"samd","library"\:"SDU"},{"package"\:"arduino","platform"\:"samd","library"\:"HID"},{"package"\:"arduino","platform"\:"samd","library"\:"Wire"},"SD",{"package"\:"arduino","platform"\:"samd","library"\:"SAMD_AnalogCorrection"},{"package"\:"arduino","platform"\:"samd","library"\:"USBHost"},"Arduino Low Power","Adafruit GPS Library","Arduino SigFox for MKRFox1200","RTCZero"]
