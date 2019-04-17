@@ -136,7 +136,7 @@ void majDataTR() {
 		Serial.println("1");
 
 		delay(250);
-		//donneesTR->setConsommation(obd2->lireConsomation());
+		donneesTR->setConsommation(obd2->lireConsomation());
 
 		Serial.println("2");
 

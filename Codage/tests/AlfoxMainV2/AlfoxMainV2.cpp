@@ -189,7 +189,6 @@ void traiterEvenement(Event ev) {
 		case OBD2_ON:
 			nouvelEtat(STANDARD);
 			break;
-
 		case MODE_DORMIR:
 			nouvelEtat(DORMIR);
 			break;
