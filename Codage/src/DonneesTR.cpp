@@ -11,7 +11,7 @@ DonneesTR* DonneesTR::getInstance() {
 }
 
 DonneesTR::DonneesTR() {
-	distanceParcourue = 100;
+	distanceParcourue = 0;
 	nbDefauts = 1;
 	defauts[4] = 1;
 	consommation = 0;
@@ -137,6 +137,7 @@ float DonneesTR::getDistanceParcourue() {
 void DonneesTR::majDistance() // d = vt
 {
 	distanceParcourue += (vitesse * 5) / 3.6;
+	Serial.println(distanceParcourue);
 }
 
 void DonneesTR::setLatitude(float latitude) {

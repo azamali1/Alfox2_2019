@@ -5,17 +5,24 @@
 #include "Bluetooth.h"
 #include "LiaisonSimulateur.h"
 
-//Communication avec OBD2 réel (Bleu)
-/*#define DEBUT_POIDS_FORT 6
- #define FIN_POIDS_FORT 8
- #define DEBUT_POIDS_FAIBLE 9
- #define FIN_POIDS_FAIBLE 11*/
+#define SIMU
 
+#ifdef SIMU
 //Communication avec le simulateur OBDSim
 #define DEBUT_POIDS_FORT 8
 #define FIN_POIDS_FORT 10
 #define DEBUT_POIDS_FAIBLE 11
 #define FIN_POIDS_FAIBLE 13
+
+#else
+
+//Communication avec OBD2 réel (Bleu)
+#define DEBUT_POIDS_FORT 6
+#define FIN_POIDS_FORT 8
+#define DEBUT_POIDS_FAIBLE 9
+#define FIN_POIDS_FAIBLE 11
+
+#endif
 
 typedef enum {
 	C_VITESSE,
@@ -41,6 +48,7 @@ private:
 	static OBD2* OBD2Instance;
 	OBD2(Bluetooth* bt);
 	OBD2(LiaisonSimulateur* liaison);bool connected;
+	int testReponse(TCode code);
 
 public:
 	/** Constructeur **/

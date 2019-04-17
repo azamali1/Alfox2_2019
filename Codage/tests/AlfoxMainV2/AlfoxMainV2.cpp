@@ -84,13 +84,10 @@ void loop() {
 	keepWatchOBD2();
 	keepWatchSerial(); //Peut être bloquant
 
-	// ---------------------------------------------------
 	// -------------- TRAITEMENTS COURANTS ---------------
 
 	traiterEtat(DO);
 	sd->ecrire(donneesTR);
-
-///////////////////////////////////////////////////////////////////////////
 
 	//Duree de loop contrôlée
 
@@ -136,7 +133,7 @@ void nouvelEtat(Etat e) {
 	if (e != etat) {
 		traiterEtat(EXIT);
 		// on doit toujours revenir à un état de suivi normal
-		if (e == STANDARD) {
+		if (e == NORMAL) {
 			if (obd2->isConnected() == true) {
 				etat = STANDARD;
 			} else {
@@ -251,12 +248,18 @@ void traiterEtat(ModeG mode) {
 			break;
 		case DO:
 			Serial.println("Initialisation");
-			nouvelEtat(STANDARD);
+			nouvelEtat(NORMAL);
 			break;
 		case EXIT:
 			break;
 		}
 		break;
+	case NORMAL:
+		if (obd2->isConnected() == true) {
+			etat = STANDARD;
+		} else {
+			etat = DEGRADE;
+		}
 	case STANDARD:
 		switch (mode) {
 		case ENTRY:
@@ -280,15 +283,16 @@ void traiterEtat(ModeG mode) {
 	case DEGRADE:
 		switch (mode) {
 		case ENTRY:
-			dureeCumulee = 0;
 			break;
 		case DO:
 			gps->maj();
+			majDataTR();
 			if (dureeCumulee >= T_MSG_STND) {
 				Serial.println("Envoi d'un message DEGRADE");
 				message->nouveau(etat, donneesTR, messageEncode);
 				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
 				//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
+				dureeCumulee = 0;
 			}
 			break;
 		case EXIT:
