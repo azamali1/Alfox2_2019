@@ -45,9 +45,10 @@ void setup() {
 	htr = HTR::getInstance();
 	sigfoxArduino = SigfoxArduino::getInstance();
 	bluetooth = Bluetooth::getInstance(PINALIM, PINEN);
-	Serial.println("Test de la classe Bluetooth");
-	bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
+	Serial.println("Connexion Bluetooth à OBD2 ...");
+	bluetooth->connexion("2017,11,7030A"); // OBD2 bleu
 	delay(2000);
+	Serial.println("Connecté à OBD2 !");
 	Serial.println(bluetooth->isActif());
 	obd2 = OBD2::getInstance(bluetooth);
 
