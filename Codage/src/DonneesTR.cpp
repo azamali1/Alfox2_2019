@@ -12,8 +12,8 @@ DonneesTR* DonneesTR::getInstance() {
 
 DonneesTR::DonneesTR() {
 	distanceParcourue = 0;
-	nbDefauts = 1;
-	defauts[4] = 1;
+	nbDefauts = 0;
+	defauts[4];
 	consommation = 0;
 	consoMoyenne = 0;
 	consoMax = 0;
@@ -156,12 +156,12 @@ float DonneesTR::getLongitude() {
 	return longitude;
 }
 
-void DonneesTR::setDatation(struct tm dateGPS){
-
+struct tm DonneesTR::setDatation(struct tm dateGPS){
+	this->dateHTR = dateGPS;
 }
 
-void DonneesTR::getDatation(){
-
+struct tm DonneesTR::getDatation(){
+	return dateHTR;
 }
 /*
  void DonneesTR::majData(OBD2 obd2)

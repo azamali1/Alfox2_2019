@@ -32,8 +32,8 @@ public:
 	//void majData(OBD2 obd2);
 	float getLatitude();
 	float getLongitude();
-	void setDatation(struct tm dateGPS);
-	void getDatation();
+	struct tm setDatation(struct tm dateGPS);
+	struct tm getDatation();
 
 	void setLatitude(float latitude);
 	void setLongitude(float longitude);
