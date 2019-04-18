@@ -11,8 +11,8 @@
 #include "../../src/LedTri.h"
 
 #define DUREE_LOOP 5000 //en millisecondes
-#define DUREE_LOOP_SENDING_MESSAGE 10000
-#define T_MSG_STND 720000 //12 minutes en ms
+#define DUREE_LOOP_SENDING_MESSAGE 5000
+#define T_MSG_NORMAL 720000 //12 minutes en ms
 #define T_MSG_ECO 3600000 //1h en ms
 #define T_MSG_GPS 720000
 #define T_MSG_MAINTENANCE 720000
@@ -27,6 +27,7 @@ unsigned long heureDebut;
 unsigned long tempoMessage;
 
 bool chgtModeSrv;
+bool fromNormal = true;
 
 SigfoxArduino* sigfoxArduino;
 HTR* htr;
@@ -54,13 +55,24 @@ void configureInterrupt_timer4_1ms();
 
 void setup() {
 	Serial.begin(115200);
+	Serial1.begin(9600);
 	delay(10000);
 	message = new Message();
 	htr = HTR::getInstance();
 	sigfoxArduino = SigfoxArduino::getInstance();
 	bluetooth = Bluetooth::getInstance(PINALIM, PINEN);
+
+	//Commenter dans OBD2.h le define SIMU pour ne pas utiliser le simulateur
+
 	Serial.println("Test de la classe Bluetooth");
+#ifdef SIMU
+	Serial.println("Connexion Bluetooth au simulateur OBD2 ...");
 	bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
+#else
+			Serial.println("Connexion Bluetooth à l'OBD2 de  la voiture ...");
+			bluetooth->connexion("2017,11,7030A"); // OBD2 bleu
+#endif
+
 	delay(2000);
 	Serial.println(bluetooth->isActif());
 	obd2 = OBD2::getInstance(bluetooth);
@@ -121,6 +133,7 @@ void majDataTR() {
 			donneesTR->setLatitude(gps->getLatitude());
 			donneesTR->setLongitude(gps->getLongitude());
 			donneesTR->setDatation(gps->getDatation());
+			htr->setDatation(gps->getDatation());
 			Serial.println("Le GPS est actif");
 		} else {
 			Serial.println("Le GPS est occupé");
@@ -255,6 +268,8 @@ void traiterEtat(ModeG mode) {
 		}
 		break;
 	case NORMAL:
+		dureeCumulee = 0;
+		fromNormal = true;
 		if (obd2->isConnected() == true) {
 			etat = STANDARD;
 		} else {
@@ -264,12 +279,16 @@ void traiterEtat(ModeG mode) {
 		switch (mode) {
 		case ENTRY:
 			majDataTR();
-			dureeCumulee = 0;
+			if (fromNormal == true) {
+				message->nouveau(etat, donneesTR, messageEncode);
+				sigfoxArduino->envoyer(messageEncode);
+			}
+
 			break;
 		case DO:
 			gps->maj();
 			majDataTR();
-			if (dureeCumulee >= T_MSG_STND) {
+			if (dureeCumulee >= T_MSG_NORMAL) {
 				Serial.println("Envoi d'un message STANDARD");
 				message->nouveau(etat, donneesTR, messageEncode);
 				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
@@ -283,11 +302,17 @@ void traiterEtat(ModeG mode) {
 	case DEGRADE:
 		switch (mode) {
 		case ENTRY:
+			gps->maj();
+			majDataTR();
+			if (fromNormal == true) {
+				message->nouveau(etat, donneesTR, messageEncode);
+				sigfoxArduino->envoyer(messageEncode);
+			}
 			break;
 		case DO:
 			gps->maj();
 			majDataTR();
-			if (dureeCumulee >= T_MSG_STND) {
+			if (dureeCumulee >= T_MSG_NORMAL) {
 				Serial.println("Envoi d'un message DEGRADE");
 				message->nouveau(etat, donneesTR, messageEncode);
 				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
@@ -324,7 +349,7 @@ void traiterEtat(ModeG mode) {
 		case DO:
 			gps->maj();
 			majDataTR();
-			if (dureeCumulee >= T_MSG_STND) {
+			if (dureeCumulee >= T_MSG_NORMAL) {
 				Serial.println("Envoi d'un message GPS_SEUL");
 				message->nouveau(etat, donneesTR, messageEncode);
 				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
@@ -367,11 +392,17 @@ void traiterEtat(ModeG mode) {
 	case ECO:
 		switch (mode) {
 		case ENTRY:
-
+			Serial.println("Envoi d'un message DORMIR");
+			gps->maj();
+			majDataTR();
+			if (dureeCumulee >= T_MSG_DORMIR) {
+				Serial.println("Envoi d'un message DORMIR");
+				message->nouveau(etat, donneesTR, messageEncode);
+				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
+				//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
+			}
 			break;
 		case DO:
-			break;
-		case EXIT:
 			break;
 		}
 	}

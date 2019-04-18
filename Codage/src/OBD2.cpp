@@ -14,7 +14,7 @@ uint16_t hex2uint16(const char *p) {
 		} else if (c < '0' || c > '9') { //si c n'est ni une lettre entre A et F ni un chifre, on quitte le test
 			break;
 		}
-		//Après avoir passé ces différents tests, c a été modifié ou c et le code ASCII d'un chiffre donc 0x30 < c < 0x39
+		//Après avoir passé ces différents tests, c a été modifié ou c est le code ASCII d'un chiffre donc 0x30 < c < 0x39
 		i = (i << 4) | (c & 0xF); //on décale i de 4 bits (un digit) et on "ajoute" la valeur hexa des 4 bits de poids faibles de c à savoir une valeur hexa comprise entre 0 et F
 		n++; // on passe au digit suivant
 	}
@@ -81,19 +81,19 @@ OBD2::OBD2(Bluetooth* bt) {
 	liaisonBT->println("AT SP0");
 	Serial.println(lireReponse());
 	String reponse = demande(C_VERSION);
-	 Serial.println(reponse);
-	 //Si le contact est coupé ou la liaison bluetooth est coupé, on précise qu'on est pas connecté
-	 if ((reponse.substring(0, 17) == "UNABLE TO CONNECT")
-	 || (reponse.substring(0, 9) == "ERROR:(0)")) {
-	 this->connected = false;
-	 Serial.println("Pas connecté");
-	 } else {
-	 this->connected = true;
-	 Serial.println("connecté");
+	Serial.println(reponse);
+	//Si le contact est coupé ou la liaison bluetooth est coupé, on précise qu'on est pas connecté
+	if ((reponse.substring(0, 17) == "UNABLE TO CONNECT")
+			|| (reponse.substring(0, 9) == "ERROR:(0)")) {
+		this->connected = false;
+		Serial.println("Pas connecté");
+	} else {
+		this->connected = true;
+		Serial.println("connecté");
 
-	 }
-	 Serial.println("Est connecté ? ");
-	 Serial.println(this->isConnected());
+	}
+	Serial.println("Est connecté ? ");
+	Serial.println(this->isConnected());
 }
 
 String OBD2::demande(TCode numCode) {
@@ -111,27 +111,27 @@ String OBD2::lireReponse() {
 	return reponse;
 }
 
-int OBD2::testReponse(TCode code){
+int OBD2::testReponse(TCode code) {
 
 	String reponse = demande(code);
 
-	//Si la vitesse n'est pas suffisante, pas de donnée, on renvoie -1
-		if (reponse.substring(0, 7) == "NO DATA"){
-			return -1;
-		}
+	//Si les donnees ne sont pas au bon format, pas de donnée, on renvoie -1
+	if (reponse.substring(0, 7) == "NO DATA") {
+		return -1;
+	}
 
-		//Si le contact est coupé, la connexion est impossible, on renvoie -2
-		if (reponse.substring(0, 17) == "UNABLE TO CONNECT") {
-			this->connected = false;
-			return -2;
-		}
-		//Si la connexion bluetooth est perdue on renvoie -3
-		if (reponse.substring(0, 9) == "ERROR:(0)") {
-			this->connected = false;
-			return -3;
-		}
-		return hex2uint8(
-					reponse.substring(DEBUT_POIDS_FORT, FIN_POIDS_FORT).c_str());
+	//Si le contact est coupé, la connexion est impossible, on renvoie -2
+	if (reponse.substring(0, 17) == "UNABLE TO CONNECT") {
+		this->connected = false;
+		return -2;
+	}
+	//Si la connexion bluetooth est perdue on renvoie -3
+	if (reponse.substring(0, 9) == "ERROR:(0)") {
+		this->connected = false;
+		return -3;
+	}
+	return hex2uint8(
+			reponse.substring(DEBUT_POIDS_FORT, FIN_POIDS_FORT).c_str());
 }
 
 int OBD2::lireVitesse() {
@@ -143,19 +143,19 @@ int OBD2::lireRegimeMoteur() {
 	String reponse = demande(C_REGIME);
 
 	//Si le moteur n'est pas démarré on renvoie -1
-	if (reponse.substring(0, 7) == "NO DATA")
+	if (reponse.substring(0, 7) == "NO DATA") {
 		return -1;
-
+	}
 	//Si le contact est coupé, la connexion est impossible, on renvoie -2
-	if (reponse.substring(0, 17) == "UNABLE TO CONNECT")
+	if (reponse.substring(0, 17) == "UNABLE TO CONNECT") {
 		this->connected = false;
-	return -2;
-
+		return -2;
+	}
 	//Si la connexion bluetooth est perdue on renvoie -3
-	if (reponse.substring(0, 9) == "ERROR:(0)")
+	if (reponse.substring(0, 9) == "ERROR:(0)") {
 		this->connected = false;
-	return -3;
-
+		return -3;
+	}
 	String trame = "";
 	trame = reponse.substring(DEBUT_POIDS_FORT, FIN_POIDS_FORT);
 	trame += reponse.substring(DEBUT_POIDS_FAIBLE, FIN_POIDS_FAIBLE);
@@ -192,7 +192,6 @@ float OBD2::lirePression() {
 	//Pression est en kPa
 	return testReponse(C_PRESSION);
 
-
 }
 
 float OBD2::lireTemprerature() {
@@ -202,40 +201,19 @@ float OBD2::lireTemprerature() {
 
 float OBD2::lireRatio() {
 	//Ratio = rapport air/carburant
-	String reponse = demande(C_RATIO);
-
-	//Si le ratio n'envoie pas de donnée, on renvoie -1
-	if (reponse.substring(0, 7) == "NO DATA")
-		return -1;
-
-	//Si le contact est coupé, la connexion est impossible, on renvoie -2
-	if (reponse.substring(0, 17) == "UNABLE TO CONNECT")
-		this->connected = false;
-	return -2;
-
-	//Si la connexion bluetooth est perdue on renvoie -3
-	if (reponse.substring(0, 9) == "ERROR:(0)")
-		this->connected = false;
-	return -3;
-
-	String trame = "";
-	trame = reponse.substring(DEBUT_POIDS_FORT, FIN_POIDS_FORT);
-	trame += reponse.substring(DEBUT_POIDS_FAIBLE, FIN_POIDS_FAIBLE);
-	return hex2uint16(
-			reponse.substring(DEBUT_POIDS_FORT, FIN_POIDS_FORT).c_str())
-			* (2 / 65536);
+	return testReponse(C_RATIO) * (2 / 65536);
 }
 
 float OBD2::lireDair() {
 	//Dair = débit d'air en g/s
 	int debitAir = testReponse(C_DAIR);
-	if(debitAir == -1){
+	if (debitAir == -1) {
 		return -1;
-	}else if(debitAir == -2){
+	} else if (debitAir == -2) {
 		return -2;
-	}else if(debitAir == -3){
+	} else if (debitAir == -3) {
 		return -3;
-	}else {
+	} else {
 		return debitAir / 100;
 	}
 }
@@ -253,4 +231,3 @@ bool OBD2::isConnected() {
 	return this->connected;
 
 }
-
