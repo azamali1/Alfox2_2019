@@ -34,7 +34,7 @@ DonneesTR::~DonneesTR() {
 
 void DonneesTR::razStat() {
 	nbDefauts = 0;
-	defauts[4] = 0;
+	defauts[4] = {0,0,0,0};
 	consommation = 0;
 	consoMoyenne = 0;
 	consoMax = 0;
