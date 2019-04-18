@@ -69,6 +69,11 @@ void setup() {
 
 	donneesTR = new DonneesTR();
 	sd = CarteSD::getInstance();
+	delay(1000);
+	while (CarteSD::sdOK == false) {
+		sd->initialisationSD();
+		delay(1000);
+	}
 	delay(10000);
 
 }
@@ -84,14 +89,14 @@ void loop() {
 	majDataTR();
 
 	afficherHeure();
-	sd->nouveauFichier("190417.txt");
+	sd->nouveauFichier("190418.txt");
 	sd->ecrire(donneesTR);
 
-	Serial.print("Vitesse :" );
+	Serial.print("Vitesse :");
 	Serial.println(donneesTR->getVitesse());
 
 	Serial.print("Distance :");
-	Serial.println((int)donneesTR->getDistanceParcourue());
+	Serial.println((int) donneesTR->getDistanceParcourue());
 	Serial.print("Régime :");
 	Serial.println(donneesTR->getRegime());
 

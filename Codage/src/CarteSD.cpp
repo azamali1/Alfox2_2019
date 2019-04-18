@@ -6,6 +6,8 @@
 
 CarteSD* CarteSD::carteSDInstance = 0;
 
+bool CarteSD::sdOK = false;
+
 CarteSD* CarteSD::getInstance() {
 	if (carteSDInstance == 0) {
 		carteSDInstance = new CarteSD();
@@ -14,18 +16,21 @@ CarteSD* CarteSD::getInstance() {
 }
 
 CarteSD::CarteSD() {
+	this->initialisationSD();
+}
+
+void CarteSD::initialisationSD() {
 	Serial.println(F("Initialisation de la carte SD"));                // debug
 	pinMode(11, OUTPUT); // laisser la broche SS en sortie - obligatoire avec librairie SD
 	if (!SD.begin(11)) { // si la communication commence bien sur le port d'ecriture
 		Serial.println(F("Initialisation impossible !"));
+		sdOK = false;
+	} else {
+		sdOK = true;
 	}
 	fichierRacineSD = SD.open("/");
 
 }
-
-//-----------------------------------------------------
-//------- Destructeur  --------------------------------
-//-----------------------------------------------------
 
 //-----------------------------------------------------
 //------- méthode de lecture avec nom du fichier ------
@@ -180,7 +185,6 @@ bool CarteSD::ecrire(DonneesTR* dTR) {
 			}
 		}
 
-
 		if (lat == NULL) {
 			fichierSD.print("N");
 			fichierSD.print(";");
@@ -202,10 +206,10 @@ bool CarteSD::ecrire(DonneesTR* dTR) {
 
 		fichierSD.close();                               // fermeture du fichier
 
-		Serial.println("ecriture");                         // debug
+		Serial.println("Écriture OK");                         // debug
 		return true;
 	} else {
-		//Serial.println("erreur d'ecriture");                // debug
+		Serial.println("Erreur d'écriture");                // debug
 		return false;
 	}
 }

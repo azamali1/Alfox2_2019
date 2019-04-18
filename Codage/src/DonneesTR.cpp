@@ -34,7 +34,9 @@ DonneesTR::~DonneesTR() {
 
 void DonneesTR::razStat() {
 	nbDefauts = 0;
-	defauts[4] = {0,0,0,0};
+	for (int i = 0; i <= 3; i++) {
+		defauts[i] = 0;
+	}
 	consommation = 0;
 	consoMoyenne = 0;
 	consoMax = 0;
@@ -156,11 +158,11 @@ float DonneesTR::getLongitude() {
 	return longitude;
 }
 
-struct tm DonneesTR::setDatation(struct tm dateGPS){
+struct tm DonneesTR::setDatation(struct tm dateGPS) {
 	this->dateHTR = dateGPS;
 }
 
-struct tm DonneesTR::getDatation(){
+struct tm DonneesTR::getDatation() {
 	return dateHTR;
 }
 /*

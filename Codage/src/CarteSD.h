@@ -21,6 +21,8 @@ public:
     void printDirectory(File dir, int numTabs);
     void extraction(String dir,int numTabs);
     void extractionRacine();
+    static bool sdOK;
+    void initialisationSD();
     
 private:
     CarteSD();

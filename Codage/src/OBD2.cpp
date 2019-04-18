@@ -1,5 +1,7 @@
 #include "OBD2.h"
-
+//-----------------------------------------------------
+//-- Convertisseur de l'Hexa en entier sur 16 bits-----
+//-----------------------------------------------------
 uint16_t hex2uint16(const char *p) {
 	char c = *p;
 	uint16_t i = 0;
@@ -21,6 +23,9 @@ uint16_t hex2uint16(const char *p) {
 	return i;
 }
 
+//-----------------------------------------------------
+//-- Convertisseur de l'Hexa en entier sur 8 bits------
+//-----------------------------------------------------
 byte hex2uint8(const char *p) {
 	byte c1 = *p;
 	byte c2 = *(p + 1);
@@ -43,6 +48,9 @@ byte hex2uint8(const char *p) {
 	return c1 << 4 | (c2 & 0xf);
 }
 
+//-----------------------------------------------------
+//------- Constructeur en singleton -------------------
+//-----------------------------------------------------
 OBD2* OBD2::OBD2Instance = 0;
 
 OBD2* OBD2::getInstance(Bluetooth* bt) {
