@@ -1,4 +1,6 @@
 #include <Arduino.h>
+
+
 #include "../../src/GPS.h"
 #include "../../src/DonneesTR.h"
 #include "../../src/Bluetooth.h"
@@ -51,8 +53,9 @@ void setup() {
 	Serial.println("Connexion Bluetooth au simulateur OBD2 ...");
 	bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
 #else
-			Serial.println("Connexion Bluetooth à l'OBD2 de  la voiture ...");
-			bluetooth->connexion("2017,11,7030A"); // OBD2 bleu
+	Serial.println("Connexion Bluetooth à l'OBD2 de  la voiture ...");
+	//OBD2 noir KONNWEI
+	bluetooth->connexion("B22B,1C,70EA6");
 #endif
 
 	delay(2000);
@@ -72,7 +75,6 @@ void setup() {
 	delay(1000);
 	while (CarteSD::sdOK == false) {
 		sd->initialisationSD();
-		delay(1000);
 	}
 	delay(10000);
 
@@ -123,7 +125,7 @@ void loop() {
 
 	}
 
-	//Durée constante de la loop avec cas des loop où les messages sont envoyés
+//Durée constante de la loop avec cas des loop où les messages sont envoyés
 
 	if (messageEnvoye == true) { //On prends plus de temps pour laisser la carte envoyer le message
 		dureeCumulee += DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut)
@@ -139,7 +141,7 @@ void loop() {
 
 	Serial.println("\n-----------------------------------------------------\n");
 
-	//fin
+//fin
 
 }
 
