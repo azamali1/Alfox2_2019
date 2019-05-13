@@ -11,7 +11,7 @@
 #include "../../src/LedTri.h"
 
 #define DUREE_LOOP 5000 //en millisecondes
-#define DUREE_LOOP_SENDING_MESSAGE 5000
+#define DUREE_LOOP_SENDING_MESSAGE 30000
 #define T_MSG_NORMAL 720000 //12 minutes en ms
 #define T_MSG_ECO 3600000 //1h en ms
 #define T_MSG_GPS 720000
@@ -43,14 +43,11 @@ void majDataTR();
 void nouvelEtat(Etat e);
 void traiterEvenement(Event ev);
 void traiterEtat(ModeG mode);
-
-//Les keepWatch sont les surveillances des evenements
-
-void keepWatchSerial();
+void keepWatchSerial(); //Les keepWatch sont les surveillances de certains evenements
 void keepWatchOBD2();
 
 void SERCOM3_Handler();
-void TC4_Handler();
+void TC4_Handler();	// Trois fonctions indispensables pour l'utilisation de la carte et de ses modules
 void configureInterrupt_timer4_1ms();
 
 void setup() {
@@ -98,6 +95,12 @@ void loop() {
 
 	// -------------- TRAITEMENTS COURANTS ---------------
 
+	/*/
+	 * Lorsque la classe reception de message sera opérationelle
+	 * il faudra placer la lecture de message juste après un envoi avec un delai de 30s
+	 * et traiter l'évenement que l'on placera dans une variable globale de type Event
+	 /*/
+
 	traiterEtat(DO);
 	sd->ecrire(donneesTR);
 
@@ -105,7 +108,7 @@ void loop() {
 
 	if (messageEnvoye == true) { //On prends plus de temps pour laisser la carte envoyer le message
 		dureeCumulee += DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut)
-				+ 1; //Decalage volontaire pour compenser le temps d'execution
+				+ 1; //Decalage volontaire pour compenser le temps d'execution de ce calcul
 
 		delay(DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut));
 	} else { //Duree standard de la loop sans messages
@@ -124,9 +127,13 @@ void majDataTR() {
 		delay(250);
 		donneesTR->setRegime(obd2->lireRegimeMoteur());
 		delay(250);
+		donneesTR->majDistance();
+
+#ifndef SIMU //En simulation la conso ne peut pas être récupérée (c'est donc bloquant)
 		donneesTR->setConsommation(obd2->lireConsomation());
 		delay(250);
-
+#endif
+		Serial.println("Maj donneesTR done !");
 		if (gps->isDispo()) {
 
 			gps->maj();
@@ -152,8 +159,9 @@ void nouvelEtat(Etat e) {
 			} else {
 				etat = DEGRADE;
 			}
-		} else
+		} else {
 			etat = e;
+		}
 		traiterEtat(ENTRY);
 		traiterEtat(DO);
 		chgtModeSrv = false;
@@ -275,6 +283,7 @@ void traiterEtat(ModeG mode) {
 		} else {
 			etat = DEGRADE;
 		}
+		break;
 	case STANDARD:
 		switch (mode) {
 		case ENTRY:
@@ -292,6 +301,7 @@ void traiterEtat(ModeG mode) {
 				Serial.println("Envoi d'un message STANDARD");
 				message->nouveau(etat, donneesTR, messageEncode);
 				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
+				//pour reconnecter il suffit sur eclipse de cliquer sur l'icone deconnecter du terminal puis sur connecter
 				//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
 			}
 			break;
@@ -317,6 +327,14 @@ void traiterEtat(ModeG mode) {
 				message->nouveau(etat, donneesTR, messageEncode);
 				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
 				//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
+#ifdef SIMU
+				Serial.println("Connexion Bluetooth au simulateur OBD2 ...");
+				bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
+#else
+						Serial.println("Connexion Bluetooth à l'OBD2 de  la voiture ...");
+						bluetooth->connexion("2017,11,7030A"); // OBD2 bleu
+#endif
+
 				dureeCumulee = 0;
 			}
 			break;
@@ -425,11 +443,10 @@ void keepWatchSerial() { // Surveille la voie série pour passage en maintenance
 
 void keepWatchOBD2() {
 	// Surveillance du Bluetooth
-	if (OBD2_ON) {
-		if (etat == DEGRADE) {
-			traiterEvenement(OBD2_ON);
-		} else if (etat == STANDARD)
-			traiterEvenement(OBD2_OFF);
+	if (obd2->isConnected()) {
+		traiterEvenement(OBD2_ON);
+	} else {
+		traiterEvenement(OBD2_OFF);
 	}
 }
 
@@ -439,7 +456,7 @@ void SERCOM3_Handler() {
 
 void TC4_Handler() {            // Interrupt Service Routine (ISR) for timer TC4
 
-	// Check for overflow (OVF) interrupt
+// Check for overflow (OVF) interrupt
 	if (TC4->COUNT16.INTFLAG.bit.OVF && TC4->COUNT16.INTENSET.bit.OVF) {
 		char c = gps->readDATA();
 		REG_TC4_INTFLAG = TC_INTFLAG_OVF;        // Clear the OVF interrupt flag
@@ -448,7 +465,7 @@ void TC4_Handler() {            // Interrupt Service Routine (ISR) for timer TC4
 
 //Fonction englobant la configuration et le démarrage des interruptions du Timer 4 toutes les 1 ms.
 void configureInterrupt_timer4_1ms() {
-	// Set up the generic clock (GCLK4) used to clock timers
+// Set up the generic clock (GCLK4) used to clock timers
 	REG_GCLK_GENDIV = GCLK_GENDIV_DIV(1) | // On divise les 48MHz  par 1: 48MHz/1=48MHz
 			GCLK_GENDIV_ID(4);            // Select Generic Clock (GCLK) 4
 	while (GCLK->STATUS.bit.SYNCBUSY)
@@ -461,7 +478,7 @@ void configureInterrupt_timer4_1ms() {
 	while (GCLK->STATUS.bit.SYNCBUSY)
 		;              // Wait for synchronization
 
-	// Feed GCLK4 to TC4 and TC5
+// Feed GCLK4 to TC4 and TC5
 	REG_GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN |      // Enable GCLK4 to TC4 and TC5
 			GCLK_CLKCTRL_GEN_GCLK4 |     // Select GCLK4
 			GCLK_CLKCTRL_ID_TC4_TC5;     // Feed the GCLK4 to TC4 and TC5
@@ -472,14 +489,14 @@ void configureInterrupt_timer4_1ms() {
 	while (TC4->COUNT16.STATUS.bit.SYNCBUSY)
 		;       // Wait for synchronization
 
-	//NVIC_DisableIRQ(TC4_IRQn);
-	//NVIC_ClearPendingIRQ(TC4_IRQn);
+//NVIC_DisableIRQ(TC4_IRQn);
+//NVIC_ClearPendingIRQ(TC4_IRQn);
 	NVIC_SetPriority(TC4_IRQn, 0); // Set the Nested Vector Interrupt Controller (NVIC) priority for TC4 to 0 (highest)
 	NVIC_EnableIRQ(TC4_IRQn); // Connect TC4 to Nested Vector Interrupt Controller (NVIC)
 
 	REG_TC4_INTFLAG |= TC_INTFLAG_OVF;              // Clear the interrupt flags
 	REG_TC4_INTENSET = TC_INTENSET_OVF;             // Enable TC4 interrupts
-	// REG_TC4_INTENCLR = TC_INTENCLR_OVF;          // Disable TC4 interrupts
+// REG_TC4_INTENCLR = TC_INTENCLR_OVF;          // Disable TC4 interrupts
 
 	REG_TC4_CTRLA |= TC_CTRLA_PRESCALER_DIV1 | // On met le présidviseur à 1. Pourrait valoir DIV2, DIC4, DIV8, DIV16, DIV64, DIV256, DIV1024
 			TC_CTRLA_WAVEGEN_MFRQ | // Timer 4 en mode "match frequency" (MFRQ)

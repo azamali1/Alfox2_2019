@@ -236,6 +236,14 @@ void OBD2::setIsConnected(bool etat) {
 }
 
 bool OBD2::isConnected() {
+
+
 	return this->connected;
+
+}
+
+float OBD2::lireBatterie() {
+	//Pression est en kPa
+	return testReponse(C_BATTERIE);
 
 }

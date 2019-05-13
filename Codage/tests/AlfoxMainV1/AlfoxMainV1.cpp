@@ -35,6 +35,7 @@ CarteSD* sd;
 void sendMessageNormal();
 void sendMessageGPS();
 void majDataTR();
+void afficherGPS();
 void afficherHeure();
 void SERCOM3_Handler();
 void TC4_Handler();
@@ -51,7 +52,8 @@ void setup() {
 
 #ifdef SIMU
 	Serial.println("Connexion Bluetooth au simulateur OBD2 ...");
-	bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
+	//bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
+	bluetooth->connexion("E84E,84,CCF54A"); //Portable ZAMALI
 #else
 	Serial.println("Connexion Bluetooth à l'OBD2 de  la voiture ...");
 	//OBD2 noir KONNWEI
@@ -59,7 +61,6 @@ void setup() {
 #endif
 
 	delay(2000);
-	Serial.println("Connecté à OBD2 !");
 	Serial.println(bluetooth->isActif());
 	obd2 = OBD2::getInstance(bluetooth);
 
@@ -87,12 +88,16 @@ void loop() {
 	bool messageEnvoye = false;
 
 	gps->maj();
+	Serial.println("gps->maj() done !");
 
 	majDataTR();
 
+	Serial.println("Date et heure :");
 	afficherHeure();
-	sd->nouveauFichier("190418.txt");
-	sd->ecrire(donneesTR);
+
+	//Carte SD désactivée por test, l'écriture est bloquante
+	/*sd->nouveauFichier("190418.txt");
+	sd->ecrire(donneesTR);*/
 
 	Serial.print("Vitesse :");
 	Serial.println(donneesTR->getVitesse());
@@ -102,7 +107,9 @@ void loop() {
 	Serial.print("Régime :");
 	Serial.println(donneesTR->getRegime());
 
-	/*if (dureeCumulee >= T_MSG_STND) {
+	//Envoi de message normal
+
+	if ((dureeCumulee >= T_MSG_STND) && (dureeCumuleeGPS < T_MSG_GPS)) {
 
 	 for (int i = 0; i < 3; i++) {
 	 Serial.println("! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !");
@@ -112,7 +119,10 @@ void loop() {
 	 dureeCumulee = 0;
 	 messageEnvoye = true;
 
-	 }*/
+	 }
+
+	//Envoi de message GPS
+
 	if (dureeCumuleeGPS >= T_MSG_GPS) {
 
 		for (int i = 0; i < 3; i++) {
@@ -146,6 +156,7 @@ void loop() {
 }
 
 void majDataTR() {
+
 	Serial.println("entrée dans majDAtaTR");
 	if (obd2->isConnected() == true) {
 		Serial.println("Le bluetooth est actif");
@@ -163,6 +174,7 @@ void majDataTR() {
 		donneesTR->setConsommation(obd2->lireConsomation());
 		delay(250);
 #endif
+		Serial.println("Maj donneesTR done !");
 
 	} else {
 		Serial.println("OBD2 est injoignable");
@@ -174,14 +186,17 @@ void majDataTR() {
 		donneesTR->setLongitude(gps->getLongitude());
 		donneesTR->setDatation(gps->getDatation());
 		Serial.println("Le GPS est actif");
+		afficherGPS();
 	} else {
 		Serial.println("Le gps est occupé");
 	}
+	Serial.println("majDataTR() done !");
 }
 
 void sendMessageNormal() {
+	Serial.println("Envoi de message normal ...");
 	if (obd2->isConnected()) {
-
+		Serial.println("Mode standard...");
 		//Si on peut contacter OBD2, on envoi un message STANDARD
 
 		message->nouveau(STANDARD, donneesTR, messageEncode);
@@ -190,20 +205,32 @@ void sendMessageNormal() {
 
 	} else {
 		//Sinon OBD 2 n'est pas connecté, alors on envoi un message dégradé*/
-
+		Serial.println("Mode degrade ...");
 		message->nouveau(DEGRADE, donneesTR, messageEncode);
 		sigfoxArduino->envoyer(messageEncode);//Le serial se déconnecte systématiquement dans SigFox.endpaquet();
 		//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
 
 	}
+	Serial.println("SendMessageNormal() done");
 
 }
 
 void sendMessageGPS() {
-
+	Serial.println("Envoi de message GPS ...");
 	message->nouveau(GPS_SEUL, donneesTR, messageEncode);
 	sigfoxArduino->envoyer(messageEncode);
+	Serial.println("SendMessageGPS() done !");
 
+}
+
+
+void afficherGPS(){
+	Serial.print("Latitude :");
+	Serial.println(gps->getLatitude());
+	Serial.print("Longitude :");
+	Serial.println(gps->getLongitude());
+	Serial.print("Vitesse :");
+	Serial.println(gps->getVitesse());
 }
 
 void afficherHeure() {
@@ -219,6 +246,7 @@ void afficherHeure() {
 	Serial.print(":");
 	Serial.println(gps->getDatation().tm_sec);
 }
+
 
 void SERCOM3_Handler() {
 	bluetooth->getLiaisonBT()->IrqHandler();

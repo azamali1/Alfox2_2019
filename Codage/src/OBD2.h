@@ -5,7 +5,7 @@
 #include "Bluetooth.h"
 #include "LiaisonSimulateur.h"
 
-//#define SIMU
+#define SIMU
 
 #ifdef SIMU
 //Communication avec le simulateur OBDSim
@@ -34,7 +34,8 @@ typedef enum {
 	C_TEMPERATURE,
 	C_RATIO,
 	C_DAIR,
-	C_SONDE
+	C_SONDE,
+	C_BATTERIE
 } TCode;
 
 class OBD2 {
@@ -43,8 +44,8 @@ private:
 
 	Bluetooth* moduleBT;
 	Uart* liaisonBT;
-	String code[9] = { "010D", "015F", "010C", "CODE_DEFAUT_NONDEF", "ATI",
-			"010B", "010F", "0144", "0010" };
+	String code[10] = { "010D", "015F", "010C", "CODE_DEFAUT_NONDEF", "ATI",
+			"010B", "010F", "0144", "0010", "AT RV" };
 	static OBD2* OBD2Instance;
 	OBD2(Bluetooth* bt);
 	OBD2(LiaisonSimulateur* liaison);bool connected;
@@ -65,6 +66,7 @@ public:
 	float lireRatio();
 	float lireDair();
 	float lireSonde();
+	float lireBatterie();
 	String lireReponse();
 };
 
