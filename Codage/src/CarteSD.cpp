@@ -120,7 +120,6 @@ bool CarteSD::ecrire(DonneesTR* dTR) {
 			fichierSD.print(dTR->getDistanceParcourue());
 			fichierSD.print(";");
 		}
-		Serial.println("passage dans les if");
 		if (consoMaxi == NULL) {
 			fichierSD.print("N");
 			fichierSD.print(";");

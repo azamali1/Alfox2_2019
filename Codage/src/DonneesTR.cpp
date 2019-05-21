@@ -139,7 +139,15 @@ float DonneesTR::getDistanceParcourue() {
 void DonneesTR::majDistance() // d = vt
 {
 	distanceParcourue += (vitesse * 5) / 3.6;
-	Serial.println(distanceParcourue);
+}
+
+void DonneesTR::majDistance(bool messageEnvoye) // d = vt
+		{
+	if (messageEnvoye == true) {
+		distanceParcourue += (vitesse * 5) / 3.6;
+	} else {
+		distanceParcourue += (vitesse * 10) / 3.6;
+	}
 }
 
 void DonneesTR::setLatitude(float latitude) {
@@ -176,8 +184,16 @@ bool DonneesTR::getOBD2Actif() {
 	return OBD2Actif;
 }
 
+void DonneesTR::setOBD2Actif(bool activeOrNot){
+	this->OBD2Actif = activeOrNot;
+}
+
 bool DonneesTR::getBluetoothActif() {
 	return bluetoothActif;
+}
+
+void DonneesTR::setBluetoothActif(bool activeOrNot){
+	this->bluetoothActif = activeOrNot;
 }
 
 void DonneesTR::initTestNORMAL() {
@@ -384,4 +400,12 @@ void DonneesTR::initTestDORMIR() {
 	regime = 0;
 	latitude = 0;
 	longitude = 0;
+}
+
+void DonneesTR::setBatterie(float tensionBatterie) {
+	this->batterie = tensionBatterie;
+}
+
+float DonneesTR::getBatterie() {
+	return this->batterie;
 }

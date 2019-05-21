@@ -29,8 +29,10 @@ bool SigfoxArduino::envoyer(byte* bMsg) {
 	SigFox.beginPacket();	//start Paquet to send
 	SigFox.write(bMsg, 12);
 	SigFox.endPacket();  //Le serial se déconnecte systématiquement ici, vérifier l'envoi du message sur https://backend.sigfox.com/
-	SigFox.end();	//end SigFox
 
+
+
+	SigFox.end();	//end SigFox
 	return 0;
 }
 

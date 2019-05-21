@@ -47,11 +47,11 @@ void loop() {
 		 Serial.print("/");
 		 Serial.print(testDatation.tm_year);
 		 Serial.print(" ");
-		 Serial.print(testDatation.tm_hour);
+		 Serial.print(testDatation.tm_hour, DEC);
 		 Serial.print(":");
-		 Serial.print(testDatation.tm_min);
+		 Serial.print(testDatation.tm_min, DEC);
 		 Serial.print(":");
-		 Serial.println(testDatation.tm_sec);
+		 Serial.println(testDatation.tm_sec, DEC);
 
 		Serial.println("-------------------------");
 

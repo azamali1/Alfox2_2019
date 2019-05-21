@@ -27,8 +27,13 @@ public:
 	void setVitesse(int vitesse);
 	void setConsommation(float consommation);
 	void setRegime(int regime);
+
+	float getBatterie();
+	void setBatterie(float tensionBatterie);
+
 	float getDistanceParcourue();
 	void majDistance();
+	void majDistance(bool messageEnvoye);
 	//void majData(OBD2 obd2);
 	float getLatitude();
 	float getLongitude();
@@ -38,7 +43,10 @@ public:
 	void setLatitude(float latitude);
 	void setLongitude(float longitude);
 
-	bool getBluetoothActif();bool getOBD2Actif();
+	bool getBluetoothActif();
+	void setBluetoothActif(bool activeOrNot);
+	bool getOBD2Actif();
+	void setOBD2Actif(bool activeOrNot);
 	//Methode pour test unitaire Classe Message
 	void initTestNORMAL();
 	void initTestDEGRADE();
@@ -66,6 +74,8 @@ private:
 	float latitude;
 	float longitude;
 	tm dateHTR;
+
+	float batterie;
 
 	int moyenneRegime = 0;  //nb total de valeurs
 	long valeurMoyenneRegime = 0;

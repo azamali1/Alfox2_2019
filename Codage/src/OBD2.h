@@ -5,7 +5,7 @@
 #include "Bluetooth.h"
 #include "LiaisonSimulateur.h"
 
-#define SIMU
+//#define SIMU
 
 #ifdef SIMU
 //Communication avec le simulateur OBDSim
@@ -16,7 +16,7 @@
 
 #else
 
-//Communication avec OBD2 réel (Bleu)
+//Communication avec OBD2 réel (Konwei)
 #define DEBUT_POIDS_FORT 6
 #define FIN_POIDS_FORT 8
 #define DEBUT_POIDS_FAIBLE 9

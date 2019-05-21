@@ -180,7 +180,19 @@ float OBD2::lireConsomation() {
 	//float temperature = this->lireTemprerature();
 	//float ratio = this->lireRatio();
 	float dair = this->lireDair();
+
+
+	Serial.print("Débit d'air :");
+	Serial.println(dair);
+
+
 	float sonde = this->lireSonde();
+
+
+	Serial.print("Sonde :");
+	Serial.println(sonde);
+
+
 	/*if(ratio == -1){
 	 ratio = 18;
 	 }*/
@@ -236,7 +248,6 @@ void OBD2::setIsConnected(bool etat) {
 }
 
 bool OBD2::isConnected() {
-
 
 	return this->connected;
 

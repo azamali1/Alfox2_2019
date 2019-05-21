@@ -11,10 +11,10 @@
 #include "../../src/LedTri.h"
 
 #define DUREE_LOOP 5000 //en millisecondes
-#define DUREE_LOOP_SENDING_MESSAGE 30000
-#define T_MSG_NORMAL 720000 //12 minutes en ms
+#define DUREE_LOOP_SENDING_MESSAGE 50000
+#define T_MSG_NORMAL 720000/9 //12 minutes en ms
 #define T_MSG_ECO 3600000 //1h en ms
-#define T_MSG_GPS 720000
+#define T_MSG_GPS 720000/6
 #define T_MSG_MAINTENANCE 720000
 #define T_MSG_DORMIR 3600000
 
@@ -28,6 +28,7 @@ unsigned long tempoMessage;
 
 bool chgtModeSrv;
 bool fromNormal = true;
+bool messageEnvoye = false;
 
 SigfoxArduino* sigfoxArduino;
 HTR* htr;
@@ -45,6 +46,9 @@ void traiterEvenement(Event ev);
 void traiterEtat(ModeG mode);
 void keepWatchSerial(); //Les keepWatch sont les surveillances de certains evenements
 void keepWatchOBD2();
+
+void afficherGPS();
+void afficherHeure();
 
 void SERCOM3_Handler();
 void TC4_Handler();	// Trois fonctions indispensables pour l'utilisation de la carte et de ses modules
@@ -66,8 +70,9 @@ void setup() {
 	Serial.println("Connexion Bluetooth au simulateur OBD2 ...");
 	bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
 #else
-			Serial.println("Connexion Bluetooth à l'OBD2 de  la voiture ...");
-			bluetooth->connexion("2017,11,7030A"); // OBD2 bleu
+	Serial.println("Connexion Bluetooth à l'OBD2 de  la voiture ...");
+	//OBD2 noir KONNWEI
+	bluetooth->connexion("B22B,1C,70EA6");
 #endif
 
 	delay(2000);
@@ -83,15 +88,18 @@ void setup() {
 
 	donneesTR = new DonneesTR();
 	sd = CarteSD::getInstance();
+	nouvelEtat(NORMAL);
+	traiterEtat(ENTRY);
 	delay(10000);
 }
 
 void loop() {
 
 	heureDebut = millis();
-	bool messageEnvoye = false;
+	Serial.println("Entrée dans la loop");
+	messageEnvoye = false;
 	keepWatchOBD2();
-	keepWatchSerial(); //Peut être bloquant
+	//keepWatchSerial(); //Peut être bloquant
 
 	// -------------- TRAITEMENTS COURANTS ---------------
 
@@ -99,20 +107,27 @@ void loop() {
 	 * Lorsque la classe reception de message sera opérationelle
 	 * il faudra placer la lecture de message juste après un envoi avec un delai de 30s
 	 * et traiter l'évenement que l'on placera dans une variable globale de type Event
+	 * Par conséquant, il faudra créer de nouvelles fonctions KeepWatch et ensuite faire :
+	 * traiterEtat(EXIT);
+	 * nouvelEtat(etat);
 	 /*/
 
 	traiterEtat(DO);
-	sd->ecrire(donneesTR);
+	//sd->ecrire(donneesTR);
+
+	Serial.print("Programme traité en : ");
 
 	//Duree de loop contrôlée
 
 	if (messageEnvoye == true) { //On prends plus de temps pour laisser la carte envoyer le message
+		Serial.println(millis() - heureDebut);
 		dureeCumulee += DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut)
 				+ 1; //Decalage volontaire pour compenser le temps d'execution de ce calcul
 
 		delay(DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut));
 	} else { //Duree standard de la loop sans messages
-		dureeCumulee += DUREE_LOOP - (millis() - heureDebut) + 1;
+		Serial.println(millis() - heureDebut);
+		dureeCumulee += DUREE_LOOP - (millis() - heureDebut);
 
 		delay(DUREE_LOOP - (millis() - heureDebut));
 	}
@@ -128,24 +143,67 @@ void majDataTR() {
 		donneesTR->setRegime(obd2->lireRegimeMoteur());
 		delay(250);
 		donneesTR->majDistance();
+		delay(250);
 
 #ifndef SIMU //En simulation la conso ne peut pas être récupérée (c'est donc bloquant)
+		donneesTR->setBatterie(obd2->lireBatterie());
+		delay(250);
 		donneesTR->setConsommation(obd2->lireConsomation());
 		delay(250);
 #endif
-		Serial.println("Maj donneesTR done !");
-		if (gps->isDispo()) {
 
-			gps->maj();
-			donneesTR->setLatitude(gps->getLatitude());
-			donneesTR->setLongitude(gps->getLongitude());
-			donneesTR->setDatation(gps->getDatation());
-			htr->setDatation(gps->getDatation());
-			Serial.println("Le GPS est actif");
-		} else {
-			Serial.println("Le GPS est occupé");
-		}
+		Serial.print("Vitesse :");
+		Serial.println(donneesTR->getVitesse());
+		Serial.print("Distance :");
+		Serial.println((int) donneesTR->getDistanceParcourue());
+		Serial.print("Régime :");
+		Serial.println(donneesTR->getRegime());
+
+#ifndef SIMU //En simulation la conso ne peut pas être récupérée (c'est donc bloquant)
+		Serial.print("Tension batterie : ");
+		Serial.println(donneesTR->getBatterie());
+		Serial.print("Consomation :");
+		Serial.println(donneesTR->getConsommation());
+#endif
+
+		Serial.println("Maj donneesTR done !");
+
 	}
+	gps->maj();
+	if (gps->isDispo()) {
+		donneesTR->setLatitude(gps->getLatitude());
+		donneesTR->setLongitude(gps->getLongitude());
+		donneesTR->setDatation(gps->getDatation());
+		htr->setDatation(gps->getDatation());
+		afficherGPS();
+		afficherHeure();
+		Serial.println("Le GPS est actif");
+	} else {
+		Serial.println("Le GPS est occupé");
+	}
+}
+
+void afficherGPS() {
+	Serial.print("Latitude :");
+	Serial.println(gps->getLatitude());
+	Serial.print("Longitude :");
+	Serial.println(gps->getLongitude());
+	Serial.print("Vitesse :");
+	Serial.println(gps->getVitesse());
+}
+
+void afficherHeure() {
+	Serial.print(gps->getDatation().tm_mday);
+	Serial.print("/");
+	Serial.print(gps->getDatation().tm_mon);
+	Serial.print("/");
+	Serial.print(gps->getDatation().tm_year);
+	Serial.print(" ");
+	Serial.print(gps->getDatation().tm_hour);
+	Serial.print(":");
+	Serial.print(gps->getDatation().tm_min);
+	Serial.print(":");
+	Serial.println(gps->getDatation().tm_sec);
 }
 
 void nouvelEtat(Etat e) {
@@ -174,7 +232,7 @@ void traiterEvenement(Event ev) {
 	case INIT:
 		nouvelEtat(INIT);
 		break;
-	case STANDARD:
+	case NORMAL:
 		switch (ev) {
 		case MODE_DMD_GPS:
 			nouvelEtat(DMD_GPS);
@@ -223,8 +281,8 @@ void traiterEvenement(Event ev) {
 		break;
 	case GPS_SEUL:
 		switch (ev) {
-		case MODE_STANDARD:
-			nouvelEtat(STANDARD);
+		case MODE_NORMAL:
+			nouvelEtat(NORMAL);
 			break;
 		case MODE_DORMIR:
 			nouvelEtat(DORMIR);
@@ -239,8 +297,8 @@ void traiterEvenement(Event ev) {
 		break;
 	case DORMIR:
 		switch (ev) {
-		case MODE_STANDARD:
-			nouvelEtat(STANDARD);
+		case MODE_NORMAL:
+			nouvelEtat(NORMAL);
 			break;
 		case MODE_MAINTENANCE:
 			nouvelEtat(MAINTENANCE);
@@ -252,8 +310,8 @@ void traiterEvenement(Event ev) {
 		case MODE_INIT:
 			nouvelEtat(INIT);
 			break;
-		case MODE_STANDARD:
-			nouvelEtat(STANDARD);
+		case MODE_NORMAL:
+			nouvelEtat(NORMAL);
 			break;
 		}
 		break;
@@ -269,27 +327,33 @@ void traiterEtat(ModeG mode) {
 			break;
 		case DO:
 			Serial.println("Initialisation");
-			nouvelEtat(NORMAL);
+			nouvelEtat(STANDARD);
 			break;
 		case EXIT:
 			break;
 		}
 		break;
-	case NORMAL:
+	case STANDARD:
 		dureeCumulee = 0;
 		fromNormal = true;
 		if (obd2->isConnected() == true) {
-			etat = STANDARD;
+			etat = NORMAL;
 		} else {
 			etat = DEGRADE;
 		}
 		break;
-	case STANDARD:
+	case NORMAL:
 		switch (mode) {
 		case ENTRY:
+			Serial.print("Entrée dans le mode ");
+			Serial.println(etat);
 			majDataTR();
 			if (fromNormal == true) {
+				Serial.println("Création du message SigFox... ");
 				message->nouveau(etat, donneesTR, messageEncode);
+				messageEnvoye = true;
+				Serial.println(
+						"Envoi du message à SigFox. \nReconnectez le terminal à la voie série pour \nreprendre la main");
 				sigfoxArduino->envoyer(messageEncode);
 			}
 
@@ -298,8 +362,11 @@ void traiterEtat(ModeG mode) {
 			gps->maj();
 			majDataTR();
 			if (dureeCumulee >= T_MSG_NORMAL) {
-				Serial.println("Envoi d'un message STANDARD");
+				Serial.println("Création du message SigFox... ");
 				message->nouveau(etat, donneesTR, messageEncode);
+				Serial.println(
+						"Envoi du message à SigFox. \nReconnectez le terminal à la voie série pour \nreprendre la main");
+				messageEnvoye = true;
 				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
 				//pour reconnecter il suffit sur eclipse de cliquer sur l'icone deconnecter du terminal puis sur connecter
 				//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
@@ -312,10 +379,16 @@ void traiterEtat(ModeG mode) {
 	case DEGRADE:
 		switch (mode) {
 		case ENTRY:
+			Serial.print("Entrée dans le mode ");
+			Serial.println(etat);
 			gps->maj();
 			majDataTR();
 			if (fromNormal == true) {
+				Serial.println("Création du message SigFox... ");
 				message->nouveau(etat, donneesTR, messageEncode);
+				messageEnvoye = true;
+				Serial.println(
+						"Envoi du message à SigFox. \nReconnectez le terminal à la voie série pour \nreprendre la main");
 				sigfoxArduino->envoyer(messageEncode);
 			}
 			break;
@@ -323,16 +396,21 @@ void traiterEtat(ModeG mode) {
 			gps->maj();
 			majDataTR();
 			if (dureeCumulee >= T_MSG_NORMAL) {
-				Serial.println("Envoi d'un message DEGRADE");
+				Serial.println("Création du message SigFox... ");
 				message->nouveau(etat, donneesTR, messageEncode);
+				messageEnvoye = true;
+				Serial.println(
+						"Envoi du message à SigFox. \nReconnectez le terminal à la voie série pour \nreprendre la main");
 				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
 				//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
 #ifdef SIMU
 				Serial.println("Connexion Bluetooth au simulateur OBD2 ...");
 				bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
 #else
-						Serial.println("Connexion Bluetooth à l'OBD2 de  la voiture ...");
-						bluetooth->connexion("2017,11,7030A"); // OBD2 bleu
+				Serial.println(
+						"Connexion Bluetooth à l'OBD2 de  la voiture ...");
+				//OBD2 noir KONNWEI
+				bluetooth->connexion("B22B,1C,70EA6");
 #endif
 
 				dureeCumulee = 0;
@@ -345,12 +423,18 @@ void traiterEtat(ModeG mode) {
 	case DMD_GPS:
 		switch (mode) {
 		case ENTRY:
+			Serial.print("Entrée dans le mode ");
+			Serial.println(etat);
 			break;
 		case DO:
 			Serial.println("Envoi d'un message DMD_GPS");
 			gps->maj();
 			majDataTR();
+			Serial.println("Création du message SigFox... ");
 			message->nouveau(etat, donneesTR, messageEncode);
+			messageEnvoye = true;
+			Serial.println(
+					"Envoi du message à SigFox. \nReconnectez le terminal à la voie série pour \nreprendre la main");
 			sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
 			//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
 			nouvelEtat(STANDARD);
@@ -362,14 +446,19 @@ void traiterEtat(ModeG mode) {
 	case GPS_SEUL:
 		switch (mode) {
 		case ENTRY:
+			Serial.print("Entrée dans le mode ");
+			Serial.println(etat);
 			dureeCumulee = 0;
 			break;
 		case DO:
 			gps->maj();
 			majDataTR();
 			if (dureeCumulee >= T_MSG_NORMAL) {
-				Serial.println("Envoi d'un message GPS_SEUL");
+				Serial.println("Création du message SigFox... ");
 				message->nouveau(etat, donneesTR, messageEncode);
+				messageEnvoye = true;
+				Serial.println(
+						"Envoi du message à SigFox. \nReconnectez le terminal à la voie série pour \nreprendre la main");
 				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
 				//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
 			}
@@ -381,12 +470,17 @@ void traiterEtat(ModeG mode) {
 	case DORMIR:
 		switch (mode) {
 		case ENTRY:
+			Serial.print("Entrée dans le mode ");
+			Serial.println(etat);
 			Serial.println("Envoi d'un message DORMIR");
 			gps->maj();
 			majDataTR();
 			if (dureeCumulee >= T_MSG_DORMIR) {
-				Serial.println("Envoi d'un message DORMIR");
+				messageEnvoye = true;
+				Serial.println("Création du message SigFox... ");
 				message->nouveau(etat, donneesTR, messageEncode);
+				Serial.println(
+						"Envoi du message à SigFox.\n\rReconnectez le terminal à la voie\n\r série pour reprendre la main");
 				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
 				//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
 			}
@@ -398,8 +492,9 @@ void traiterEtat(ModeG mode) {
 	case MAINTENANCE:
 		switch (mode) {
 		case ENTRY:
-			// afficher un id sur la console
-			Serial.println("Envoi d'un message MAINTENANCE");
+			Serial.print("Entrée dans le mode ");
+			Serial.println(etat);
+
 			break;
 		case DO:
 			break;
@@ -410,12 +505,16 @@ void traiterEtat(ModeG mode) {
 	case ECO:
 		switch (mode) {
 		case ENTRY:
-			Serial.println("Envoi d'un message DORMIR");
+			Serial.print("Entrée dans le mode ");
+			Serial.println(etat);
 			gps->maj();
 			majDataTR();
 			if (dureeCumulee >= T_MSG_DORMIR) {
-				Serial.println("Envoi d'un message DORMIR");
+				messageEnvoye = true;
+				Serial.println("Création du message SigFox... ");
 				message->nouveau(etat, donneesTR, messageEncode);
+				Serial.println(
+						"Envoi du message à SigFox. \nReconnectez le terminal à la voie série pour \nreprendre la main");
 				sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
 				//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
 			}
@@ -428,6 +527,7 @@ void traiterEtat(ModeG mode) {
 
 void keepWatchSerial() { // Surveille la voie série pour passage en maintenance
 	// Surveillance de la voie série
+	Serial.print("KeepWatchSerial status : ");
 	String car;
 	int donneesAlire = Serial.available(); //lecture du nombre de caractères disponibles dans le buffer
 	if (car != NULL && donneesAlire > 0) { //si le serial a reçu un caractère // si le buffer n'est pas vide
@@ -435,17 +535,26 @@ void keepWatchSerial() { // Surveille la voie série pour passage en maintenance
 		//while(Serial.read(donneesAlire) != -1);  Permet de lire et vider tout le buffer; à voir si à utiliser?
 
 		if (car == "#") {
+			Serial.println("# reçu, passage en maintenance");
 			traiterEvenement(MODE_MAINTENANCE);
+
+		} else {
+			Serial.println("# non reçu, mode actuel conservé");
 		}
+	} else {
+		Serial.println("Aucun caractère reçu sur la voie série");
 	}
 
 }
 
 void keepWatchOBD2() {
 	// Surveillance du Bluetooth
+	Serial.print("KeepWatchOBD2 status : ");
 	if (obd2->isConnected()) {
 		traiterEvenement(OBD2_ON);
+		Serial.println("OBD2 connecté");
 	} else {
+		Serial.println("OBD2 déconnecté");
 		traiterEvenement(OBD2_OFF);
 	}
 }

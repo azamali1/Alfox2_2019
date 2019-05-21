@@ -14,7 +14,7 @@ typedef enum {
 } Etat;
 
 typedef enum {
-    MODE_STANDARD, MODE_DMD_GPS, MODE_GPS,
+    MODE_NORMAL, MODE_DMD_GPS, MODE_GPS,
     MODE_MAINTENANCE, MODE_INIT, MODE_DORMIR,
     OBD2_ON, OBD2_OFF
 } Event;

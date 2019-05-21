@@ -1,6 +1,5 @@
 #include <Arduino.h>
 
-
 #include "../../src/GPS.h"
 #include "../../src/DonneesTR.h"
 #include "../../src/Bluetooth.h"
@@ -12,9 +11,9 @@
 #include "../../src/SigfoxArduino.h"
 
 #define DUREE_LOOP 5000 //en millisecondes
-#define DUREE_LOOP_SENDING_MESSAGE 10000
-#define T_MSG_STND 720000 //12 minutes en ms
-#define T_MSG_GPS 120000 //2mn en ms
+#define DUREE_LOOP_SENDING_MESSAGE 35000
+#define T_MSG_STND 720000/6 //12 minutes en ms
+#define T_MSG_GPS 720000/9 //2mn en ms
 
 byte messageEncode[12];
 
@@ -22,6 +21,8 @@ unsigned long dureeCumulee = 0;
 unsigned long dureeCumuleeGPS = 0;
 unsigned long heureDebut;
 unsigned long tempoMessage;
+
+bool messageEnvoye = false;
 
 SigfoxArduino* sigfoxArduino;
 HTR* htr;
@@ -53,7 +54,7 @@ void setup() {
 #ifdef SIMU
 	Serial.println("Connexion Bluetooth au simulateur OBD2 ...");
 	//bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
-	bluetooth->connexion("E84E,84,CCF54A"); //Portable ZAMALI
+	bluetooth->connexion("E84E,84,CCF54A");//Portable ZAMALI
 #else
 	Serial.println("Connexion Bluetooth à l'OBD2 de  la voiture ...");
 	//OBD2 noir KONNWEI
@@ -85,10 +86,7 @@ void loop() {
 
 	heureDebut = millis();
 
-	bool messageEnvoye = false;
-
-	gps->maj();
-	Serial.println("gps->maj() done !");
+	messageEnvoye = false;
 
 	majDataTR();
 
@@ -97,7 +95,7 @@ void loop() {
 
 	//Carte SD désactivée por test, l'écriture est bloquante
 	/*sd->nouveauFichier("190418.txt");
-	sd->ecrire(donneesTR);*/
+	 sd->ecrire(donneesTR);*/
 
 	Serial.print("Vitesse :");
 	Serial.println(donneesTR->getVitesse());
@@ -111,15 +109,15 @@ void loop() {
 
 	if ((dureeCumulee >= T_MSG_STND) && (dureeCumuleeGPS < T_MSG_GPS)) {
 
-	 for (int i = 0; i < 3; i++) {
-	 Serial.println("! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !");
-	 }
+		for (int i = 0; i < 3; i++) {
+			Serial.println("! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !");
+		}
 
-	 sendMessageNormal();
-	 dureeCumulee = 0;
-	 messageEnvoye = true;
+		sendMessageNormal();
+		dureeCumulee = 0;
+		messageEnvoye = true;
 
-	 }
+	}
 
 	//Envoi de message GPS
 
@@ -157,40 +155,49 @@ void loop() {
 
 void majDataTR() {
 
-	Serial.println("entrée dans majDAtaTR");
-	if (obd2->isConnected() == true) {
-		Serial.println("Le bluetooth est actif");
-
+	if (obd2->isConnected()) {
 		donneesTR->setVitesse(obd2->lireVitesse());
-
 		delay(250);
 		donneesTR->setRegime(obd2->lireRegimeMoteur());
-
 		delay(250);
-
-		donneesTR->majDistance();
+		donneesTR->majDistance(messageEnvoye);
+		delay(250);
+		donneesTR->setBluetoothActif(obd2->isConnected());
+		donneesTR->setOBD2Actif(obd2->isConnected());
 
 #ifndef SIMU //En simulation la conso ne peut pas être récupérée (c'est donc bloquant)
+		donneesTR->setBatterie(obd2->lireBatterie());
+		delay(250);
 		donneesTR->setConsommation(obd2->lireConsomation());
 		delay(250);
 #endif
-		Serial.println("Maj donneesTR done !");
-
-	} else {
-		Serial.println("OBD2 est injoignable");
 	}
+	Serial.print("Vitesse :");
+	Serial.println(donneesTR->getVitesse());
+	Serial.print("Distance :");
+	Serial.println((int) donneesTR->getDistanceParcourue());
+	Serial.print("Régime :");
+	Serial.println(donneesTR->getRegime());
+
+#ifndef SIMU //En simulation la conso ne peut pas être récupérée (c'est donc bloquant)
+	//Serial.print("Tension batterie : ");
+	//Serial.println(donneesTR->getBatterie());
+	Serial.print("Consomation :");
+	Serial.println(donneesTR->getConsommation());
+
+#endif
+
+	gps->maj();
 	if (gps->isDispo()) {
 
-		gps->maj();
 		donneesTR->setLatitude(gps->getLatitude());
 		donneesTR->setLongitude(gps->getLongitude());
 		donneesTR->setDatation(gps->getDatation());
+		htr->setDatation(gps->getDatation());
 		Serial.println("Le GPS est actif");
-		afficherGPS();
 	} else {
-		Serial.println("Le gps est occupé");
+		Serial.println("Le GPS est occupé");
 	}
-	Serial.println("majDataTR() done !");
 }
 
 void sendMessageNormal() {
@@ -223,8 +230,7 @@ void sendMessageGPS() {
 
 }
 
-
-void afficherGPS(){
+void afficherGPS() {
 	Serial.print("Latitude :");
 	Serial.println(gps->getLatitude());
 	Serial.print("Longitude :");
@@ -246,7 +252,6 @@ void afficherHeure() {
 	Serial.print(":");
 	Serial.println(gps->getDatation().tm_sec);
 }
-
 
 void SERCOM3_Handler() {
 	bluetooth->getLiaisonBT()->IrqHandler();
