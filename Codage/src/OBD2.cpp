@@ -93,6 +93,7 @@ OBD2::OBD2(Bluetooth* bt) {
 	//Si le contact est coupé ou la liaison bluetooth est coupé, on précise qu'on est pas connecté
 	if ((reponse.substring(0, 17) == "UNABLE TO CONNECT")
 			|| (reponse.substring(0, 9) == "ERROR:(0)")) {
+		Serial.println("Est connecté ? ");
 		this->connected = false;
 		Serial.println("Pas connecté");
 	} else {
@@ -100,7 +101,7 @@ OBD2::OBD2(Bluetooth* bt) {
 		Serial.println("connecté");
 
 	}
-	Serial.println("Est connecté ? ");
+
 	Serial.println(this->isConnected());
 }
 

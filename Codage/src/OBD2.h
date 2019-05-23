@@ -44,7 +44,7 @@ private:
 
 	Bluetooth* moduleBT;
 	Uart* liaisonBT;
-	String code[10] = { "010D", "015F", "010C", "CODE_DEFAUT_NONDEF", "ATI",
+	String code[11] = { "010D", "015F", "010C", "CODE_DEFAUT_NONDEF", "ATI",
 			"010B", "010F", "0144", "0110","0114" ,"AT RV" };
 	static OBD2* OBD2Instance;
 	OBD2(Bluetooth* bt);
