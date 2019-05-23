@@ -21,8 +21,8 @@ void setup() {
 	bluetooth = Bluetooth::getInstance(PINALIM, PINEN);
 	//bluetooth->connexion("2017,11,7030A"); // OBD2 bleu
 	Serial.println("Test de la classe OBD2");
-	//bluetooth->connexion("2017,11,7030A");
-	bluetooth->connexion("E84E,84,CCF54A"); //Portable ZAMALI
+	bluetooth->connexion("B22B,1C,70EA6");// OBD2 noir KONNWEI
+	//bluetooth->connexion("E84E,84,CCF54A"); //Portable ZAMALI
 
 	delay(2000);
 	if (bluetooth->isActif()) {
