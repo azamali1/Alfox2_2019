@@ -1,0 +1,2 @@
+eclipse.preferences.version=1
+libraries=[{"package"\:"arduino","platform"\:"samd","library"\:"SPI"},"SD",{"package"\:"adafruit","platform"\:"samd","library"\:"SPI"},"Arduino Low Power",{"package"\:"arduino","platform"\:"avr","library"\:"SPI"},"Arduino SigFox for MKRFox1200","RTCZero"]
