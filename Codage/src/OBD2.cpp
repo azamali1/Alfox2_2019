@@ -201,7 +201,7 @@ float OBD2::lireConsomation() {
 		conso = 0;
 	} else {
 		//Calcul de la consommation que vous pouvez retrouver dans la documentation "Consommation OBD2"
-		conso = ((360000 / 845) * (dair / (-1.045 * sonde + 15.222))
+		conso = ((360000 / 845) * (dair / ((-1.045 * sonde) + 15.222))
 				* (1 / vitesse));
 		//conso = ((6000 / vitesse)* (0.0027* ((pression * regime) / ((temperature + 273.15) * ratio))));
 	}
@@ -240,8 +240,8 @@ float OBD2::lireDair() {
 }
 
 float OBD2::lireSonde() {
-	//Température est en °C
-	return testReponse(C_SONDE);
+	//le sonde lambda est en V
+	return testReponse(C_SONDE)/200;
 }
 
 void OBD2::setIsConnected(bool etat) {
@@ -255,7 +255,7 @@ bool OBD2::isConnected() {
 }
 
 float OBD2::lireBatterie() {
-	//Pression est en kPa
+	//Batterie en V
 	return testReponse(C_BATTERIE);
 
 }
