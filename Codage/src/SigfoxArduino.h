@@ -16,7 +16,8 @@ class SigfoxArduino
 public:
 	static SigfoxArduino* getInstance();
 	bool envoyer(byte* bMsg);
-	//bool isMsgRecu();
+	bool sendMessageAndGetResponse(byte* bMsg);
+	bool isMsgRecu(byte* bMsg);
 	//String lire();
 	//int getNbMsgEmisParH();
 	//void setNbMsgEmisParH(int nbMsgRemisParHeure);
