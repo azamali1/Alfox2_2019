@@ -48,7 +48,7 @@ void loop() {
 			Serial.print(obd2->lireVitesse());
 			Serial.println(" Km/h");
 			delay(500);
-			//ici on lit la Pression en kpa
+			/*//ici on lit la Pression en kpa
 			Serial.print("Pression : ");
 			Serial.print(obd2->lirePression());
 			Serial.println(" kpa");
@@ -60,7 +60,7 @@ void loop() {
 			delay(500);
 			//ici on lit le Ratio carburant/air
 			Serial.println(obd2->lireRatio());
-			delay(500);
+			delay(500);*/
 			//ici on lit le Regime moteur en tr/min
 			Serial.print("Regime moteur : ");
 			Serial.print(obd2->lireRegimeMoteur());
@@ -79,6 +79,7 @@ void loop() {
 			Serial.print(obd2->lireConsomation());
 			Serial.println(" L/100");
 			delay(500);
+			//on lit la Tension de la batterie en V avec une commande AT
 			Serial.print("Tension batterie : ");
 			Serial.print(obd2->lireBatterie());
 			Serial.println(" V");
