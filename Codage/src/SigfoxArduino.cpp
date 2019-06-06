@@ -41,23 +41,38 @@ bool SigfoxArduino::envoyer(byte* bMsg) {
 //void SigfoxArduino::setNbMsgEmisParH(int nbMsgRemisParHeure){
 //}
 
-bool SigfoxArduino::sendMessageAndGetResponse(byte* bMsg) {
+bool SigfoxArduino::sendMessageAndGetResponse(byte* bMsg, byte* rMsg) {
 	unsigned int index = 0;
 
-	Serial.println("envoye et reception du message Sigfox");
+	Serial.println("envoi et reception du message Sigfox");
 // Start the module
 	SigFox.begin();
+	delay(100);
+	SigFox.status();
 	delay(1);
-
 	SigFox.beginPacket();
 	SigFox.write(bMsg, 12);
-	SigFox.endPacket(); // send buffer to SIGFOX network and wait for a response
 
-	if ((SigFox.parsePacket() != 0) && (SigFox.parsePacket() != NULL)) {
+	int ret = SigFox.endPacket(true); // send buffer to SIGFOX network and wait for a response
+	/*Serial.end();
+	delay(100);
+	Serial.begin(9600);
+	delay(100);
+	while (!Serial) {};*/
+	if (ret > 0) {
+	    Serial.println("pas de transmission");
+	  } else {
+	    Serial.println("Transmission ok");
+	  }
 
+	  Serial.println(SigFox.status(SIGFOX));
+	  Serial.println(SigFox.status(ATMEL));
+
+	if (SigFox.parsePacket())  {
+		Serial.println("Réponse du serveur:");
 		while (SigFox.available()) {
-			if (index < sizeof bMsg)
-				bMsg[index++] = SigFox.read();
+				rMsg[index] = SigFox.read();
+				index++;
 		}
 		SigFox.end();
 		return true;
@@ -72,7 +87,7 @@ bool SigfoxArduino::isMsgRecu(byte* bMsg) {
 	unsigned int index = 0;
 	Serial.println("en attente de reception du message Sigfox");
 
-	if ((SigFox.parsePacket() != 0) && (SigFox.parsePacket() != NULL)) {
+	if (SigFox.parsePacket()) {
 
 		while (SigFox.available()) {
 			if (index < sizeof bMsg)

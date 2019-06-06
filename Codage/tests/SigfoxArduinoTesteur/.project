@@ -29,6 +29,16 @@
 			<locationURI>PARENT-2-PROJECT_LOC/src/DonneesTR.h</locationURI>
 		</link>
 		<link>
+			<name>LedTri.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/src/LedTri.cpp</locationURI>
+		</link>
+		<link>
+			<name>LedTri.h</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/src/LedTri.h</locationURI>
+		</link>
+		<link>
 			<name>Message.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/src/Message.cpp</locationURI>
