@@ -27,6 +27,7 @@ bool SigfoxArduino::envoyer(byte* bMsg) {
 	Serial.println("envoye du message Sigfox");
 	SigFox.begin();	//launch Sigfox
 	delay(1);
+	SigFox.debug();
 	SigFox.beginPacket();	//start Paquet to send
 	SigFox.write(bMsg, 12);
 	SigFox.endPacket(); //Le serial se déconnecte systématiquement ici, vérifier l'envoi du message sur https://backend.sigfox.com/
@@ -46,8 +47,13 @@ bool SigfoxArduino::sendMessageAndGetResponse(byte* bMsg, byte* rMsg) {
 
 	Serial.println("envoi et reception du message Sigfox");
 // Start the module
-	SigFox.begin();
+	if (!SigFox.begin()) {
+		Serial.println("Shield error or not present!");
+		return false;
+	}
 	delay(100);
+	 SigFox.debug();
+
 	SigFox.status();
 	delay(1);
 	SigFox.beginPacket();
@@ -55,29 +61,31 @@ bool SigfoxArduino::sendMessageAndGetResponse(byte* bMsg, byte* rMsg) {
 
 	int ret = SigFox.endPacket(true); // send buffer to SIGFOX network and wait for a response
 	/*Serial.end();
-	delay(100);
-	Serial.begin(9600);
-	delay(100);
-	while (!Serial) {};*/
+	 delay(100);
+	 Serial.begin(9600);
+	 delay(100);
+	 while (!Serial) {};*/
 	if (ret > 0) {
-	    Serial.println("pas de transmission");
-	  } else {
-	    Serial.println("Transmission ok");
-	  }
+		Serial.println("pas de transmission");
+	} else {
+		Serial.println("Transmission ok");
+	}
 
-	  Serial.println(SigFox.status(SIGFOX));
-	  Serial.println(SigFox.status(ATMEL));
+	Serial.println(SigFox.status(SIGFOX));
+	Serial.println(SigFox.status(ATMEL));
 
-	if (SigFox.parsePacket())  {
+	if (SigFox.parsePacket()) {
 		Serial.println("Réponse du serveur:");
 		while (SigFox.available()) {
-				rMsg[index] = SigFox.read();
-				index++;
+			rMsg[index] = SigFox.read();
+			index++;
 		}
+		delay(100);
 		SigFox.end();
 		return true;
 
 	} else {
+		delay(100);
 		SigFox.end();
 		return false;
 	}

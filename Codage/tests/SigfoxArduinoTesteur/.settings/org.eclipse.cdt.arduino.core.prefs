@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-libraries=[{"package"\:"arduino","platform"\:"samd","library"\:"SPI"},{"package"\:"adafruit","platform"\:"samd","library"\:"SPI"},"Time","Arduino Low Power",{"package"\:"arduino","platform"\:"avr","library"\:"SPI"},"Adafruit GPS Library","Arduino SigFox for MKRFox1200","RTCZero"]
+libraries=[{"package"\:"arduino","platform"\:"samd","library"\:"SPI"},"SD","Time","Arduino Low Power",{"package"\:"arduino","platform"\:"samd","library"\:"USBHost"},"Adafruit GPS Library","Arduino SigFox for MKRFox1200","RTCZero"]

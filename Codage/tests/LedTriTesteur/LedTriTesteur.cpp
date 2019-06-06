@@ -1,6 +1,7 @@
 #include "../../src/LedTri.h"
 
-LedTri* maLed = LedTri::getInstance(redLedPin, greenLedPin, blueLedPin); // définit la pin pour chaque couleur
+
+LedTri* maLed = new LedTri(redLedPin, greenLedPin, blueLedPin); // définit la pin pour chaque couleur
 
 void setup() {
 	// put your setup code here, to run once:
@@ -10,82 +11,82 @@ void setup() {
 void loop() {
 	// put your main code here, to run repeatedly:
 
+	//Teste 2 fois toutes les valeurs possible de la fonction setCouleur à deux paramètres\\
+
 	for (int r = 0; r < 254; r++) {
-		maLed->setCouleur(rouge, r);
-		delay(10);
+		maLed	->setCouleur(rouge, r);
+		delay(5);
 	}
 	for (int r = 255; r >= 0; r--) {
 		maLed->setCouleur(rouge, r);
-		delay(10);
+		delay(5);
 	}
 
-	delay(1000);
+	delay(5);
 	for (int r = 0; r < 254; r++) {
 		maLed->setCouleur(vert, r);
-		delay(10);
+		delay(5);
 	}
 	for (int r = 255; r >= 0; r--) {
 		maLed->setCouleur(vert, r);
-		delay(10);
+		delay(5);
 	}
 
-	delay(1000);
+	delay(5);
 	for (int r = 0; r < 255; r++) {
 		maLed->setCouleur(bleu, r);
-		delay(10);
+		delay(5);
 	}
 
 	for (int r = 255; r >= 0; r--) {
 		maLed->setCouleur(bleu, r);
-		delay(10);
+		delay(5);
 	}
 
-	delay(1000);
+	delay(5);
 	for (int r = 0; r < 255; r++) {
 		maLed->setCouleur(magenta, r);
-		delay(10);
+		delay(5);
 	}
 
 	for (int r = 255; r >= 0; r--) {
 		maLed->setCouleur(magenta, r);
-		delay(10);
+		delay(5);
 	}
 
-	delay(1000);
+	delay(5);
 	for (int r = 0; r < 255; r++) {
 		maLed->setCouleur(cyan, r);
-		delay(10);
+		delay(5);
 	}
 
 	for (int r = 255; r >= 0; r--) {
 		maLed->setCouleur(cyan, r);
-		delay(10);
+		delay(5);
 	}
 
-	delay(1000);
+	delay(5);
 	for (int r = 0; r < 255; r++) {
 		maLed->setCouleur(jaune, r);
-		delay(10);
+		delay(5);
 	}
 
 	for (int r = 255; r >= 0; r--) {
 		maLed->setCouleur(jaune, r);
-		delay(10);
+		delay(5);
 	}
 
-	delay(1000);
+	//Teste 2 fois toutes les valeurs possible de la fonction setCouleur à trois paramètres
+	delay(5);
 	for (int r = 0; r < 255; r++) {
 		maLed->setCouleur(r, r, r);
-		delay(10);
+		delay(5);
 	}
 
 	for (int r = 255; r >= 0; r--) {
 		maLed->setCouleur(r, r, r);
-		delay(10);
+		delay(5);
 	}
-
-	delay(1000);
-	maLed->setCouleur(255, 255, 255);
 	maLed->resetCouleur();
+	delay(5);
 }
-

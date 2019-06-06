@@ -12,15 +12,16 @@
 
 #define DUREE_LOOP 5000 //en millisecondes
 #define DUREE_LOOP_SENDING_MESSAGE 35000
-#define T_MSG_STND 720000/6 //12 minutes en ms
-#define T_MSG_GPS 720000/9 //2mn en ms
+#define T_MSG_STND 720000/8  //12 minutes en ms /8 pour démo
+#define T_MSG_GPS 3600000/8 //1h en ms /8 pour démo
 
 byte messageEncode[12];
+
+int j=1;
 
 unsigned long dureeCumulee = 0;
 unsigned long dureeCumuleeGPS = 0;
 unsigned long heureDebut;
-unsigned long tempoMessage;
 
 bool messageEnvoye = false;
 
@@ -53,8 +54,10 @@ void setup() {
 
 #ifdef SIMU
 	Serial.println("Connexion Bluetooth au simulateur OBD2 ...");
-	//bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
-	bluetooth->connexion("E84E,84,CCF54A");//Portable ZAMALI
+	bluetooth->connexion("780C,B8,46F54"); // PC Mr. Commenge simulateur
+	//bluetooth->connexion("E84E,84,CCF54A");//Portable ZAMALI*
+	//bluetooth->connexion("E84E,84,CCF54A");//Dongle bt 4 dg440s
+
 #else
 	Serial.println("Connexion Bluetooth à l'OBD2 de  la voiture ...");
 	//OBD2 noir KONNWEI
@@ -107,28 +110,28 @@ void loop() {
 
 	//Envoi de message normal
 
-	if ((dureeCumulee >= T_MSG_STND) && (dureeCumuleeGPS < T_MSG_GPS)) {
+	if ((dureeCumulee >= T_MSG_STND*j) && (dureeCumulee < T_MSG_GPS)) {
 
 		for (int i = 0; i < 3; i++) {
 			Serial.println("! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !");
 		}
-
+		j++;
 		sendMessageNormal();
-		dureeCumulee = 0;
 		messageEnvoye = true;
 
 	}
 
 	//Envoi de message GPS
 
-	if (dureeCumuleeGPS >= T_MSG_GPS) {
+	if (dureeCumulee >= T_MSG_GPS) {
 
 		for (int i = 0; i < 3; i++) {
 			Serial.println("# # # # # # # # # # # # # # # # # # # # # # #");
 		}
 
 		sendMessageGPS();
-		dureeCumuleeGPS = 0;
+		dureeCumulee = 0;
+		j=1;
 		messageEnvoye = true;
 
 	}

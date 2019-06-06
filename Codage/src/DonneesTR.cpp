@@ -146,7 +146,7 @@ void DonneesTR::majDistance(bool messageEnvoye) // d = vt
 	if (messageEnvoye == true) {
 		distanceParcourue += (vitesse * 5) / 3.6;
 	} else {
-		distanceParcourue += (vitesse * 10) / 3.6;
+		distanceParcourue += (vitesse * 35) / 3.6;
 	}
 }
 

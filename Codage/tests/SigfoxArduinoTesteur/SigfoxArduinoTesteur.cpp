@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <SigFox.h>
+#include <ArduinoLowPower.h>
 
 #include "../../src/SigfoxArduino.h"
 #include "../../src/DonneesTR.h"
@@ -20,6 +22,8 @@ byte messageRecu[8];
 void setup() {
 	Serial.begin(9600);
 	 while (!Serial) {};
+
+
 	Serial.println("Test de la classe SigfoxArduino");
 	delay(10000);
 	sigfoxArduino = SigfoxArduino::getInstance();

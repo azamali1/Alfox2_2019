@@ -2,8 +2,6 @@
 
 #include <Arduino.h>
 
-Etat etatMessage;
-
 Etat Message::decoderEtat(byte* msg) {
 	// Message descendant : TM MB OB DD PP
 	int code = msg[0];
@@ -44,7 +42,7 @@ void Message::normal(DonneesTR* data, byte* bMsg) {
 	// NB = nb défauts
 	bMsg[0] = bMsg[0] << 2 | (byte) ((data->getNbDefaut() != 0) ? 1 : 0);
 	// TM = Type de message
-	bMsg[0] = bMsg[0] << 4 | (byte) etatMessage;
+	bMsg[0] = bMsg[0] << 4 | (byte) NORMAL;
 	// Distance parcourue depuis le dernier reset du boitier en KM
 	bMsg[1] = (byte) (data->getDistanceParcourue() / 10000);
 	bMsg[2] = (byte) (((int) data->getDistanceParcourue() % 10000) / 100);
