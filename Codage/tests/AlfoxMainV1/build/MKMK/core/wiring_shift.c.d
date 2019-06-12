@@ -1,8 +1,8 @@
 core/wiring_shift.c.o: \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring_shift.c \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring_shift.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring_digital.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/WVariant.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/wiring_shift.c \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/wiring_shift.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/wiring_digital.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/WVariant.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/sam.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/samd21.h \
@@ -68,5 +68,5 @@ core/wiring_shift.c.o: \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/instance/usb.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/instance/wdt.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/pio/samd21g18a.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring_private.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring_constants.h
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/wiring_private.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/wiring_constants.h

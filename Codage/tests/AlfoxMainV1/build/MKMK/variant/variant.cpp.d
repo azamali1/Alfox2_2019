@@ -1,7 +1,7 @@
 variant/variant.cpp.o: \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200/variant.cpp \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200/variant.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/WVariant.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/variants/mkrfox1200/variant.cpp \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/variants/mkrfox1200/variant.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/WVariant.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/sam.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/samd21.h \
@@ -67,13 +67,13 @@ variant/variant.cpp.o: \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/instance/usb.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/instance/wdt.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/pio/samd21g18a.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/SERCOM.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Uart.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/HardwareSerial.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Stream.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Print.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/WString.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/avr/pgmspace.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Printable.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/SERCOM.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/RingBuffer.h
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/SERCOM.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/Uart.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/HardwareSerial.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/Stream.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/Print.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/WString.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/avr/pgmspace.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/Printable.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/SERCOM.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/RingBuffer.h

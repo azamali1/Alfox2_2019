@@ -24,9 +24,12 @@ SigfoxArduino::SigfoxArduino() {
 }
 
 bool SigfoxArduino::envoyer(byte* bMsg) {
-	Serial.println("envoye du message Sigfox");
-	SigFox.begin();	//launch Sigfox
-	delay(1);
+	Serial.println("envoi du message Sigfox");
+	if (!SigFox.begin()) {
+		Serial.println("Shield error or not present!");
+		return false;
+	}
+	delay(100);
 	SigFox.debug();
 	SigFox.beginPacket();	//start Paquet to send
 	SigFox.write(bMsg, 12);
@@ -52,7 +55,7 @@ bool SigfoxArduino::sendMessageAndGetResponse(byte* bMsg, byte* rMsg) {
 		return false;
 	}
 	delay(100);
-	 SigFox.debug();
+	SigFox.debug();
 
 	SigFox.status();
 	delay(1);
@@ -75,11 +78,14 @@ bool SigfoxArduino::sendMessageAndGetResponse(byte* bMsg, byte* rMsg) {
 	Serial.println(SigFox.status(ATMEL));
 
 	if (SigFox.parsePacket()) {
-		Serial.println("Réponse du serveur:");
+		Serial.println("Réponse du serveur");
 		while (SigFox.available()) {
+
 			rMsg[index] = SigFox.read();
+			Serial.print(rMsg[index]);
 			index++;
 		}
+		Serial.println();
 		delay(100);
 		SigFox.end();
 		return true;

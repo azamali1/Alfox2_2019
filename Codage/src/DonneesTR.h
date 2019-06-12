@@ -33,7 +33,7 @@ public:
 
 	float getDistanceParcourue();
 	void majDistance();
-	void majDistance(bool messageEnvoye);
+	void majDistance(int duree);
 	//void majData(OBD2 obd2);
 	float getLatitude();
 	float getLongitude();

@@ -1,10 +1,10 @@
 project/AlfoxMainV1.cpp.o: ../../AlfoxMainV1.cpp \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Arduino.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/avr/pgmspace.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/avr/interrupt.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/avr/io.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/binary.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/itoa.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/Arduino.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/avr/pgmspace.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/avr/interrupt.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/avr/io.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/binary.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/itoa.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/sam.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/samd21.h \
@@ -70,51 +70,51 @@ project/AlfoxMainV1.cpp.o: ../../AlfoxMainV1.cpp \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/instance/usb.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/instance/wdt.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/pio/samd21g18a.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring_constants.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/WVariant.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/WCharacter.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/WString.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/avr/pgmspace.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Tone.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Arduino.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/WMath.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/HardwareSerial.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Stream.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Print.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Printable.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/pulse.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/delay.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200/variant.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/SERCOM.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Uart.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/SERCOM.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/RingBuffer.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring_digital.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring_analog.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring_shift.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/WInterrupts.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/USBDesc.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/USBCore.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/USBAPI.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Stream.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/RingBuffer.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/USB_host.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/samd21_host.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/wiring_constants.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/WVariant.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/WCharacter.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/WString.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/avr/pgmspace.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/Tone.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/Arduino.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/WMath.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/HardwareSerial.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/Stream.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/Print.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/Printable.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/pulse.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/delay.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/variants/mkrfox1200/variant.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/SERCOM.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/Uart.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/SERCOM.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/RingBuffer.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/wiring.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/wiring_digital.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/wiring_analog.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/wiring_shift.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/WInterrupts.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/USBDesc.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/USBCore.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/USBAPI.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/Stream.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/RingBuffer.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/USB_host.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/samd21_host.h \
  ../../../../src/GPS.h \
  /home/snir2g2/.arduinocdt/libraries/Adafruit_GPS_Library/1.0.3/Adafruit_GPS.h \
  ../../../../src/DonneesTR.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/libraries/SPI/SPI.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/libraries/SPI/SPI.h \
  /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/SD.h \
  /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/utility/SdFat.h \
  /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/utility/Sd2Card.h \
  /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/utility/Sd2PinMap.h \
  /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/utility/SdInfo.h \
  /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/utility/FatStructs.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/Print.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/Print.h \
  /home/snir2g2/.arduinocdt/libraries/SD/1.2.3/src/utility/SdFatUtil.h \
  ../../../../src/Bluetooth.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring_private.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/wiring_private.h \
  ../../../../src/CarteSD.h ../../../../src/DonneesTR.h \
  ../../../../src/OBD2.h ../../../../src/Bluetooth.h \
  ../../../../src/LiaisonSimulateur.h ../../../../src/Global.h \

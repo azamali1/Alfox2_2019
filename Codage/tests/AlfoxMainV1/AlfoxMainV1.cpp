@@ -54,7 +54,8 @@ void setup() {
 
 #ifdef SIMU
 	Serial.println("Connexion Bluetooth au simulateur OBD2 ...");
-	bluetooth->connexion("780C,B8,46F54"); // PC Mr. Commenge simulateur
+	//bluetooth->connexion("780C,B8,46F54"); // PC Mr. Commenge simulateur
+	bluetooth->connexion("C0CB,38,D768D5"); // PC Mr. Commenge simulateur SONY
 	//bluetooth->connexion("E84E,84,CCF54A");//Portable ZAMALI*
 	//bluetooth->connexion("E84E,84,CCF54A");//Dongle bt 4 dg440s
 
@@ -91,7 +92,10 @@ void loop() {
 
 	messageEnvoye = false;
 
+
+	Serial.println("MajDataTR() ?");
 	majDataTR();
+	Serial.println("MajDataTR() OK");
 
 	Serial.println("Date et heure :");
 	afficherHeure();
@@ -206,10 +210,10 @@ void majDataTR() {
 void sendMessageNormal() {
 	Serial.println("Envoi de message normal ...");
 	if (obd2->isConnected()) {
-		Serial.println("Mode standard...");
+		Serial.println("Mode normal...");
 		//Si on peut contacter OBD2, on envoi un message STANDARD
 
-		message->nouveau(STANDARD, donneesTR, messageEncode);
+		message->nouveau(NORMAL, donneesTR, messageEncode);
 		sigfoxArduino->envoyer(messageEncode); //Le serial se déconnecte systématiquement dans SigFox.endpaquet();
 		//Les println et les write sont donc inutiles ici, il est donc nécéssaire de vérifier l'envoi du message sur https://backend.sigfox.com/
 

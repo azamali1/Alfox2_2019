@@ -68,16 +68,16 @@ void setup() {
 	sigfoxArduino = SigfoxArduino::getInstance();
 	bluetooth = Bluetooth::getInstance(PINALIM, PINEN);
 
-	//Commenter dans OBD2.h le define SIMU pour ne pas utiliser le simulateur
+	//Commenter dans OBD2.h le #define SIMU pour ne pas utiliser le simulateur
 
-	Serial.println("Test de la classe Bluetooth");
 #ifdef SIMU
 	Serial.println("Connexion Bluetooth au simulateur OBD2 ...");
-	bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
+	//bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
+	bluetooth->connexion("C0CB,38,D768D5"); // PC Mr. Commenge simulateur SONY
 #else
-	Serial.println("Connexion Bluetooth à l'OBD2 de  la voiture ...");
-	//OBD2 noir KONNWEI
-	bluetooth->connexion("B22B,1C,70EA6");
+			Serial.println("Connexion Bluetooth à l'OBD2 de  la voiture ...");
+			//OBD2 noir KONNWEI
+			bluetooth->connexion("B22B,1C,70EA6");
 #endif
 
 	delay(2000);
@@ -141,13 +141,17 @@ void loop() {
 
 void majDataTR() {
 
-	if (etat == STANDARD) {
+	if (etat == NORMAL) {
 
 		donneesTR->setVitesse(obd2->lireVitesse());
 		delay(250);
 		donneesTR->setRegime(obd2->lireRegimeMoteur());
 		delay(250);
-		donneesTR->majDistance();
+		if (messageEnvoye == true) {
+			donneesTR->majDistance(DUREE_LOOP_SENDING_MESSAGE);
+		} else {
+			donneesTR->majDistance(DUREE_LOOP);
+		}
 		delay(250);
 
 #ifndef SIMU //En simulation la conso ne peut pas être récupérée (c'est donc bloquant)
@@ -162,7 +166,7 @@ void majDataTR() {
 		Serial.println(" km/h");
 		Serial.print("Distance :");
 		Serial.print((int) donneesTR->getDistanceParcourue());
-		Serial.println(" km");
+		Serial.println(" m");
 		Serial.print("Régime :");
 		Serial.print(donneesTR->getRegime());
 		Serial.println(" tours/min");
@@ -187,7 +191,7 @@ void majDataTR() {
 		if (etat == DEGRADE) {
 			if (messageEnvoye == true) {
 				donneesTR->majDistance(true);
-			}else{
+			} else {
 				donneesTR->majDistance();
 			}
 			donneesTR->setVitesse(gps->getVitesse());
@@ -230,8 +234,11 @@ void nouvelEtat(Etat e) {
 		traiterEtat(EXIT);
 		etat = e;
 		traiterEtat(ENTRY);
-		traiterEtat(DO);
+		Serial.println("E");
+		//traiterEtat(DO);
+		Serial.println("F");
 		chgtModeSrv = false;
+		Serial.println("G");
 	}
 }
 
@@ -344,14 +351,23 @@ void traiterEtat(ModeG mode) {
 		}
 		break;
 	case STANDARD:
-		led->setCouleur(255, 255, 255);
-		dureeCumulee = 0;
-		fromStandard = true;
-		if (obd2->isConnected() == true) {
-			etat = NORMAL;
-		} else {
-			etat = DEGRADE;
+		switch (mode) {
+		case ENTRY:
+			led->setCouleur(255, 255, 255);
+			dureeCumulee = 0;
+			fromStandard = true;
+			if (obd2->isConnected() == true) {
+				nouvelEtat(NORMAL);
+			} else {
+				nouvelEtat(DEGRADE);
+			}
+			break;
+		case DO:
+			break;
+		case EXIT:
+			break;
 		}
+
 		break;
 	case NORMAL:
 		switch (mode) {
@@ -359,19 +375,19 @@ void traiterEtat(ModeG mode) {
 			led->setVert(200);
 			Serial.print("Entrée dans le mode ");
 			Serial.println(etat);
-			majDataTR();
-			if (fromStandard == true) {
-				//traiterMessage(true);
-			}
+
 
 			break;
 		case DO:
 			led->setVert(200);
 			gps->maj();
-			majDataTR();
 			if (dureeCumulee >= T_MSG_NORMAL) {
+				messageEnvoye = true;
+				majDataTR();
 				traiterMessage(true);
 				dureeCumulee = 0;
+			} else {
+				majDataTR();
 			}
 			break;
 		case EXIT:
@@ -538,18 +554,19 @@ void traiterMessage(bool askForResponse) {
 	message->nouveau(etat, donneesTR, messageEncode);
 	messageEnvoye = true;
 	Serial.println("Envoi du message à SigFox... ");
-	Serial.println("Reconnectez le terminal à la voie série pour");
-	Serial.println("reprendre la main");
 	if (askForResponse == false) {
 		sigfoxArduino->envoyer(messageEncode);
 	} else {
 		led->setCouleur(255, 165 / 3, 0);
 		if (sigfoxArduino->sendMessageAndGetResponse(messageEncode,
 				reponseDecode)) {
-			led->setVert(255);
+			led->setCouleur(cyan, 255);
+			delay(1000);
 			nouvelEtat(message->decoderEtat(reponseDecode));
+
 		} else {
 			led->setMagenta(255);
+			nouvelEtat(etat);
 		}
 	}
 }

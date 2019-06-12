@@ -1,11 +1,11 @@
 core/USB/samd21_host.c.o: \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/samd21_host.c \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../Arduino.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../avr/pgmspace.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../avr/interrupt.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../avr/io.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../binary.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../itoa.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/samd21_host.c \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../Arduino.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../avr/pgmspace.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../avr/interrupt.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../avr/io.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../binary.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../itoa.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/sam.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/samd21.h \
@@ -71,22 +71,22 @@ core/USB/samd21_host.c.o: \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/instance/usb.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/instance/wdt.h \
  /home/snir2g2/.arduinocdt/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL/samd21/include/pio/samd21g18a.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../wiring_constants.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../WVariant.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../delay.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/variants/mkrfox1200/variant.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../wiring.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../wiring_digital.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../wiring_analog.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../wiring_shift.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../WInterrupts.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../USB/USBDesc.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../USB/USBCore.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../USB/USBAPI.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../USB/USB_host.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/../USB/samd21_host.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/USB_host.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/USB/samd21_host.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring_digital.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring_private.h \
- /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.20/cores/arduino/wiring_constants.h
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../wiring_constants.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../WVariant.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../delay.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/variants/mkrfox1200/variant.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../wiring.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../wiring_digital.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../wiring_analog.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../wiring_shift.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../WInterrupts.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../USB/USBDesc.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../USB/USBCore.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../USB/USBAPI.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../USB/USB_host.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/../USB/samd21_host.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/USB_host.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/USB/samd21_host.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/wiring_digital.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/wiring_private.h \
+ /home/snir2g2/.arduinocdt/packages/arduino/hardware/samd/1.6.21/cores/arduino/wiring_constants.h

@@ -141,13 +141,9 @@ void DonneesTR::majDistance() // d = vt
 	distanceParcourue += (vitesse * 5) / 3.6;
 }
 
-void DonneesTR::majDistance(bool messageEnvoye) // d = vt
-		{
-	if (messageEnvoye == true) {
-		distanceParcourue += (vitesse * 5) / 3.6;
-	} else {
-		distanceParcourue += (vitesse * 35) / 3.6;
-	}
+void DonneesTR::majDistance(int duree) { // d = vt
+
+	distanceParcourue += (vitesse * duree / 1000) / 3.6; //La durée est divisée par 1000 car elle est exprimée en ms et que nous avons besoin de s.
 }
 
 void DonneesTR::setLatitude(float latitude) {
@@ -184,7 +180,7 @@ bool DonneesTR::getOBD2Actif() {
 	return OBD2Actif;
 }
 
-void DonneesTR::setOBD2Actif(bool activeOrNot){
+void DonneesTR::setOBD2Actif(bool activeOrNot) {
 	this->OBD2Actif = activeOrNot;
 }
 
@@ -192,7 +188,7 @@ bool DonneesTR::getBluetoothActif() {
 	return bluetoothActif;
 }
 
-void DonneesTR::setBluetoothActif(bool activeOrNot){
+void DonneesTR::setBluetoothActif(bool activeOrNot) {
 	this->bluetoothActif = activeOrNot;
 }
 
