@@ -18,13 +18,15 @@ void setup() {
 	delay(2500);
 	bluetooth = Bluetooth::getInstance(PINALIM, PINEN);
 	Serial.println("Test de la classe OBD2");
-	bluetooth->connexion("B22B,1C,70EA6"); // OBD2 noir KONNWEI
-	//bluetooth->connexion("780C,B8,46F54"); // pc prof
-	//bluetooth->connexion("C0CB,38,D768D5"); // pc prof
+	//bluetooth->connexion("B22B,1C,70EA6"); // OBD2 noir KONNWEI
+	//bluetooth->connexion("780C,B8,46F54"); // pc prof HP
+	bluetooth->connexion("C0CB,38,D768D5"); // pc prof SONY
 	delay(2000);
 	Serial.println(bluetooth->isActif());
 	obd2 = OBD2::getInstance(bluetooth);
 	delay(2000);
+	Serial.print("La connexion à l'OBD2 est-elle opérationnelle ? ");
+	Serial.println(obd2->testerConnexion());
 
 }
 
@@ -37,6 +39,15 @@ void loop() {
 		if (obd2->isConnected()) {
 			Serial.println("Acquisitions des données OBD2");
 			delay(500);
+
+			int heureDebut = millis();
+			Serial.print("La connexion à l'OBD2 est-elle opérationnelle ? ");
+			Serial.println(obd2->testerConnexion());
+			int heureFin = millis();
+			int duree= heureFin-heureDebut;
+			Serial.print("Durée d'exécution du test de connexion : ");
+			Serial.println(duree);
+
 			Serial.print("Vitesse : ");
 			Serial.print(obd2->lireVitesse());
 			Serial.println(" Km/h");
@@ -54,9 +65,9 @@ void loop() {
 			Serial.println("°C");
 			delay(500);
 			/*Serial.print("Débit d'air : ");
-			Serial.print(obd2->lireDair());
-			Serial.println(" g/s");
-			delay(500);*/
+			 Serial.print(obd2->lireDair());
+			 Serial.println(" g/s");
+			 delay(500);*/
 			Serial.print("Sonde : ");
 			Serial.print(obd2->lireSonde());
 			Serial.println("V");
@@ -69,7 +80,8 @@ void loop() {
 			Serial.print(obd2->lireBatterie());
 			Serial.println(" V");
 			delay(500);
-			Serial.println("-----------------------------------------------------");
+			Serial.println(
+					"-----------------------------------------------------");
 			initial = millis();
 		}
 	}

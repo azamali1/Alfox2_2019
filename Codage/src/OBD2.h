@@ -5,7 +5,7 @@
 #include "Bluetooth.h"
 #include "LiaisonSimulateur.h"
 
-//#define SIMU
+#define SIMU
 
 #ifdef SIMU
 //Communication avec le simulateur OBDSim
@@ -74,6 +74,7 @@ public:
 	float lireSonde();
 	float lireBatterie();
 	String lireReponse();
+	bool testerConnexion();
 };
 
 #endif

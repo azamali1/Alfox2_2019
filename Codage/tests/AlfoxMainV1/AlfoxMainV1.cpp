@@ -92,10 +92,7 @@ void loop() {
 
 	messageEnvoye = false;
 
-
-	Serial.println("MajDataTR() ?");
 	majDataTR();
-	Serial.println("MajDataTR() OK");
 
 	Serial.println("Date et heure :");
 	afficherHeure();

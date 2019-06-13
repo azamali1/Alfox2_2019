@@ -11,7 +11,7 @@
 #include "../../src/LedTri.h"
 
 #define DUREE_LOOP 5000 //en millisecondes
-#define DUREE_LOOP_SENDING_MESSAGE 75000
+#define DUREE_LOOP_SENDING_MESSAGE 45000
 #define T_MSG_NORMAL 720000/8 //12 minutes en ms
 #define T_MSG_ECO 3600000 //1h en ms
 #define T_MSG_GPS 720000/8
@@ -101,6 +101,10 @@ void setup() {
 void loop() {
 
 	heureDebut = millis();
+	Serial.println();
+	Serial.println();
+	Serial.println("#############################");
+	Serial.println();
 	Serial.println("Entrée dans la loop");
 	messageEnvoye = false;
 	keepWatchOBD2();
@@ -160,7 +164,9 @@ void majDataTR() {
 		donneesTR->setConsommation(obd2->lireConsomation());
 		delay(250);
 #endif
-
+		Serial.println();
+		Serial.println("------------------------------------");
+		Serial.println("Données véhicule :");
 		Serial.print("Vitesse :");
 		Serial.print(donneesTR->getVitesse());
 		Serial.println(" km/h");
@@ -179,7 +185,8 @@ void majDataTR() {
 		Serial.print(donneesTR->getConsommation());
 		Serial.println(" l/100km");
 #endif
-
+		Serial.println("------------------------------------");
+		Serial.println();
 		Serial.println("Maj donneesTR done !");
 
 	}
@@ -206,12 +213,17 @@ void majDataTR() {
 }
 
 void afficherGPS() {
+	Serial.println();
+	Serial.println("------------------------------------");
+	Serial.println("Données GPS :");
 	Serial.print("Latitude :");
 	Serial.println(donneesTR->getLatitude(), 6);
 	Serial.print("Longitude :");
 	Serial.println(donneesTR->getLongitude(), 6);
-	Serial.print("Vitesse :");
-	Serial.println(donneesTR->getVitesse());
+	Serial.print("Vitesse GPS :");
+	Serial.print(donneesTR->getVitesse());
+	Serial.println(" km/h");
+	Serial.println("------------------------------------");
 }
 
 void afficherHeure() {
@@ -234,11 +246,7 @@ void nouvelEtat(Etat e) {
 		traiterEtat(EXIT);
 		etat = e;
 		traiterEtat(ENTRY);
-		Serial.println("E");
-		//traiterEtat(DO);
-		Serial.println("F");
 		chgtModeSrv = false;
-		Serial.println("G");
 	}
 }
 
@@ -268,6 +276,8 @@ void traiterEvenement(Event ev) {
 		case MODE_INIT:
 			nouvelEtat(INIT);
 			break;
+		default:
+			break;
 		}
 		break;
 	case DEGRADE:
@@ -290,6 +300,9 @@ void traiterEvenement(Event ev) {
 		case MODE_INIT:
 			nouvelEtat(INIT);
 			break;
+		default:
+			break;
+
 		}
 		break;
 	case DMD_GPS:
@@ -309,6 +322,8 @@ void traiterEvenement(Event ev) {
 		case MODE_INIT:
 			nouvelEtat(INIT);
 			break;
+		default:
+			break;
 		}
 		break;
 	case DORMIR:
@@ -318,6 +333,8 @@ void traiterEvenement(Event ev) {
 			break;
 		case MODE_MAINTENANCE:
 			nouvelEtat(MAINTENANCE);
+			break;
+		default:
 			break;
 		}
 		break;
@@ -329,7 +346,11 @@ void traiterEvenement(Event ev) {
 		case MODE_NORMAL:
 			nouvelEtat(NORMAL);
 			break;
+		default:
+			break;
 		}
+		break;
+	default:
 		break;
 	}
 
@@ -375,7 +396,6 @@ void traiterEtat(ModeG mode) {
 			led->setVert(200);
 			Serial.print("Entrée dans le mode ");
 			Serial.println(etat);
-
 
 			break;
 		case DO:
@@ -540,13 +560,14 @@ void keepWatchSerial() { // Surveille la voie série pour passage en maintenance
 void keepWatchOBD2() {
 // Surveillance du Bluetooth
 	Serial.print("KeepWatchOBD2 status : ");
-	if (obd2->isConnected()) {
-		traiterEvenement(OBD2_ON);
+	if (obd2->testerConnexion()) {
 		Serial.println("OBD2 connecté");
+		traiterEvenement(OBD2_ON);
 	} else {
 		Serial.println("OBD2 déconnecté");
 		traiterEvenement(OBD2_OFF);
 	}
+
 }
 
 void traiterMessage(bool askForResponse) {
@@ -569,6 +590,8 @@ void traiterMessage(bool askForResponse) {
 			nouvelEtat(etat);
 		}
 	}
+	delay(200);
+	bluetooth->reinitialiserLiaisonSerie();
 }
 
 void SERCOM3_Handler() {

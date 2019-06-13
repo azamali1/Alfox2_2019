@@ -82,7 +82,7 @@ bool SigfoxArduino::sendMessageAndGetResponse(byte* bMsg, byte* rMsg) {
 		while (SigFox.available()) {
 
 			rMsg[index] = SigFox.read();
-			Serial.print(rMsg[index]);
+			Serial.print(rMsg[index], HEX);
 			index++;
 		}
 		Serial.println();

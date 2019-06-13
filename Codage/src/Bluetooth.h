@@ -35,6 +35,7 @@ class Bluetooth {
     int connexion(String adresse);
     bool isActif();
     Uart* getLiaisonBT();
+    void reinitialiserLiaisonSerie();
 };
 
 #endif
