@@ -176,34 +176,18 @@ float OBD2::lireConsomation() {
 	//Consommation est en L/100
 	float conso = 0;
 	float vitesse = (float) this->lireVitesse();
-	//float pression = this->lirePression();
-	//float regime = (float)this->lireRegimeMoteur();
-	//float temperature = this->lireTemprerature();
+	float pression = this->lirePression();
+	float regime = (float)this->lireRegimeMoteur();
+	float temperature = this->lireTemprerature();
 	//float ratio = this->lireRatio();
-	float dair = this->lireDair();
-
-
-	Serial.print("Débit d'air :");
-	Serial.println(dair);
-
-
+	//float dair = this->lireDair();
 	float sonde = this->lireSonde();
-
-
-	Serial.print("Sonde :");
-	Serial.println(sonde);
-
-
-	/*if(ratio == -1){
-	 ratio = 18;
-	 }*/
 	if (vitesse == 0) {
 		conso = 0;
 	} else {
 		//Calcul de la consommation que vous pouvez retrouver dans la documentation "Consommation OBD2"
-		conso = ((360000 / 845) * (dair / ((-1.045 * sonde) + 15.222))
-				* (1 / vitesse));
-		//conso = ((6000 / vitesse)* (0.0027* ((pression * regime) / ((temperature + 273.15) * ratio))));
+		//conso = ((360000 / 845) * (dair / ((-1.045 * sonde) + 15.222))* (1 / vitesse));
+		conso = ((6000 / vitesse)* (0.0027* ((pression * regime) / ((temperature + 273.15) * ((-1.045 * sonde) + 15.222)))));
 	}
 
 	return conso;
@@ -241,7 +225,7 @@ float OBD2::lireDair() {
 
 float OBD2::lireSonde() {
 	//le sonde lambda est en V
-	return testReponse(C_SONDE)/200;
+	return testReponse(C_SONDE) / 200;
 }
 
 void OBD2::setIsConnected(bool etat) {

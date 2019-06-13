@@ -46,6 +46,12 @@ private:
 	Uart* liaisonBT;
 	String code[11] = { "010D", "015F", "010C", "CODE_DEFAUT_NONDEF", "ATI",
 			"010B", "010F", "0144", "0110","0114" ,"AT RV" };
+	//différent PID sonde lambda
+	//0114 0115 0116 0117 0118 0119 011A 011B
+	//0124 0125 0126 0127 0128 0129 012A 012B
+
+	//différent PID ratio en relation avec la sonde lambda
+	//0134 0135 0136 0137 0138 0139 013A 013B
 	static OBD2* OBD2Instance;
 	OBD2(Bluetooth* bt);
 	OBD2(LiaisonSimulateur* liaison);bool connected;
