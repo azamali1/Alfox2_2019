@@ -11,7 +11,8 @@
 #include "../../src/LedTri.h"
 
 #define DUREE_LOOP 5000 //en millisecondes
-#define DUREE_LOOP_SENDING_MESSAGE 45000
+#define DUREE_LOOP_SENDING_MESSAGE 50000
+#define DUREE_LOOP_SENDING_MESSAGE_DEGRADE 80000
 #define T_MSG_NORMAL 720000/8 //12 minutes en ms
 #define T_MSG_ECO 3600000 //1h en ms
 #define T_MSG_GPS 720000/8
@@ -28,6 +29,7 @@ unsigned long heureDebut;
 unsigned long tempoMessage;
 
 bool chgtModeSrv;
+bool fromDegrade = false;
 bool fromStandard = true;
 bool messageEnvoye = false;
 
@@ -129,11 +131,20 @@ void loop() {
 	//Duree de loop contrôlée
 
 	if (messageEnvoye == true) { //On prends plus de temps pour laisser la carte envoyer le message
-		Serial.println(millis() - heureDebut);
-		dureeCumulee += DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut)
-				+ 1; //Decalage volontaire pour compenser le temps d'execution de ce calcul
+		if (fromDegrade) {
+			fromDegrade = false;
+			Serial.println(millis() - heureDebut);
+			dureeCumulee += DUREE_LOOP_SENDING_MESSAGE_DEGRADE
+					- (millis() - heureDebut) + 1; //Decalage volontaire pour compenser le temps d'execution de ce calcul
 
-		delay(DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut));
+			delay(DUREE_LOOP_SENDING_MESSAGE_DEGRADE - (millis() - heureDebut));
+		} else {
+			Serial.println(millis() - heureDebut);
+			dureeCumulee += DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut)
+					+ 1; //Decalage volontaire pour compenser le temps d'execution de ce calcul
+
+			delay(DUREE_LOOP_SENDING_MESSAGE - (millis() - heureDebut));
+		}
 	} else { //Duree standard de la loop sans messages
 		Serial.println(millis() - heureDebut);
 		dureeCumulee += DUREE_LOOP - (millis() - heureDebut);
@@ -223,7 +234,6 @@ void afficherGPS() {
 	Serial.print("Vitesse GPS :");
 	Serial.print(donneesTR->getVitesse());
 	Serial.println(" km/h");
-	Serial.println("------------------------------------");
 }
 
 void afficherHeure() {
@@ -238,6 +248,7 @@ void afficherHeure() {
 	Serial.print(gps->getDatation().tm_min);
 	Serial.print(":");
 	Serial.println(gps->getDatation().tm_sec);
+	Serial.println("------------------------------------");
 }
 
 void nouvelEtat(Etat e) {
@@ -429,20 +440,11 @@ void traiterEtat(ModeG mode) {
 			majDataTR();
 			if (dureeCumulee >= T_MSG_NORMAL) {
 				traiterMessage(true);
-				/*#ifdef SIMU
-				 Serial.println("Connexion Bluetooth au simulateur OBD2 ...");
-				 bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
-				 #else
-				 Serial.println(
-				 "Connexion Bluetooth à l'OBD2 de  la voiture ...");
-				 //OBD2 noir KONNWEI
-				 bluetooth->connexion("B22B,1C,70EA6");
-				 #endif*/
-
-				dureeCumulee = 0;
 			}
 			break;
 		case EXIT:
+			fromDegrade = true;
+			dureeCumulee = 0;
 			break;
 		}
 		break;
@@ -535,6 +537,41 @@ void traiterEtat(ModeG mode) {
 	}
 }
 
+void traiterMessage(bool askForResponse) {
+	Serial.println("Création du message SigFox... ");
+	message->nouveau(etat, donneesTR, messageEncode);
+	messageEnvoye = true;
+	Serial.println("Envoi du message à SigFox... ");
+	if (askForResponse == false) {
+		sigfoxArduino->envoyer(messageEncode);
+	} else {
+		led->setCouleur(255, 165 / 3, 0);
+		if (sigfoxArduino->sendMessageAndGetResponse(messageEncode,
+				reponseDecode)) {
+			led->setCouleur(cyan, 255);
+			delay(1000);
+			nouvelEtat(message->decoderEtat(reponseDecode));
+
+		} else {
+			led->setMagenta(255);
+			nouvelEtat(etat);
+		}
+	}
+	delay(200);
+	bluetooth->reinitialiserLiaisonSerie();
+	if (fromDegrade) {
+#ifdef SIMU
+		Serial.println("Connexion Bluetooth au simulateur OBD2 ...");
+		//bluetooth->connexion("780C,B8,46F54"); // PC Commenge simulateur
+		bluetooth->connexion("C0CB,38,D768D5"); // PC Mr. Commenge simulateur SONY
+#else
+		Serial.println("Connexion Bluetooth à l'OBD2 de  la voiture ...");
+		//OBD2 noir KONNWEI
+		bluetooth->connexion("B22B,1C,70EA6");
+#endif
+	}
+}
+
 void keepWatchSerial() { // Surveille la voie série pour passage en maintenance
 // Surveillance de la voie série
 	Serial.print("KeepWatchSerial status : ");
@@ -568,30 +605,6 @@ void keepWatchOBD2() {
 		traiterEvenement(OBD2_OFF);
 	}
 
-}
-
-void traiterMessage(bool askForResponse) {
-	Serial.println("Création du message SigFox... ");
-	message->nouveau(etat, donneesTR, messageEncode);
-	messageEnvoye = true;
-	Serial.println("Envoi du message à SigFox... ");
-	if (askForResponse == false) {
-		sigfoxArduino->envoyer(messageEncode);
-	} else {
-		led->setCouleur(255, 165 / 3, 0);
-		if (sigfoxArduino->sendMessageAndGetResponse(messageEncode,
-				reponseDecode)) {
-			led->setCouleur(cyan, 255);
-			delay(1000);
-			nouvelEtat(message->decoderEtat(reponseDecode));
-
-		} else {
-			led->setMagenta(255);
-			nouvelEtat(etat);
-		}
-	}
-	delay(200);
-	bluetooth->reinitialiserLiaisonSerie();
 }
 
 void SERCOM3_Handler() {

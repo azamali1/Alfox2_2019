@@ -84,7 +84,7 @@ OBD2::OBD2(Bluetooth* bt) {
 	 Serial.println(lireReponse());*/
 	//ATE0: Desactive(0) ou non l’echo (si activÃ©, l’ELM renvoie alors les caractÃ¨res reÃ§u pour verif eventuelle)
 	liaisonBT->println("AT E0");
-	Serial.println(lireReponse());
+	lireReponse();
 	//ATSP0: Permet de parametrer le protocole Ã utiliser (0=mode auto)
 	liaisonBT->println("AT SP0");
 	lireReponse();
@@ -93,25 +93,20 @@ OBD2::OBD2(Bluetooth* bt) {
 	//Si le contact est coupé ou la liaison bluetooth est coupé, on précise qu'on est pas connecté
 	if ((reponse.substring(0, 17) == "UNABLE TO CONNECT")
 			|| (reponse.substring(0, 9) == "ERROR:(0)")) {
-		Serial.println("Est connecté ? ");
+		Serial.print("OBD2 : ");
 		this->connected = false;
-		Serial.println("Pas connecté");
+		Serial.println("pas connecté");
 	} else {
 		this->connected = true;
 		Serial.println("connecté");
 
 	}
-
-	Serial.println(this->isConnected());
 }
 
 String OBD2::demande(TCode numCode) {
-	Serial.println("Laision BT en attente");
+
 	liaisonBT->println(code[numCode]);
-	Serial.println("Laision BT passée");
-	Serial.println("lecture de réponse");
 	String a = lireReponse();
-	Serial.println("lecture de réponse passée");
 	return a/*.toInt()*/;
 }
 
@@ -119,18 +114,13 @@ String OBD2::lireReponse() {
 	String reponse = "";
 	delay(100);
 	while (liaisonBT->available() <= 0);
-	Serial.println("Les données sont prêtes, on s'apprête à les lire");
-
 	reponse = liaisonBT->readStringUntil('>');
-	Serial.println("On renvoie la réponse");
-
 	return reponse;
 }
 
 int OBD2::testReponse(TCode code) {
-	Serial.println("On va appeler demande()");
+
 	String reponse = demande(code);
-	Serial.println("demande est passé");
 
 	//Si les donnees ne sont pas au bon format, pas de donnée, on renvoie -1
 	if (reponse.substring(0, 7) == "NO DATA") {
@@ -249,7 +239,7 @@ bool OBD2::isConnected() {
 bool OBD2::testerConnexion() {
 
 	int connecte = testReponse(C_VITESSE);
-	Serial.println("testReponse() passé");
+
 	if ((connecte == -1) || (connecte == -2) || (connecte == -3)) {
 		this->connected = false;
 		return this->connected;
