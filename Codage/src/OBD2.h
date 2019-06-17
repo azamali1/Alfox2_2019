@@ -5,7 +5,7 @@
 #include "Bluetooth.h"
 #include "LiaisonSimulateur.h"
 
-#define SIMU
+//#define SIMU
 
 #ifdef SIMU
 //Communication avec le simulateur OBDSim
@@ -35,7 +35,17 @@ typedef enum {
 	C_RATIO,
 	C_DAIR,
 	C_SONDE,
-	C_BATTERIE
+	C_BATTERIE,
+	C_SONDE2,
+	C_SONDE3,
+	C_SONDE4,
+	C_SONDE5,
+	C_SONDE6,
+	C_SONDE7,
+	C_SONDE8,
+
+
+
 } TCode;
 
 class OBD2 {
@@ -44,14 +54,14 @@ private:
 
 	Bluetooth* moduleBT;
 	Uart* liaisonBT;
-	String code[11] = { "010D", "015F", "010C", "CODE_DEFAUT_NONDEF", "ATI",
-			"010B", "010F", "0144", "0110","0114" ,"AT RV" };
+	String code[18] = { "010D", "015F", "010C", "CODE_DEFAUT_NONDEF", "ATI",
+			"010B", "010F", "0144", "0110", "0114", "AT RV", "0115", "0116",
+			"0117", "0118", "0119", "011A", "011B"};
+
 	//différent PID sonde lambda
-	//0114 0115 0116 0117 0118 0119 011A 011B
-	//0124 0125 0126 0127 0128 0129 012A 012B
 
 	//différent PID ratio en relation avec la sonde lambda
-	//0134 0135 0136 0137 0138 0139 013A 013B
+	//"0134", "0135", "0136", "0137", "0138", "0139", "013A", "013B",
 	static OBD2* OBD2Instance;
 	OBD2(Bluetooth* bt);
 	OBD2(LiaisonSimulateur* liaison);bool connected;
@@ -70,8 +80,32 @@ public:
 	float lirePression();
 	float lireTemprerature();
 	float lireRatio();
+	float lireRatio1();
+	float lireRatio2();
+	float lireRatio3();
+	float lireRatio4();
+	float lireRatio5();
+	float lireRatio6();
+	float lireRatio7();
+	float lireRatio8();
 	float lireDair();
 	float lireSonde();
+	float lireSonde1();
+	float lireSonde2();
+	float lireSonde3();
+	float lireSonde4();
+	float lireSonde5();
+	float lireSonde6();
+	float lireSonde7();
+	float lireSonde8();
+	float lireSonde9();
+	float lireSonde10();
+	float lireSonde11();
+	float lireSonde12();
+	float lireSonde13();
+	float lireSonde14();
+	float lireSonde15();
+	float lireSonde16();
 	float lireBatterie();
 	String lireReponse();
 	bool testerConnexion();
