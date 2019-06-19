@@ -17,7 +17,7 @@
 
 byte messageEncode[12];
 
-int j=1;
+int j = 1;
 
 unsigned long dureeCumulee = 0;
 unsigned long dureeCumuleeGPS = 0;
@@ -34,7 +34,7 @@ GPS* gps;
 DonneesTR* donneesTR;
 CarteSD* sd;
 
-void sendMessageNormal();
+void sendMessageStandard();
 void sendMessageGPS();
 void majDataTR();
 void afficherGPS();
@@ -79,9 +79,7 @@ void setup() {
 	donneesTR = new DonneesTR();
 	sd = CarteSD::getInstance();
 	delay(1000);
-	while (CarteSD::sdOK == false) {
-		sd->initialisationSD();
-	}
+	sd->initialisationSD();
 	delay(10000);
 
 }
@@ -90,11 +88,17 @@ void loop() {
 
 	heureDebut = millis();
 
+	Serial.println();
+	Serial.println();
+	Serial.println("#############################");
+	Serial.println();
+	Serial.println("Entrée dans la loop");
+
 	messageEnvoye = false;
 
 	majDataTR();
 
-	Serial.println("Date et heure :");
+
 	afficherHeure();
 
 	//Carte SD désactivée por test, l'écriture est bloquante
@@ -111,30 +115,24 @@ void loop() {
 
 	//Envoi de message normal
 
-	if ((dureeCumulee >= T_MSG_STND*j) && (dureeCumulee < T_MSG_GPS)) {
-
+	if ((dureeCumulee >= T_MSG_STND * j) && (dureeCumulee < T_MSG_GPS)) {
 		for (int i = 0; i < 3; i++) {
 			Serial.println("! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !");
 		}
 		j++;
-		sendMessageNormal();
+		sendMessageStandard();
 		messageEnvoye = true;
-
 	}
-
 	//Envoi de message GPS
 
 	if (dureeCumulee >= T_MSG_GPS) {
-
 		for (int i = 0; i < 3; i++) {
-			Serial.println("# # # # # # # # # # # # # # # # # # # # # # #");
+			Serial.println("% % % % % % % % % % % % % % % % % % % % % % %");
 		}
-
 		sendMessageGPS();
 		dureeCumulee = 0;
-		j=1;
+		j = 1;
 		messageEnvoye = true;
-
 	}
 
 //Durée constante de la loop avec cas des loop où les messages sont envoyés
@@ -150,11 +148,6 @@ void loop() {
 		dureeCumuleeGPS += DUREE_LOOP - (millis() - heureDebut) + 1;
 		delay(DUREE_LOOP - (millis() - heureDebut));
 	}
-
-	Serial.println("\n-----------------------------------------------------\n");
-
-//fin
-
 }
 
 void majDataTR() {
@@ -175,13 +168,31 @@ void majDataTR() {
 		donneesTR->setConsommation(obd2->lireConsomation());
 		delay(250);
 #endif
+		Serial.println();
+		Serial.println("------------------------------------");
+		Serial.println("Données véhicule :");
+		Serial.print("Vitesse :");
+		Serial.print(donneesTR->getVitesse());
+		Serial.println(" km/h");
+		Serial.print("Distance :");
+		Serial.print((int) donneesTR->getDistanceParcourue());
+		Serial.println(" m");
+		Serial.print("Régime :");
+		Serial.print(donneesTR->getRegime());
+		Serial.println(" tours/min");
+
+#ifndef SIMU //En simulation la conso ne peut pas être récupérée (c'est donc bloquant)
+		Serial.print("Tension batterie : ");
+		Serial.print(donneesTR->getBatterie());
+		Serial.println(" V");
+		Serial.print("Consomation :");
+		Serial.print(donneesTR->getConsommation());
+		Serial.println(" l/100km");
+#endif
+		Serial.println("------------------------------------");
+		Serial.println();
+		Serial.println("Maj donneesTR done !");
 	}
-	Serial.print("Vitesse :");
-	Serial.println(donneesTR->getVitesse());
-	Serial.print("Distance :");
-	Serial.println((int) donneesTR->getDistanceParcourue());
-	Serial.print("Régime :");
-	Serial.println(donneesTR->getRegime());
 
 #ifndef SIMU //En simulation la conso ne peut pas être récupérée (c'est donc bloquant)
 	//Serial.print("Tension batterie : ");
@@ -204,8 +215,8 @@ void majDataTR() {
 	}
 }
 
-void sendMessageNormal() {
-	Serial.println("Envoi de message normal ...");
+void sendMessageStandard() {
+	Serial.println("Envoi de message standard ...");
 	if (obd2->isConnected()) {
 		Serial.println("Mode normal...");
 		//Si on peut contacter OBD2, on envoi un message STANDARD
@@ -244,6 +255,7 @@ void afficherGPS() {
 }
 
 void afficherHeure() {
+	Serial.println("Date et heure :");
 	Serial.print(gps->getDatation().tm_mday);
 	Serial.print("/");
 	Serial.print(gps->getDatation().tm_mon);
@@ -255,6 +267,7 @@ void afficherHeure() {
 	Serial.print(gps->getDatation().tm_min);
 	Serial.print(":");
 	Serial.println(gps->getDatation().tm_sec);
+	Serial.println("------------------------------------");
 }
 
 void SERCOM3_Handler() {
