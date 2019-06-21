@@ -548,12 +548,9 @@ void traiterMessage(bool askForResponse) {
 		led->setCouleur(255, 165 / 3, 0);
 		if (sigfoxArduino->sendMessageAndGetResponse(messageEncode,
 				reponseDecode)) {
-			led->setCouleur(cyan, 255);
-			delay(1000);
 			nouvelEtat(message->decoderEtat(reponseDecode));
 
 		} else {
-			led->setMagenta(255);
 			nouvelEtat(etat);
 		}
 	}
